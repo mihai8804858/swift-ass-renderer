@@ -1,0 +1,389 @@
+[Script Info]
+Title: English (US)
+Original Script: kadokawapictures  [http://www.crunchyroll.com/user/kadokawapictures]
+Original Translation:
+Original Editing:
+Original Timing:
+Synch Point:
+Script Updated By:
+Update Details:
+ScriptType: v4.00+
+Collisions: Normal
+PlayResX: 640
+PlayResY: 360
+Timer: 0.0000
+WrapStyle: 0
+
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,Strikeout,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: OP_ED,Trebuchet MS,24,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,-1,0,0,100,100,0,0,1,2,1,2,0010,0010,0020,0
+Style: Default - Top,Trebuchet MS,24,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,1,8,0010,0010,0020,1
+Style: Default,Trebuchet MS,24,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,1,2,0010,0010,0020,1
+Style: italics,Trebuchet MS,24,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,-1,0,0,100,100,0,0,1,2,1,2,0010,0010,0018,0
+Style: main,Trebuchet MS,24,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,1,2,0010,0010,0018,1
+Style: top,Trebuchet MS,24,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,1,8,0010,0010,0018,0
+Style: italicstop,Trebuchet MS,24,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,-1,0,0,100,100,0,0,1,2,1,8,0010,0010,0018,0
+Style: flashback,Trebuchet MS,24,&H00FFFFFF,&H000000FF,&H00400000,&H00400000,0,0,0,0,100,100,0,0,1,2,1,2,0010,0010,0018,1
+Style: flashback italics,Trebuchet MS,24,&H00FFFFFF,&H000000FF,&H00400000,&H00400000,0,-1,0,0,100,100,0,0,1,2,1,2,0010,0010,0018,1
+Style: flashbacktop,Trebuchet MS,24,&H00FFFFFF,&H000000FF,&H00400000,&H00400000,0,0,0,0,100,100,0,0,1,2,1,8,0020,0020,0018,0
+Style: flashbackitalicstop,Trebuchet MS,24,&H00FFFFFF,&H000000FF,&H00400000,&H00400000,0,-1,0,0,100,100,0,0,1,2,1,8,0010,0010,0018,0
+Style: overlap,Trebuchet MS,24,&H007FD3F2,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,1,2,0010,0010,0018,0
+Style: overlaptop,Trebuchet MS,24,&H007FD3F2,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,1,8,0010,0010,0018,0
+Style: overlap italics,Trebuchet MS,24,&H007FD3F2,&H000000FF,&H00000000,&H00000000,0,-1,0,0,100,100,0,0,1,2,1,2,0010,0010,0018,0
+Style: sign_generic,Arial,20,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,0,2,0010,0010,0010,1
+
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:24.43,0:00:25.75,main,Alicia,0000,0000,0000,,Wow!
+Dialogue: 0,0:00:26.93,0:00:28.87,main,Alicia,0000,0000,0000,,So many people and carriages!
+Dialogue: 0,0:00:34.35,0:00:37.24,main,Alicia,0000,0000,0000,,Let's see... The Royal Academy is...
+Dialogue: 0,0:00:40.00,0:00:42.02,main,Alicia,0000,0000,0000,,Excuse me. Are you all right?
+Dialogue: 0,0:00:43.22,0:00:46.21,main,Old Lady,0000,0000,0000,,I suddenly started feeling ill...
+Dialogue: 0,0:00:46.21,0:00:46.96,main,Alicia,0000,0000,0000,,Huh?!
+Dialogue: 0,0:00:56.78,0:01:00.16,main,Old Lady,0000,0000,0000,,Thank you. I feel better now.
+Dialogue: 0,0:01:00.86,0:01:03.62,main,Alicia,0000,0000,0000,,I'm glad. You'll be all right now.
+Dialogue: 0,0:01:03.62,0:01:07.72,main,Daughter,0000,0000,0000,,Thank you so much. How can I ever repay you?
+Dialogue: 0,0:01:07.72,0:01:08.92,main,Alicia,0000,0000,0000,,You don't need to thank me.
+Dialogue: 0,0:01:09.43,0:01:12.42,main,Alicia,0000,0000,0000,,It took a long time since I'm only level 1.
+Dialogue: 0,0:01:12.72,0:01:16.58,main,Daughter,0000,0000,0000,,Oh, no. Who knows what would have \Nhappened to my mother if not for you?
+Dialogue: 0,0:01:17.24,0:01:19.30,main,Daughter,0000,0000,0000,,Wait, by any chance...
+Dialogue: 0,0:01:20.13,0:01:22.95,main,Daughter,0000,0000,0000,,Were you on your way to the Royal Academy?
+Dialogue: 0,0:01:22.95,0:01:25.56,main,Alicia,0000,0000,0000,,Yes, I'm moving into the dorm today.
+Dialogue: 0,0:01:25.79,0:01:28.05,main,Daughter,0000,0000,0000,,Oh, then you'd better hurry!
+Dialogue: 0,0:01:28.05,0:01:28.77,main,Alicia,0000,0000,0000,,Huh?
+Dialogue: 0,0:01:28.77,0:01:32.07,main,Daughter,0000,0000,0000,,I believe the academy's \Ngates close at 6 o'clock.
+Dialogue: 0,0:01:32.07,0:01:33.29,main,Alicia,0000,0000,0000,,What?!
+Dialogue: 0,0:01:45.08,0:01:47.85,main,Alicia,0000,0000,0000,,Wait! Wait!
+Dialogue: 0,0:01:52.22,0:01:53.46,main,Alicia,0000,0000,0000,,You're kidding...
+Dialogue: 0,0:01:54.32,0:01:55.90,main,Oswald,0000,0000,0000,,It's time to lock the gate.
+Dialogue: 0,0:01:56.25,0:02:00.47,main,Oswald,0000,0000,0000,,It's the rule that the Royal \NAcademy's main gate closes at 6 o'clock.
+Dialogue: 0,0:02:00.47,0:02:04.17,main,Alicia,0000,0000,0000,,But the bell hasn't even finished ringing...
+Dialogue: 0,0:02:05.71,0:02:07.05,main,Alicia,0000,0000,0000,,And now it has.
+Dialogue: 0,0:02:07.61,0:02:09.25,main,Oswald,0000,0000,0000,,Your name and grade?
+Dialogue: 0,0:02:09.89,0:02:13.24,main,Alicia,0000,0000,0000,,Alicia Ehnleit. I'm a new first-year.
+Dialogue: 0,0:02:13.24,0:02:16.38,main,Alicia,0000,0000,0000,,Wait, the color of your necktie... \NAren't you a first-year, too?
+Dialogue: 0,0:02:16.38,0:02:19.11,main,Oswald,0000,0000,0000,,Yes. I've been helping with the weekly duties
+Dialogue: 0,0:02:19.11,0:02:21.87,main,Oswald,0000,0000,0000,,to get myself accustomed to the school.
+Dialogue: 0,0:02:22.17,0:02:25.19,main,Oswald,0000,0000,0000,,In any case, the rules are absolute.
+Dialogue: 0,0:02:25.63,0:02:27.75,main,Oswald,0000,0000,0000,,You'll have to find lodging \Nin town for tonight.
+Dialogue: 0,0:02:27.96,0:02:30.64,main,Alicia,0000,0000,0000,,But the entrance ceremony is tomorrow.
+Dialogue: 0,0:02:30.97,0:02:33.88,main,Alicia,0000,0000,0000,,I need to get into the dorm today.
+Dialogue: 0,0:02:34.14,0:02:39.38,main,Alicia,0000,0000,0000,,Besides, um... I don't have that much money.
+Dialogue: 0,0:02:39.38,0:02:44.83,main,Oswald,0000,0000,0000,,Oh, so you're the one commoner \Nwho was admitted here this year.
+Dialogue: 0,0:02:45.20,0:02:47.06,main,Oswald,0000,0000,0000,,Not that I don't sympathize...
+Dialogue: 0,0:02:48.76,0:02:52.15,main,Oswald,0000,0000,0000,,But rules are rules. Just give up.
+Dialogue: 0,0:02:52.15,0:02:54.98,main,Alicia,0000,0000,0000,,What?! But you're a first-year, too!
+Dialogue: 0,0:02:54.98,0:02:56.59,main,Alicia,0000,0000,0000,,Meanie!
+Dialogue: 0,0:02:56.59,0:03:00.77,main,Oswald,0000,0000,0000,,Now, what I'm about to say \Nis just me talking to myself.
+Dialogue: 0,0:03:00.77,0:03:01.45,main,Alicia,0000,0000,0000,,Huh?
+Dialogue: 0,0:03:01.45,0:03:04.75,main,Oswald,0000,0000,0000,,There's a part of the wall on the \Neastern side that's crumbling.
+Dialogue: 0,0:03:04.75,0:03:08.77,main,Oswald,0000,0000,0000,,Students who break curfew often \Nenter and leave through there.
+Dialogue: 0,0:03:08.77,0:03:11.37,main,Oswald,0000,0000,0000,,You're unlikely to be seen at this hour.
+Dialogue: 0,0:03:13.75,0:03:15.17,main,Alicia,0000,0000,0000,,What's your name?
+Dialogue: 0,0:03:15.17,0:03:18.99,main,Oswald,0000,0000,0000,,Oh, I hadn't introduced \Nmyself yet. How rude of me.
+Dialogue: 0,0:03:18.99,0:03:20.93,main,Oswald,0000,0000,0000,,I'm Oswald Grimsarde.
+Dialogue: 0,0:03:20.93,0:03:24.74,main,Alicia,0000,0000,0000,,Grimsarde? I've heard that \Nname somewhere before...
+Dialogue: 0,0:03:24.74,0:03:27.80,main,Oswald,0000,0000,0000,,Probably my father. He's a \Ncabinet minister, after all.
+Dialogue: 0,0:03:27.80,0:03:29.68,main,Alicia,0000,0000,0000,,You're the son of a minister?!
+Dialogue: 0,0:03:29.68,0:03:34.21,main,Oswald,0000,0000,0000,,My father is my father, and I am \Nme. Please call me by my name.
+Dialogue: 0,0:03:34.21,0:03:37.46,main,Alicia,0000,0000,0000,,Sure. I'll call you Oz, then.
+Dialogue: 0,0:03:37.46,0:03:38.84,main,Oswald,0000,0000,0000,,O-Oz?
+Dialogue: 0,0:03:42.98,0:03:46.56,main,Alicia,0000,0000,0000,,Thanks, Oz! You're a nice guy!
+Dialogue: 0,0:03:47.33,0:03:48.71,main,Alicia,0000,0000,0000,,I hope we'll be friends!
+Dialogue: 0,0:04:02.38,0:04:03.16,main,William,0000,0000,0000,,Hand.
+Dialogue: 0,0:04:03.16,0:04:04.09,main,Alicia,0000,0000,0000,,Huh?
+Dialogue: 0,0:04:04.09,0:04:06.23,main,William,0000,0000,0000,,You broke curfew too, right?
+Dialogue: 0,0:04:06.23,0:04:08.30,main,William,0000,0000,0000,,I'll help you in. Give me your hand.
+Dialogue: 0,0:04:08.30,0:04:08.97,main,William,0000,0000,0000,,C'mon.
+Dialogue: 0,0:04:10.04,0:04:11.14,main,Alicia,0000,0000,0000,,Thanks.
+Dialogue: 0,0:04:12.17,0:04:14.46,main,William,0000,0000,0000,,Here we go. Ready, and... up!
+Dialogue: 0,0:04:15.35,0:04:17.13,main,Alicia,0000,0000,0000,,You're really strong!
+Dialogue: 0,0:04:20.04,0:04:21.50,main,William,0000,0000,0000,,Just follow me.
+Dialogue: 0,0:04:22.71,0:04:25.20,main,William,0000,0000,0000,,I'm William Ares. You?
+Dialogue: 0,0:04:25.20,0:04:28.49,main,Alicia,0000,0000,0000,,Alicia Ehnleit. Are you \Na new first-year, too?
+Dialogue: 0,0:04:28.70,0:04:33.46,main,William,0000,0000,0000,,Yeah. The older guys in the dorm \Nsent me to buy drinks for a party.
+Dialogue: 0,0:04:33.78,0:04:34.49,main,William,0000,0000,0000,,See?
+Dialogue: 0,0:04:35.62,0:04:36.65,main,Alicia,0000,0000,0000,,Oh...
+Dialogue: 0,0:04:37.71,0:04:42.32,main,William,0000,0000,0000,,It's sort of a ritual for \Nnew kids entering the dorm.
+Dialogue: 0,0:04:42.32,0:04:43.19,main,William,0000,0000,0000,,Whoops...
+Dialogue: 0,0:04:43.57,0:04:45.00,main,William,0000,0000,0000,,Watch your step there.
+Dialogue: 0,0:04:49.30,0:04:52.39,main,Alicia,0000,0000,0000,,Thanks. You really are strong, huh?
+Dialogue: 0,0:04:54.03,0:04:55.77,main,William,0000,0000,0000,,My dad's a general.
+Dialogue: 0,0:04:55.77,0:04:58.22,main,William,0000,0000,0000,,He's been training me since I was a kid.
+Dialogue: 0,0:04:59.27,0:05:01.45,main,Alicia,0000,0000,0000,,A minister and a general...
+Dialogue: 0,0:05:01.90,0:05:04.61,main,Alicia,0000,0000,0000,,All the people here are from \Nsuch impressive families.
+Dialogue: 0,0:05:04.61,0:05:07.32,main,William,0000,0000,0000,,Don't space out. If you're \Nnot paying attentionâ€”
+Dialogue: 0,0:05:09.59,0:05:12.62,main,Alicia,0000,0000,0000,,I-I... I can't!
+Dialogue: 0,0:05:14.96,0:05:16.07,main,Boys,0000,0000,0000,,What the?!
+Dialogue: 0,0:05:16.07,0:05:17.42,main,Boys,0000,0000,0000,,They just fell through the roof!
+Dialogue: 0,0:05:17.42,0:05:18.58,main,Boys,0000,0000,0000,,You okay?!
+Dialogue: 0,0:05:19.32,0:05:22.09,main,Alicia,0000,0000,0000,,That... didn't hurt? What?
+Dialogue: 0,0:05:22.09,0:05:24.43,main,Edwin,0000,0000,0000,,I'm the one who's hurting.
+Dialogue: 0,0:05:24.43,0:05:26.41,main,Edwin,0000,0000,0000,,Would you mind getting off of me?
+Dialogue: 0,0:05:26.93,0:05:29.60,main,Alicia,0000,0000,0000,,I'm so sorry! Are you all right?
+Dialogue: 0,0:05:31.23,0:05:32.10,main,Edwin,0000,0000,0000,,Who are you?
+Dialogue: 0,0:05:32.98,0:05:34.79,main,Alicia,0000,0000,0000,,My name is Alicia.
+Dialogue: 0,0:05:34.79,0:05:38.10,main,William,0000,0000,0000,,Hey, Ed. That had to hurt.
+Dialogue: 0,0:05:38.10,0:05:40.01,main,Alicia,0000,0000,0000,,Ed? Are you two friends?
+Dialogue: 0,0:05:40.81,0:05:44.24,main,Edwin,0000,0000,0000,,Yeah. I've known Will since we were kids.
+Dialogue: 0,0:05:46.23,0:05:48.40,main,Edwin,0000,0000,0000,,I'm Edwin Valschein,
+Dialogue: 0,0:05:48.40,0:05:51.24,main,Edwin,0000,0000,0000,,the second prince of the \NKingdom of Valschein.
+Dialogue: 0,0:05:51.24,0:05:52.93,main,Alicia,0000,0000,0000,,A prince?!
+Dialogue: 1,0:05:54.10,0:05:59.08,sign_generic,Text,0000,0000,0000,,{\fad(150,356)\an7\t(1389,1738,\bord4\blur3)\fs35\c&H95323E&\3c&HF8FAFA&\b1\fnTimes New Roman\pos(154.551,43.982)}Li{\alphaFF\t(629,1171,\alpha00)}ght{\alphaFF\t(1171,1672,\alpha00)} Ma{\alphaFF\t(1672,2297,\alpha00)}gic {\alphaFF\t(2297,2798,\alpha00)}and {\alphaFF\t(2798,3215,\alpha00)}the {\alphaFF\t(3215,3757,\alpha00)}He{\alphaFF\t(3757,4174,\alpha00)}ro
+Dialogue: 0,0:05:58.75,0:06:06.01,sign_generic,Text,0000,0000,0000,,{\fade(300,1)\an7\t(1389,1738,\bord4\blur3)\fs35\c&HE881DF&\3c&HF8FAFA&\b1\fnTimes New Roman\pos(154.551,43.982)}Light Magic and the Hero
+Dialogue: 0,0:06:06.57,0:06:10.91,sign_generic,Text,0000,0000,0000,,{\blur2\3c&HA12EC8&\fade(200,200)\pos(177.778,177.185)}The only commoner\N at the academy \N{\fs25}Alicia \N{\fs18}CV: Azumi Waki
+Dialogue: 0,0:06:14.52,0:06:16.90,sign_generic,Text,0000,0000,0000,,{\blur2\3c&H0A81B9&\pos(454.68,158.502)}Second prince of the\N Kingdom of Valschein \N{\fs25}Edwin \N{\fs18}CV: Taku Yashiro
+Dialogue: 0,0:06:17.21,0:06:22.04,sign_generic,Text,0000,0000,0000,,{\blur2\3c&H1A06A3&\fade(200,200)\pos(177.778,177.185)}A swordsman with a \Nstrong sense of justice \NWilliam \NCV: Haruki Ishiya
+Dialogue: 0,0:06:22.19,0:06:26.32,sign_generic,Text,0000,0000,0000,,{\blur2\3c&HA9253E&\fade(400,1)\pos(184.602,157.784)}An elite magic user \Nof high-ranking nobility \N{\fs25}Oswald \N{\fs18}CV: Kohei Amasaki
+Dialogue: 0,0:06:29.79,0:06:32.08,sign_generic,Text,0000,0000,0000,,{\blur2\3c&H7A211E&\pos(464.736,161.018)}The strongest, most \Npassionate knight captain in the kingdom \N{\fs25}Adolf \N{\fs18}CV: Shinji Kawada
+Dialogue: 0,0:06:32.08,0:06:34.50,sign_generic,Text,0000,0000,0000,,{\blur2\3c&H59167E&\pos(462.582,164.97)}The apex of female\N students and a tyrant \N{\fs25}Eleonora \N{\fs18}CV: Rina Hidaka
+Dialogue: 0,0:06:34.50,0:06:37.10,sign_generic,Text,0000,0000,0000,,{\pos(179.933,175.749)\3c&H0B1B05&\blur2}A girl attending the academy \N{\fs25}Jessica \N{\fs18}CV: Konomi Inagaki
+Dialogue: 0,0:06:46.84,0:06:49.43,sign_generic,Text,0000,0000,0000,,{\blur2\3c&H110C1C&\pos(164.849,170)}A boy attending the academy \N{\fs25}Patrick \N{\fs18}CV: Yuma Uchida
+Dialogue: 0,0:06:49.43,0:06:52.70,sign_generic,Text,0000,0000,0000,,{\blur2\3c&H6D028D&\pos(493.109,172.874)}The black-haired villainess \N{\fs25}Yumiella \N{\fs18}CV: Fairouz Ai
+Dialogue: 0,0:07:16.72,0:07:23.94,sign_generic,Text,0000,0000,0000,,{\fade(500,300)\an7\t(1389,1738,\bord4\blur3)\fs35\c&HE881DF&\3c&HF8FAFA&\b1\fnTimes New Roman\pos(154.91,96.796)}Light Magic and the Hero
+Dialogue: 0,0:07:25.21,0:07:27.46,main,Principal,0000,0000,0000,,We haven't even had the \Nentrance ceremony yet,
+Dialogue: 0,0:07:27.46,0:07:31.43,main,Principal,0000,0000,0000,,and you're already causing a commotion. \NYou don't waste time, do you?
+Dialogue: 0,0:07:31.43,0:07:35.39,main,Principal,0000,0000,0000,,As the principal, I feel that \Nmakes you worth teaching.
+Dialogue: 0,0:07:35.39,0:07:37.05,main,William,0000,0000,0000,,This is all your fault.
+Dialogue: 0,0:07:37.05,0:07:38.47,main,Alicia,0000,0000,0000,,What? Why me?
+Dialogue: 0,0:07:38.47,0:07:40.87,main,William,0000,0000,0000,,I got distracted 'cause you talked to me.
+Dialogue: 0,0:07:40.87,0:07:41.79,main,Alicia,0000,0000,0000,,Excuse me?!
+Dialogue: 0,0:07:41.79,0:07:43.19,main,Principal,0000,0000,0000,,Quiet.
+Dialogue: 0,0:07:44.81,0:07:46.60,main,Principal,0000,0000,0000,,William Ares...
+Dialogue: 0,0:07:46.97,0:07:49.57,main,Principal,0000,0000,0000,,I'll be confiscating this.
+Dialogue: 0,0:07:52.75,0:07:54.92,main,Principal,0000,0000,0000,,And Alicia Ehnleit...
+Dialogue: 0,0:07:54.92,0:07:56.07,main,Alicia,0000,0000,0000,,Y-Yes?
+Dialogue: 0,0:07:56.07,0:08:00.08,main,Principal,0000,0000,0000,,You have a rare and precious \Ntalent for light magic.
+Dialogue: 0,0:08:00.40,0:08:05.87,main,Principal,0000,0000,0000,,That is why you were the one and only \Ncommoner admitted here on a scholarship.
+Dialogue: 0,0:08:05.87,0:08:10.09,main,Principal,0000,0000,0000,,Always be aware of that, and mind \Nyour behavior going forward.
+Dialogue: 0,0:08:10.09,0:08:11.61,main,Alicia,0000,0000,0000,,I'm sorry.
+Dialogue: 0,0:08:11.61,0:08:14.09,main,Principal,0000,0000,0000,,You will both be given extra duties \Nfor one week as punishment.
+Dialogue: 0,0:08:14.09,0:08:17.00,main,Principal,0000,0000,0000,,You are to work together, and no fighting.
+Dialogue: 0,0:08:17.00,0:08:18.33,main,Principal,0000,0000,0000,,You may go.
+Dialogue: 0,0:08:18.76,0:08:20.73,main,Alicia/William,0000,0000,0000,,Pardon us.
+Dialogue: 0,0:08:27.00,0:08:30.48,italics,Principal,0000,0000,0000,,I see. So that's Alicia Ehnleit.
+Dialogue: 0,0:08:32.87,0:08:38.87,italics,Principal,0000,0000,0000,,She's our kingdom's last hope \Nof salvation from the Demon Lord...
+Dialogue: 0,0:08:45.18,0:08:47.76,main,Alicia,0000,0000,0000,,I screwed up on my first day.
+Dialogue: 0,0:08:47.76,0:08:51.69,main,Alicia,0000,0000,0000,,I showed up late, broke a window, and \Neven got punished with extra duties.
+Dialogue: 0,0:08:52.19,0:08:53.20,main,TeacherA,0000,0000,0000,,Intruder!
+Dialogue: 0,0:08:53.72,0:08:55.55,main,TeacherB,0000,0000,0000,,There's an intruder! Capture him!
+Dialogue: 0,0:08:55.88,0:08:57.16,main,TeacherA,0000,0000,0000,,Where'd he go?
+Dialogue: 0,0:08:57.16,0:09:00.18,main,TeacherB,0000,0000,0000,,He may have climbed the wall to get outside.
+Dialogue: 0,0:09:00.18,0:09:02.46,main,TeacherA,0000,0000,0000,,Go and look. I'll check the dorm.
+Dialogue: 0,0:09:02.46,0:09:03.31,main,TeacherB,0000,0000,0000,,Right!
+Dialogue: 0,0:09:04.57,0:09:06.71,main,TeacherA,0000,0000,0000,,There's been an intruder on school grounds!
+Dialogue: 0,0:09:06.71,0:09:08.44,main,TeacherA,0000,0000,0000,,All of you, stay inside!
+Dialogue: 0,0:09:08.44,0:09:09.43,main,GirlA,0000,0000,0000,,Okay!
+Dialogue: 0,0:09:09.43,0:09:10.80,main,GirlB,0000,0000,0000,,Got it!
+Dialogue: 0,0:09:12.44,0:09:14.07,main,Alicia,0000,0000,0000,,Scary...
+Dialogue: 0,0:09:14.07,0:09:17.89,main,Alicia,0000,0000,0000,,I guess bad guys target this \Nschool since it's full of nobles?
+Dialogue: 0,0:09:18.51,0:09:21.95,main,Alicia,0000,0000,0000,,But I'm safe on that front, \Nconsidering I'm a commoner.
+Dialogue: 0,0:09:32.47,0:09:33.85,main,Alicia,0000,0000,0000,,Take that!
+Dialogue: 0,0:09:34.80,0:09:36.84,main,Alicia,0000,0000,0000,,Someoneâ€”
+Dialogue: 0,0:09:36.84,0:09:39.02,main,Edwin,0000,0000,0000,,Be quiet. I'm not a bad guy.
+Dialogue: 0,0:09:39.85,0:09:40.79,main,Edwin,0000,0000,0000,,It's you!
+Dialogue: 0,0:09:41.41,0:09:43.53,main,Edwin,0000,0000,0000,,Your name was... Alicia?
+Dialogue: 0,0:09:44.57,0:09:48.10,main,Edwin,0000,0000,0000,,It's me. Remember, the \Nguy who broke your fall?
+Dialogue: 0,0:09:48.33,0:09:50.46,main,Alicia,0000,0000,0000,,Edwin... Your Highness?!
+Dialogue: 0,0:09:51.17,0:09:53.77,main,Edwin,0000,0000,0000,,Yeah, there's some stuff going on...
+Dialogue: 0,0:09:53.77,0:09:55.24,main,Alicia,0000,0000,0000,,"Stuff"?
+Dialogue: 0,0:09:55.24,0:09:57.73,main,Edwin,0000,0000,0000,,There's something I want to look into...
+Dialogue: 0,0:09:58.33,0:10:01.25,main,Edwin,0000,0000,0000,,But when I tried to sneak into the \Nschool building, they spotted me.
+Dialogue: 0,0:10:01.57,0:10:03.29,main,Edwin,0000,0000,0000,,I can't tell you the details, but...
+Dialogue: 0,0:10:03.29,0:10:04.35,main,TeacherA,0000,0000,0000,,Find him?
+Dialogue: 0,0:10:04.35,0:10:05.87,main,TeacherB,0000,0000,0000,,I didn't see him anywhere.
+Dialogue: 0,0:10:06.25,0:10:09.14,main,TeacherA,0000,0000,0000,,I see. Stay on guard, though.
+Dialogue: 0,0:10:09.14,0:10:10.13,main,TeacherB,0000,0000,0000,,Got it.
+Dialogue: 0,0:10:12.50,0:10:14.60,main,Edwin,0000,0000,0000,,I can't go out there yet.
+Dialogue: 0,0:10:14.60,0:10:17.26,main,Edwin,0000,0000,0000,,Please, let me hide here for a while.
+Dialogue: 0,0:10:17.26,0:10:18.34,main,Alicia,0000,0000,0000,,What?!
+Dialogue: 0,0:10:24.89,0:10:26.48,main,Edwin,0000,0000,0000,,Sorry about this.
+Dialogue: 0,0:10:26.48,0:10:31.66,main,Edwin,0000,0000,0000,,I know a gentleman shouldn't just \Ndive into a lady's room, but...
+Dialogue: 0,0:10:31.66,0:10:34.78,main,Alicia,0000,0000,0000,,Oh, it's fine. This almost \Nfeels like a dream.
+Dialogue: 0,0:10:35.08,0:10:39.02,main,Alicia,0000,0000,0000,,I've never talked to a member \Nof the royal family before.
+Dialogue: 0,0:10:39.02,0:10:43.46,main,Edwin,0000,0000,0000,,It's the same for me. I'm always \Nsurrounded by royalty and nobles.
+Dialogue: 0,0:10:43.91,0:10:47.37,main,Edwin,0000,0000,0000,,Are all commoner women as violent as you?
+Dialogue: 0,0:10:48.54,0:10:51.67,main,Alicia,0000,0000,0000,,Don't be mean! I did that because \NI thought you were a robber!
+Dialogue: 0,0:10:52.00,0:10:55.42,main,Edwin,0000,0000,0000,,I'm just kidding. Please don't hit me again.
+Dialogue: 0,0:11:00.37,0:11:02.68,main,Edwin,0000,0000,0000,,I suppose I owe you one now.
+Dialogue: 0,0:11:02.96,0:11:04.97,main,Edwin,0000,0000,0000,,About what happened tonight...
+Dialogue: 0,0:11:04.97,0:11:07.56,main,Alicia,0000,0000,0000,,Don't worry. I won't tell anyone.
+Dialogue: 0,0:11:07.56,0:11:08.80,main,Edwin,0000,0000,0000,,I appreciate it.
+Dialogue: 0,0:11:10.78,0:11:12.74,main,Edwin,0000,0000,0000,,I think the coast is clear now.
+Dialogue: 0,0:11:12.74,0:11:14.97,main,Edwin,0000,0000,0000,,I don't want to trouble \Nyou by staying too long.
+Dialogue: 0,0:11:18.13,0:11:21.20,main,Edwin,0000,0000,0000,,See you at the entrance ceremony \Ntomorrow. Goodnight, Alicia.
+Dialogue: 0,0:11:21.83,0:11:24.44,main,Alicia,0000,0000,0000,,Be careful, Prince Edwin.
+Dialogue: 0,0:11:31.78,0:11:33.73,main,Sword TeacherA,0000,0000,0000,,The new students will now enter.
+Dialogue: 0,0:11:53.53,0:11:54.94,main,Alicia,0000,0000,0000,,Oh, I'm sorry...
+Dialogue: 0,0:12:04.68,0:12:08.01,main,Yumiella,0000,0000,0000,,Is something the matter, Alicia Ehnleit?
+Dialogue: 0,0:12:08.91,0:12:11.48,main,Alicia,0000,0000,0000,,H-How do you know my name?
+Dialogue: 0,0:12:11.48,0:12:13.25,main,Yumiella,0000,0000,0000,,I... just do.
+Dialogue: 0,0:12:13.25,0:12:16.17,main,Yumiella,0000,0000,0000,,More importantly, are you feeling ill?
+Dialogue: 0,0:12:16.17,0:12:17.90,main,Alicia,0000,0000,0000,,I-I'm all right.
+Dialogue: 0,0:12:20.81,0:12:24.51,main,Sword TeacherA,0000,0000,0000,,The Royal Academy Entrance \NCeremony will now commence.
+Dialogue: 0,0:12:25.15,0:12:29.51,main,Principal,0000,0000,0000,,Having the privilege to welcome you \Nfirst-years to our school today
+Dialogue: 0,0:12:29.51,0:12:32.76,main,Principal,0000,0000,0000,,gives all of us at the academy \Nthe greatest pleasure.
+Dialogue: 0,0:12:32.76,0:12:34.52,main,Principal,0000,0000,0000,,As you are already aware...
+Dialogue: 0,0:12:34.94,0:12:37.02,flashback,Ed,0000,0000,0000,,That's enough, Yumiella!
+Dialogue: 0,0:12:37.78,0:12:40.82,flashback,William,0000,0000,0000,,That devil's luck of yours \Nis finally about to run out!
+Dialogue: 0,0:13:01.59,0:13:03.33,flashback,Oswald,0000,0000,0000,,Now, Alicia!
+Dialogue: 0,0:13:03.33,0:13:03.84,flashback,Alicia,0000,0000,0000,,Right!
+Dialogue: 0,0:13:04.57,0:13:06.49,flashback,Alicia,0000,0000,0000,,Sacred light magic,
+Dialogue: 0,0:13:06.49,0:13:09.85,flashback,Alicia,0000,0000,0000,,banish the darkness and grant me strength!
+Dialogue: 0,0:13:27.69,0:13:28.74,flashback,Edwin,0000,0000,0000,,Alicia...
+Dialogue: 0,0:13:29.43,0:13:33.64,sign_generic,Text,0000,0000,0000,,{\fs15\c&H93C4D4&\3c&HE4FBF9&\pos(155.151,246.168)\fade(200,1)}Edwin
+Dialogue: 0,0:13:29.43,0:13:33.64,sign_generic,Text,0000,0000,0000,,{\bord0\pos(185.679,302.216)\fade(200,1)}Well done, Alicia.
+Dialogue: 0,0:13:33.64,0:13:38.25,sign_generic,Text,0000,0000,0000,,{\fs15\c&H8A76CB&\3c&HE4FBF9&\pos(145.454,230.36)}Alicia
+Dialogue: 0,0:13:33.64,0:13:38.25,sign_generic,Text,0000,0000,0000,,{\bord0\pos(214.411,327.365)}Thank you, Prince Edwin.
+Dialogue: 0,0:13:45.30,0:13:47.18,flashback,Past Life Yumiella,0000,0000,0000,,It's morning...
+Dialogue: 0,0:13:48.54,0:13:52.33,italicstop,Yumiella,0000,0000,0000,,This game is called {\i0}Light Magic and the Hero{\i1},
+Dialogue: 0,0:13:48.99,0:13:50.60,sign_generic,Text,0000,0000,0000,,{\an7\bord4\blur3)\fs25\c&HE881DF&\3c&HF8FAFA&\b1\fnTimes New Roman\move(343.462,320.988,312.216,260.988)}Light Magic and the Hero
+Dialogue: 0,0:13:50.60,0:13:55.18,sign_generic,Text,0000,0000,0000,,{\an7\bord4\blur3)\fs25\c&HE881DF&\3c&HF8FAFA&\b1\fnTimes New Roman\pos(311.498,263.503)}Light Magic and the Hero
+Dialogue: 0,0:13:52.63,0:13:55.19,italicstop,Yumiella,0000,0000,0000,,or {\i0}Light and Hero{\i1} for short.
+Dialogue: 0,0:13:52.70,0:13:55.19,sign_generic,Text,0000,0000,0000,,{\b1\fs25\frz22.3\pos(353.042,229.282)\bord3\c&HF5F3FE&\3c&HDEDAFA&}Light {\c&HF7DDDC&\3c&HDEAFA2&}and {\c&HB3C3EB&\3c&H585FC9&}Hero
+Dialogue: 0,0:13:55.45,0:13:57.53,italicstop,Yumiella,0000,0000,0000,,It takes place in a world \Nof swords and magic.
+Dialogue: 0,0:13:56.21,0:13:59.69,sign_generic,Text,0000,0000,0000,,{\fs15\c&H945456&\3c&HE4FBF9&\pos(155.151,246.168)}Oswald
+Dialogue: 0,0:13:56.21,0:13:59.69,sign_generic,Text,0000,0000,0000,,{\bord0\fs15\an7\pos(129.237,310)}Not that I don't sympathize... \NBut rules are rules. Just give up.
+Dialogue: 0,0:13:57.94,0:14:00.62,italicstop,Yumiella,0000,0000,0000,,The heroine enrolls in the Royal Academy,
+Dialogue: 0,0:14:00.62,0:14:03.83,italicstop,Yumiella,0000,0000,0000,,where she deepens her relationships \Nwith the conquerable characters
+Dialogue: 0,0:14:00.71,0:14:04.20,sign_generic,Text,0000,0000,0000,,{\fs15\c&H5451A5&\3c&HE4FBF9&\pos(155.151,246.168)}William
+Dialogue: 0,0:14:00.71,0:14:04.20,sign_generic,Text,0000,0000,0000,,{\bord0\an7\fs15\pos(128.519,310)}You broke curfew too, right? \NI'll help you in. Give me your hand. C'mon.
+Dialogue: 0,0:14:03.83,0:14:06.85,italicstop,Yumiella,0000,0000,0000,,as she levels up and, eventually, \Ndefeats the Demon Lord.
+Dialogue: 0,0:14:05.21,0:14:08.70,sign_generic,Text,0000,0000,0000,,{\fs15\c&H93C4D4&\3c&HE4FBF9&\pos(155.151,246.168)}Edwin
+Dialogue: 0,0:14:05.21,0:14:08.70,sign_generic,Text,0000,0000,0000,,{\bord0\an7\pos(128.575,307.605)\fs15}I suppose I owe you one now. \NAbout what happened tonight...
+Dialogue: 0,0:14:06.85,0:14:08.70,italicstop,Yumiella,0000,0000,0000,,It's a fairly clichÃ© story.
+Dialogue: 0,0:14:08.70,0:14:11.77,italicstop,Yumiella,0000,0000,0000,,But after the ending in which \Nthe Demon Lord is defeated,
+Dialogue: 0,0:14:09.47,0:14:11.72,sign_generic,Text,0000,0000,0000,,{\bord0\pos(264.691,307.964)}The Demon Lord is defeated, but...
+Dialogue: 0,0:14:11.72,0:14:14.20,sign_generic,Text,0000,0000,0000,,{\bord0\pos(244.219,310.12)}A hidden boss has appeared.
+Dialogue: 0,0:14:11.77,0:14:14.20,italicstop,Yumiella,0000,0000,0000,,the hidden boss, the game's \Nstrongest foe, appears.
+Dialogue: 0,0:14:15.38,0:14:17.97,italics,Yumiella,0000,0000,0000,,She is Yumiella Dolkness,
+Dialogue: 0,0:14:17.97,0:14:24.48,sign_generic,Text,0000,0000,0000,,{\fs13\bord0\pos(479.82,102.455)\fade(0,300)}Yumiella...?!
+Dialogue: 0,0:14:18.28,0:14:19.78,italicstop,Yumiella,0000,0000,0000,,the villainess who uses dark magic
+Dialogue: 0,0:14:19.48,0:14:24.48,sign_generic,Text,0000,0000,0000,,{\\fs13\bord0\pos(97.329,204.85)\fade(0,300)}Don't tell me you're...
+Dialogue: 0,0:14:19.78,0:14:23.27,italicstop,Yumiella,0000,0000,0000,,and bullies the heroine, \NAlicia, throughout the game.
+Dialogue: 0,0:14:20.98,0:14:24.48,sign_generic,Text,0000,0000,0000,,{\\fs13\bord0\an7\pos(448.934,270.599)\fade(0,300)}I thought you seemed\N suspicious...!
+Dialogue: 0,0:14:22.48,0:14:24.48,sign_generic,Text,0000,0000,0000,,{\fs13\bord0\pos(266.487,323.413)\fade(0,300)}(We have to fight her?!)
+Dialogue: 0,0:14:25.40,0:14:27.01,italics,Yumiella,0000,0000,0000,,And that's me.
+Dialogue: 0,0:14:28.57,0:14:30.36,italics,Yumiella,0000,0000,0000,,At age fifteen,
+Dialogue: 0,0:14:30.36,0:14:34.02,italics,Yumiella,0000,0000,0000,,I'm on my way to enter the \NRoyal Academy in the capital.
+Dialogue: 0,0:14:34.53,0:14:39.23,sign_generic,Text,0000,0000,0000,,{\fnGeorgia\b1\pos(320,115.389)\fs25\blur1\bord2\c&HA200D6&\3c&HFFFFFF&\bord1\fade(600,1)}The Hidden Boss Enters the Academy
+Dialogue: 0,0:14:40.51,0:14:45.54,italics,Yumiella,0000,0000,0000,,I was five years old when I regained \Nmy memories from my previous life.
+Dialogue: 0,0:14:46.73,0:14:50.57,italics,Yumiella,0000,0000,0000,,While I was attending college, \NI got hit by a truck
+Dialogue: 0,0:14:50.57,0:14:52.81,italics,Yumiella,0000,0000,0000,,and reincarnated in this world.
+Dialogue: 0,0:14:55.30,0:14:58.09,italics,Yumiella,0000,0000,0000,,Some research confirmed \Nthat this was, in fact,
+Dialogue: 0,0:14:58.09,0:15:02.46,italics,Yumiella,0000,0000,0000,,the world of {\i0}Light and \NHero{\i1}, the game I played.
+Dialogue: 0,0:15:03.67,0:15:06.25,italics,Yumiella,0000,0000,0000,,Pondering why it happened won't do any good.
+Dialogue: 0,0:15:06.25,0:15:09.42,italics,Yumiella,0000,0000,0000,,All I know is that that's what happened.
+Dialogue: 0,0:15:10.21,0:15:15.20,italics,Yumiella,0000,0000,0000,,This kingdom was founded by the hero \Nand saint who defeated the Demon Lord.
+Dialogue: 0,0:15:15.20,0:15:17.72,italics,Yumiella,0000,0000,0000,,Because that Demon Lord was black-haired,
+Dialogue: 0,0:15:17.72,0:15:21.92,italics,Yumiella,0000,0000,0000,,black hair is seen as unlucky, \Nand even as a symbol of evil.
+Dialogue: 0,0:15:25.25,0:15:29.37,italics,Yumiella,0000,0000,0000,,That must be one of the things that \Nmakes the villainess what she is.
+Dialogue: 0,0:15:29.93,0:15:32.17,italics,Yumiella,0000,0000,0000,,Even my servants keep me at arm's length.
+Dialogue: 0,0:15:33.41,0:15:38.18,italics,Yumiella,0000,0000,0000,,Also, I have no memory of ever meeting \Nmy parents, who live in the capital.
+Dialogue: 0,0:15:39.26,0:15:42.33,italics,Yumiella,0000,0000,0000,,The Demon Lord can be \Ndefeated at level 70 or so,
+Dialogue: 0,0:15:42.33,0:15:44.31,italics,Yumiella,0000,0000,0000,,but once Yumiella becomes the hidden boss,
+Dialogue: 0,0:15:44.31,0:15:46.71,italics,Yumiella,0000,0000,0000,,one's level has to be \Nmaxed out to defeat her.
+Dialogue: 0,0:15:47.26,0:15:49.16,italics,Yumiella,0000,0000,0000,,She is truly the embodiment of unfairness.
+Dialogue: 0,0:15:50.22,0:15:52.32,italics,Yumiella,0000,0000,0000,,But she still gets defeated in the end.
+Dialogue: 0,0:15:52.76,0:15:56.58,italics,Yumiella,0000,0000,0000,,So does my existence really have any meaning?
+Dialogue: 0,0:15:58.42,0:16:00.82,italics,Yumiella,0000,0000,0000,,Still, I thought...
+Dialogue: 0,0:16:01.30,0:16:03.78,italics,Yumiella,0000,0000,0000,,I have the potential to \Nsurpass even the final boss,
+Dialogue: 0,0:16:03.78,0:16:06.50,italics,Yumiella,0000,0000,0000,,I'm stronger than anyone \Nin the heroine's party,
+Dialogue: 0,0:16:06.50,0:16:10.74,italics,Yumiella,0000,0000,0000,,and I can use dark magic, which \Nonly enemy characters can use.
+Dialogue: 0,0:16:11.22,0:16:13.70,italics,Yumiella,0000,0000,0000,,Isn't that... actually awesome?!
+Dialogue: 0,0:16:15.44,0:16:19.55,italicstop,Yumiella,0000,0000,0000,,Of course! There's no need to recreate the \Nstory of {\i0}Light and Hero{\i1} to the letter!
+Dialogue: 0,0:16:16.47,0:16:18.93,sign_generic,Text,0000,0000,0000,,{\fs15\c&H5451A5&\3c&HE4FBF9&\pos(155.151,246.168)}William
+Dialogue: 0,0:16:16.47,0:16:18.93,sign_generic,Text,0000,0000,0000,,{\pos(304.916,333.114)\bord0}Stop picking on Alicia. Don't make me angry.
+Dialogue: 0,0:16:19.47,0:16:21.98,sign_generic,Text,0000,0000,0000,,{\fs15\c&H945456&\3c&HE4FBF9&\pos(155.151,246.168)}Oswald
+Dialogue: 0,0:16:19.47,0:16:21.98,sign_generic,Text,0000,0000,0000,,{\bord0\pos(281.212,311.916)}If that's how it must be, I have an idea.
+Dialogue: 0,0:16:19.87,0:16:23.04,italicstop,Yumiella,0000,0000,0000,,I had no interest in the dating \Nsim aspect of the game.
+Dialogue: 0,0:16:22.48,0:16:24.46,sign_generic,Text,0000,0000,0000,,{\fs15\c&H93C4D4&\3c&HE4FBF9&\pos(155.151,246.168)}Edwin
+Dialogue: 0,0:16:22.48,0:16:24.46,sign_generic,Text,0000,0000,0000,,{\bord0\pos(226.622,306.886)}Stop messing with Alicia!
+Dialogue: 0,0:16:23.73,0:16:27.34,italicstop,Yumiella,0000,0000,0000,,I had no emotional attachment to the \Nthree conquerable characters, either.
+Dialogue: 0,0:16:29.05,0:16:32.30,italicstop,Yumiella,0000,0000,0000,,So instead of living out the \Nstory of {\i0}Light and Hero{\i1},
+Dialogue: 0,0:16:32.63,0:16:36.30,italicstop,Yumiella,0000,0000,0000,,I could just lay low and \Nenjoy a peaceful school life.
+Dialogue: 0,0:16:36.89,0:16:40.46,italicstop,Yumiella,0000,0000,0000,,I'd have nothing to do with \NAlicia or the male leads.
+Dialogue: 0,0:16:40.81,0:16:45.31,italicstop,Yumiella,0000,0000,0000,,That way, I could avoid all risk \Nof becoming the hidden boss,
+Dialogue: 0,0:16:45.32,0:16:53.26,sign_generic,Text,0000,0000,0000,,{\fs15\c&H93C4D4&\3c&HE4FBF9&\pos(155.151,246.168)}Edwin
+Dialogue: 0,0:16:45.32,0:16:53.26,sign_generic,Text,0000,0000,0000,,{\fs17\pos(275.825,304.731)\bord0}Defeat the Demon Lord! Let's go, everyone!
+Dialogue: 0,0:16:45.61,0:16:47.25,italicstop,Yumiella,0000,0000,0000,,and in the spring of our third year,
+Dialogue: 0,0:16:47.25,0:16:50.77,italicstop,Yumiella,0000,0000,0000,,Alicia and the boys would defeat \Nthe resurrected Demon Lord,
+Dialogue: 0,0:16:50.77,0:16:52.35,italicstop,Yumiella,0000,0000,0000,,and we'd all live happily ever after.
+Dialogue: 0,0:16:57.63,0:17:00.81,flashback italics,Yumiella Age 5,0000,0000,0000,,But I should still raise \Nmy level as much as I can.
+Dialogue: 0,0:17:01.21,0:17:04.84,flashback italics,Yumiella Age 5,0000,0000,0000,,I need to be strong enough to beat the \NDemon Lord myself if it comes to that.
+Dialogue: 0,0:17:09.83,0:17:10.63,flashback,Yumiella Age 5,0000,0000,0000,,Yah.
+Dialogue: 0,0:17:13.39,0:17:15.13,flashback,Yumiella Age 5,0000,0000,0000,,It comes so naturally.
+Dialogue: 0,0:17:17.22,0:17:20.26,flashback italics,Yumiella Age 5,0000,0000,0000,,When you kill a monster, \Nyou get a magic stone.
+Dialogue: 0,0:17:21.01,0:17:22.92,flashback italics,Yumiella Age 5,0000,0000,0000,,I should be able to sell these for money.
+Dialogue: 0,0:17:28.13,0:17:31.11,flashback,Yumiella Age 5,0000,0000,0000,,I think my movements are a little faster now.
+Dialogue: 0,0:17:31.48,0:17:33.92,flashback,Yumiella Age 5,0000,0000,0000,,Is this what leveling up feels like?
+Dialogue: 0,0:17:36.53,0:17:38.65,flashback italics,Yumiella Age 5,0000,0000,0000,,The gamer blood in me is boiling!
+Dialogue: 0,0:17:40.57,0:17:43.36,italics,Yumiella,0000,0000,0000,,I was always the type to get \Nabsorbed in what I was doing,
+Dialogue: 0,0:17:43.36,0:17:45.85,italics,Yumiella,0000,0000,0000,,so I'd sneak out of the \Nmansion essentially every day
+Dialogue: 0,0:17:46.29,0:17:48.41,italics,Yumiella,0000,0000,0000,,and get engrossed in leveling up.
+Dialogue: 0,0:17:49.29,0:17:52.25,italics,Yumiella,0000,0000,0000,,On top of that, I made \Nmoney off of magic stones
+Dialogue: 0,0:17:52.25,0:17:53.80,italics,Yumiella,0000,0000,0000,,and bought all kinds of items.
+Dialogue: 0,0:17:54.46,0:17:57.45,italics,Yumiella,0000,0000,0000,,The first thing I bought \Nwas the Amulet of Growth.
+Dialogue: 0,0:17:57.45,0:18:00.74,italics,Yumiella,0000,0000,0000,,The Amulet of Protection would \Nbe better for keeping me safe,
+Dialogue: 0,0:18:00.74,0:18:04.95,italics,Yumiella,0000,0000,0000,,but wearing this would allow \Nme to level up much faster.
+Dialogue: 0,0:18:06.54,0:18:09.21,italics,Yumiella,0000,0000,0000,,Then, I entered the dungeon.
+Dialogue: 0,0:18:10.51,0:18:12.19,flashback italics,Yumiella Age 5,0000,0000,0000,,I'll be fine by myself.
+Dialogue: 0,0:18:12.65,0:18:15.73,flashback italics,Yumiella Age 5,0000,0000,0000,,I can regenerate an arm \Nwith my magic if I need to.
+Dialogue: 0,0:18:18.78,0:18:19.83,flashback italics,Yumiella Age 5,0000,0000,0000,,I conquered it.
+Dialogue: 0,0:18:25.02,0:18:28.13,italics,Yumiella,0000,0000,0000,,I also acquired the Monster-Calling Flute.
+Dialogue: 0,0:18:31.46,0:18:32.21,italics,Yumiella,0000,0000,0000,,And day...
+Dialogue: 0,0:18:34.59,0:18:35.34,italics,Yumiella,0000,0000,0000,,after day...
+Dialogue: 0,0:18:37.72,0:18:38.47,italics,Yumiella,0000,0000,0000,,after day...
+Dialogue: 0,0:18:45.14,0:18:47.04,italics,Yumiella,0000,0000,0000,,Until today, at age fifteen,
+Dialogue: 0,0:18:47.04,0:18:50.51,italics,Yumiella,0000,0000,0000,,I've focused only on leveling up efficiently.
+Dialogue: 0,0:18:50.51,0:18:53.98,italics,Yumiella,0000,0000,0000,,I've been through the same dungeon \Nfrom start to end countless times.
+Dialogue: 0,0:18:59.29,0:19:02.97,italics,Yumiella,0000,0000,0000,,I hope I'll be able to continue \Nleveling up after I start school.
+Dialogue: 0,0:19:14.69,0:19:17.11,main,Yumiella,0000,0000,0000,,Even the building looks just \Nlike it did in the game.
+Dialogue: 0,0:19:22.97,0:19:24.86,main,Yumiella,0000,0000,0000,,I'm exhausted.
+Dialogue: 0,0:19:27.88,0:19:29.74,italics,Father,0000,0000,0000,,Attend the Royal Academy.
+Dialogue: 0,0:19:30.23,0:19:34.43,italics,Father,0000,0000,0000,,While there, befriend as many sons \Nof high-ranking noblemen as you can.
+Dialogue: 0,0:19:35.01,0:19:39.27,italics,Father,0000,0000,0000,,They don't need to be eldest sons, as I'll \Nhave one marry you and become my heir.
+Dialogue: 0,0:19:41.35,0:19:44.44,main,Yumiella,0000,0000,0000,,And this is my first \Ninteraction with my parents?
+Dialogue: 0,0:19:45.97,0:19:47.04,main,Yumiella,0000,0000,0000,,I should...
+Dialogue: 0,0:19:47.04,0:19:48.91,main,Oswald,0000,0000,0000,,It's time to lock the gate.
+Dialogue: 0,0:19:48.91,0:19:53.03,main,Oswald,0000,0000,0000,,It's the rule that the Royal \NAcademy's main gate closes at 6 o'clock.
+Dialogue: 0,0:19:53.03,0:19:56.48,main,Alicia,0000,0000,0000,,But the bell hasn't even finished ringing...
+Dialogue: 0,0:19:58.27,0:20:01.55,italics,Yumiella,0000,0000,0000,,It's really playing out just \Nlike it did in {\i0}Light and Hero{\i1}.
+Dialogue: 0,0:20:02.48,0:20:05.55,main,Alicia,0000,0000,0000,,Wait, the color of your necktie... \NAren't you a first-year, too?
+Dialogue: 0,0:20:06.22,0:20:08.69,italics,Yumiella,0000,0000,0000,,Avoid getting involved with those four.
+Dialogue: 0,0:20:09.07,0:20:11.61,italics,Yumiella,0000,0000,0000,,That's the key to having a peaceful life.
+Dialogue: 0,0:20:15.99,0:20:17.98,main,Sword TeacherA,0000,0000,0000,,The new students will now enter.
+Dialogue: 0,0:20:18.84,0:20:22.57,main,Sword TeacherA,0000,0000,0000,,The Royal Academy Entrance \NCeremony will now commence.
+Dialogue: 0,0:20:23.34,0:20:27.33,main,Principal,0000,0000,0000,,Having the privilege to welcome you \Nfirst-years to our school today
+Dialogue: 0,0:20:27.33,0:20:31.08,main,Principal,0000,0000,0000,,gives all of us at the academy \Nthe greatest pleasure.
+Dialogue: 0,0:20:31.08,0:20:33.06,main,Principal,0000,0000,0000,,As you are already aware...
+Dialogue: 0,0:20:31.88,0:20:34.08,italicstop,Yumiella,0000,0000,0000,,I feel eyes on me.
+Dialogue: 0,0:20:34.71,0:20:37.90,italics,Yumiella,0000,0000,0000,,Oh, right. It must be my hair.
+Dialogue: 0,0:20:38.59,0:20:41.88,main,Sword TeacherA,0000,0000,0000,,We will now assess your levels.
+Dialogue: 0,0:20:42.17,0:20:44.25,italics,Yumiella,0000,0000,0000,,What? Assess our levels?
+Dialogue: 0,0:20:48.64,0:20:51.30,main,Magic Teacher,0000,0000,0000,,Alicia Ehnleit: level 1.
+Dialogue: 0,0:20:51.90,0:20:53.93,main,Principal,0000,0000,0000,,Work your hardest going forward.
+Dialogue: 0,0:20:53.93,0:20:55.14,main,Alicia,0000,0000,0000,,I will.
+Dialogue: 0,0:20:55.51,0:20:57.58,italics,Yumiella,0000,0000,0000,,What is my level, anyway?
+Dialogue: 0,0:20:57.58,0:21:00.31,italics,Yumiella,0000,0000,0000,,Come to think of it, I've never checked...
+Dialogue: 0,0:21:00.31,0:21:02.57,main,Magic Teacher,0000,0000,0000,,William Ares: level 10.
+Dialogue: 0,0:21:02.57,0:21:03.59,main,Students,0000,0000,0000,,Whoa!
+Dialogue: 0,0:21:03.59,0:21:04.78,main,Students,0000,0000,0000,,Incredible!
+Dialogue: 0,0:21:05.00,0:21:06.25,main,William,0000,0000,0000,,Yeah, I guess!
+Dialogue: 0,0:21:06.77,0:21:09.03,italics,Yumiella,0000,0000,0000,,They're that excited over level 10?
+Dialogue: 0,0:21:09.03,0:21:13.54,italics,Yumiella,0000,0000,0000,,Then if I don't want to stand out, \NI hope I'm... around level 5?
+Dialogue: 0,0:21:15.16,0:21:16.54,italics,Yumiella,0000,0000,0000,,Level 5...
+Dialogue: 0,0:21:17.28,0:21:20.13,italics,Yumiella,0000,0000,0000,,wouldn't be enough to beat a boss character.
+Dialogue: 0,0:21:21.32,0:21:22.95,main,Principal,0000,0000,0000,,Miss Yumiella Dolkness.
+Dialogue: 0,0:21:23.53,0:21:24.17,main,Yumiella,0000,0000,0000,,Yes, sir.
+Dialogue: 0,0:21:26.81,0:21:28.55,main,Principal,0000,0000,0000,,Are you nervous?
+Dialogue: 0,0:21:28.85,0:21:33.31,main,Principal,0000,0000,0000,,Don't worry. There's nothing embarrassing \Nabout being level 1 when you start school.
+Dialogue: 0,0:21:33.77,0:21:35.93,italics,Yumiella,0000,0000,0000,,No, that's not why I'm nervous.
+Dialogue: 0,0:21:45.90,0:21:49.49,main,Magic Teacher,0000,0000,0000,,Eldest daughter of Count \NDolkness, Yumiella Dolkness...
+Dialogue: 0,0:21:49.49,0:21:51.92,main,Magic Teacher,0000,0000,0000,,L-Level 99?!
+Dialogue: 0,0:21:51.92,0:21:53.33,main,Students,0000,0000,0000,,What?!
+Dialogue: 0,0:21:53.33,0:21:54.50,main,Students,0000,0000,0000,,For real?!
+Dialogue: 0,0:21:54.50,0:21:56.56,main,StudentA,0000,0000,0000,,Level 99?!
+Dialogue: 0,0:22:03.41,0:22:09.14,italics,Yumiella,0000,0000,0000,,Well... goodbye to my peaceful life...
+Dialogue: 0,0:22:34.35,0:22:37.92,sign_generic,Title,0000,0000,0000,,{\fnTimes New Roman\an8\b1\fs32\c&H000400&\bord0\fade(300,1)}Villainess {\c&H6984B3&\alphaFF\t(294,1087,\alpha00)}Level 99
+Dialogue: 0,0:22:34.62,0:22:37.92,sign_generic,Title,0000,0000,0000,,{\fs13\pos(325.387,309.401)\3c&H00040E&\fade(300,1}I May Be the {\c&H485686&}Hidden Boss {\c&HFFFFFF&}but I'm Not the {\c&H3D4F7F&}Demon Lord
