@@ -12,8 +12,6 @@ struct ContentView: View {
     private let fontsConfig: FontConfig
     private let renderer: AssSubtitlesRenderer
 
-    @State private var isPaused = false
-
     init() {
         player = AVPlayer(url: videoURL)
         fontsConfig = FontConfig(fontsPath: fontsURL, defaultFontName: defaultFont)
@@ -27,15 +25,14 @@ struct ContentView: View {
         .aspectRatio(16 / 9, contentMode: .fit)
         .clipShape(RoundedRectangle(cornerSize: CGSize(width: 8, height: 8)))
         .padding()
-        .onAppear(perform: setupPlayer)
         .onAppear(perform: loadSubtitleTrack)
-        .onReceive(player.publisher(for: \.timeControlStatus), perform: onControlStatusChanged)
+        .onAppear(perform: setupPlayer)
     }
 
     private func setupPlayer() {
         player.play()
         player.addPeriodicTimeObserver(
-            forInterval: CMTime(value: 1, timescale: 10),
+            forInterval: CMTime(value: 1, timescale: 60),
             queue: .main,
             using: { renderer.setTimeOffset($0.seconds) }
         )
@@ -47,13 +44,5 @@ struct ContentView: View {
         } catch {
             print(error)
         }
-    }
-
-    private func onControlStatusChanged(_ status: AVPlayer.TimeControlStatus) {
-        isPaused = status == .paused
-    }
-
-    private func onCurrentTimeChanged(_ time: CMTime) {
-        renderer.setTimeOffset(time.seconds)
     }
 }

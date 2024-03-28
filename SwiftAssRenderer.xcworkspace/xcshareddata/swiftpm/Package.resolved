@@ -24,7 +24,7 @@
       "location" : "https://github.com/mihai8804858/swift-libass",
       "state" : {
         "branch" : "main",
-        "revision" : "3c091947dc68b73a39de8746a282575f5bed18ac"
+        "revision" : "fe3dfb54fd0058d7def49848e72d29c36e78f7cf"
       }
     },
     {
@@ -33,7 +33,7 @@
       "location" : "https://github.com/mihai8804858/swift-snapshot-testing",
       "state" : {
         "branch" : "visionos-support",
-        "revision" : "20f4ec33062f3ec0cccf2f828a88189e384ab5d0"
+        "revision" : "63fe2e4c718bc9981c2412b4cf7031fab60685d7"
       }
     },
     {

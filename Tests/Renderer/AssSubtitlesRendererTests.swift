@@ -2,6 +2,7 @@ import XCTest
 import Combine
 import CombineSchedulers
 import SwiftLibass
+import SwiftAssBlend
 @testable import SwiftAssRenderer
 
 // swiftlint:disable:next type_body_length
@@ -244,7 +245,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         mockLibraryWrapper.libraryInitStub = library
         mockLibraryWrapper.rendererInitStub = renderer
         mockLibraryWrapper.readTrackStub = ASS_Track()
-        mockLibraryWrapper.renderImageStub = (assImage, changed)
+        mockLibraryWrapper.renderImageStub = LibraryRenderResult(image: assImage, changed: changed)
         mockImagePipeline.processStub = image
 
         // WHEN
@@ -278,7 +279,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         mockLibraryWrapper.libraryInitStub = library
         mockLibraryWrapper.rendererInitStub = renderer
         mockLibraryWrapper.readTrackStub = ASS_Track()
-        mockLibraryWrapper.renderImageStub = (ASS_Image(), true)
+        mockLibraryWrapper.renderImageStub = LibraryRenderResult(image: ASS_Image(), changed: true)
         mockImagePipeline.processStub = image
 
         // WHEN
@@ -312,7 +313,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         mockLibraryWrapper.libraryInitStub = library
         mockLibraryWrapper.rendererInitStub = renderer
         mockLibraryWrapper.readTrackStub = ASS_Track()
-        mockLibraryWrapper.renderImageStub = (ASS_Image(), changed)
+        mockLibraryWrapper.renderImageStub = LibraryRenderResult(image: ASS_Image(), changed: changed)
 
         // WHEN
         let subRenderer = createRenderer()
@@ -346,7 +347,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         mockLibraryWrapper.libraryInitStub = library
         mockLibraryWrapper.rendererInitStub = renderer
         mockLibraryWrapper.readTrackStub = ASS_Track()
-        mockLibraryWrapper.renderImageStub = (assImage, changed)
+        mockLibraryWrapper.renderImageStub = LibraryRenderResult(image: assImage, changed: changed)
         mockImagePipeline.processStub = image
 
         // WHEN

@@ -4,7 +4,6 @@ import SwiftLibass
 import SnapshotTesting
 @testable import SwiftAssRenderer
 
-#if os(iOS) || os(tvOS) || os(visionOS)
 final class ImagePipelineTests: XCTestCase {
     private var library: OpaquePointer!
     private var renderer: OpaquePointer!
@@ -45,8 +44,8 @@ final class ImagePipelineTests: XCTestCase {
 
     func test_processImage() throws {
         for offset in offsets {
-            guard let image = LibraryWrapper.renderImage(renderer, track: &track, at: offset) else { continue }
-            guard let processedImage = pipeline.process(image: image.image) else { continue }
+            let image = try XCTUnwrap(LibraryWrapper.renderImage(renderer, track: &track, at: offset))
+            let processedImage = try XCTUnwrap(pipeline.process(image: image.image))
             assertSnapshot(of: value(image: processedImage), as: .image, named: snapshotName(offset: offset))
         }
     }
@@ -78,4 +77,3 @@ final class ImagePipelineTests: XCTestCase {
         return layer
     }
 }
-#endif

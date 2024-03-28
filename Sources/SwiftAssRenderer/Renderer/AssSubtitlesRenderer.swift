@@ -18,9 +18,8 @@ public final class AssSubtitlesRenderer {
     private var canvasScale: CGFloat = 1.0
 
     private var currentTrack: ASS_Track?
+    private var currentOffset: TimeInterval = 0
     private var currentFrame = CurrentValueSubject<ProcessedImage?, Never>(nil)
-    private var currentOffset = CurrentValueSubject<TimeInterval, Never>(0)
-    private var cancellables = Set<AnyCancellable>()
 
     public convenience init(fontConfig: FontConfig, logLevel: LogLevel? = nil) {
         self.init(
@@ -72,11 +71,12 @@ public final class AssSubtitlesRenderer {
         wrapper.freeTrack(&track)
         currentTrack = nil
         currentFrame.value = nil
-        currentOffset.value = 0
+        currentOffset = 0
     }
 
     public func setTimeOffset(_ offset: TimeInterval) {
-        currentOffset.value = offset
+        currentOffset = offset
+        loadFrame(offset: offset)
     }
 }
 
@@ -102,7 +102,7 @@ extension AssSubtitlesRenderer {
     }
 
     func reloadFrame() {
-        loadFrame(offset: currentOffset.value)
+        loadFrame(offset: currentOffset)
     }
 }
 
@@ -133,11 +133,13 @@ private extension AssSubtitlesRenderer {
             logger.log(message: "Can't render frame since track has not been loaded", messageLevel: .verbose)
             return .none
         }
-        guard let (image, changed) = wrapper.renderImage(renderer, track: &currentTrack, at: offset) else {
+        guard let result = wrapper.renderImage(renderer, track: &currentTrack, at: offset) else {
             return .none
         }
-        guard changed else { return .unchanged }
-        guard let processedImage = measure("process", action: { pipeline.process(image: image) }) else { return .none }
+        guard result.changed else { return .unchanged }
+        guard let processedImage = measure("process", action: { pipeline.process(image: result.image) }) else {
+            return .none
+        }
         let imageRect = (processedImage.imageRect / canvasScale).rounded()
 
         return .loaded(ProcessedImage(image: processedImage.image, imageRect: imageRect))
@@ -148,7 +150,6 @@ private extension AssSubtitlesRenderer {
     func configure() {
         configureLibrary()
         configureFonts()
-        subscribeToOffsetEvents()
         setCanvasSize(canvasSize, scale: canvasScale)
     }
 
@@ -178,20 +179,12 @@ private extension AssSubtitlesRenderer {
         }
     }
 
-    func subscribeToOffsetEvents() {
-        currentOffset
-            .removeDuplicates()
-            .throttle(for: .seconds(0.1), scheduler: scheduler, latest: true)
-            .sink { [weak self] in self?.loadFrame(offset: $0) }
-            .store(in: &cancellables)
+    func measure<T>(_ title: String, action: () -> T) -> T {
+        let startTime = CFAbsoluteTimeGetCurrent()
+        let value = action()
+        let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime
+        logger.log(message: "[measure] [\(title)] \(Int(timeElapsed * 1000_000)) µs", messageLevel: .verbose)
+
+        return value
     }
-}
-
-private func measure<T>(_ title: String, action: () -> T) -> T {
-    let startTime = CFAbsoluteTimeGetCurrent()
-    let value = action()
-    let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime
-    print("[measure] [\(title)] \(Int(timeElapsed * 1000)) ms")
-
-    return value
 }

@@ -38,15 +38,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: extractions/netrc@v1
+      - uses: extractions/netrc@v2
         with:
           machine: github.com
-          username: user
-          password: ${{ secrets.GH_PAT }}
-
-      - uses: extractions/netrc@v1
-        with:
-          machine: api.github.com
           username: user
           password: ${{ secrets.GH_PAT }}
 
@@ -66,15 +60,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: extractions/netrc@v1
+      - uses: extractions/netrc@v2
         with:
           machine: github.com
-          username: user
-          password: ${{ secrets.GH_PAT }}
-
-      - uses: extractions/netrc@v1
-        with:
-          machine: api.github.com
           username: user
           password: ${{ secrets.GH_PAT }}
 

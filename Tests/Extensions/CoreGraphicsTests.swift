@@ -71,20 +71,4 @@ final class CoreGraphicsTests: XCTestCase {
         let expectedRect = CGRect(origin: CGPoint(x: 50, y: 100), size: CGSize(width: 150, height: 200))
         XCTAssertEqual(dividedRect, expectedRect)
     }
-
-    func testCGRect_boundingRect_shouldFindBoundingRect() {
-        // GIVEN
-        let rects = [
-            CGRect(origin: CGPoint(x: 50, y: 50), size: CGSize(width: 100, height: 100)),
-            CGRect(origin: CGPoint(x: 100, y: 100), size: CGSize(width: 100, height: 100)),
-            CGRect(origin: CGPoint(x: 200, y: 200), size: CGSize(width: 100, height: 100))
-        ]
-
-        // WHEN
-        let rect = rects.boundingRect
-
-        // THEN
-        let expectedRect = CGRect(origin: CGPoint(x: 50, y: 50), size: CGSize(width: 250, height: 250))
-        XCTAssertEqual(rect, expectedRect)
-    }
 }

@@ -1,6 +1,11 @@
 import Foundation
 import SwiftLibass
 
+struct LibraryRenderResult {
+    let image: ASS_Image
+    let changed: Bool
+}
+
 protocol LibraryWrapperType {
     static var libraryLogger: (Int, String) -> Void { get set }
     static func setLogCallback(_ library: OpaquePointer)
@@ -27,7 +32,7 @@ protocol LibraryWrapperType {
         _ renderer: OpaquePointer,
         track: inout ASS_Track,
         at offset: TimeInterval
-    ) -> (image: ASS_Image, changed: Bool)?
+    ) -> LibraryRenderResult?
 }
 
 enum LibraryWrapper: LibraryWrapperType {
@@ -99,11 +104,11 @@ enum LibraryWrapper: LibraryWrapperType {
         _ renderer: OpaquePointer,
         track: inout ASS_Track,
         at offset: TimeInterval
-    ) -> (image: ASS_Image, changed: Bool)? {
+    ) -> LibraryRenderResult? {
         var changed: Int32 = 0
         let millisecond = Int64(offset * 1000)
         guard let frame = ass_render_frame(renderer, &track, millisecond, &changed) else { return nil }
 
-        return (frame.pointee, changed != 0)
+        return LibraryRenderResult(image: frame.pointee, changed: changed != 0)
     }
 }

@@ -23,14 +23,22 @@ let package = Package(
         .target(
             name: "SwiftAssRenderer",
             dependencies: [
+                .target(name: "SwiftAssBlend"),
                 .product(name: "SwiftLibass", package: "swift-libass"),
                 .product(name: "CombineSchedulers", package: "combine-schedulers")
             ],
-            path: "Sources",
+            path: "Sources/SwiftAssRenderer",
             resources: [
                 .copy("Resources/PrivacyInfo.xcprivacy"),
                 .copy("Resources/fonts.conf")
             ]
+        ),
+        .target(
+            name: "SwiftAssBlend",
+            dependencies: [
+                .product(name: "SwiftLibass", package: "swift-libass")
+            ],
+            path: "Sources/SwiftAssBlend"
         ),
         .testTarget(
             name: "SwiftAssRendererTests",

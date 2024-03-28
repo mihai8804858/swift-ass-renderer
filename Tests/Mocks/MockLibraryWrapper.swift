@@ -69,12 +69,12 @@ final class MockLibraryWrapper: LibraryWrapperType {
 
     // swiftlint:disable:next large_tuple
     static let renderImageFunc = FuncCheck<(OpaquePointer, ASS_Track, TimeInterval)>()
-    static var renderImageStub: (ASS_Image, Bool)?
+    static var renderImageStub: LibraryRenderResult?
     static func renderImage(
         _ renderer: OpaquePointer,
         track: inout ASS_Track,
         at offset: TimeInterval
-    ) -> (image: ASS_Image, changed: Bool)? {
+    ) -> LibraryRenderResult? {
         renderImageFunc.call((renderer, track, offset))
         return renderImageStub
     }
