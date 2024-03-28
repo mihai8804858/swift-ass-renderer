@@ -137,7 +137,7 @@ private extension AssSubtitlesRenderer {
             return .none
         }
         guard changed else { return .unchanged }
-        guard let processedImage = pipeline.process(image: image) else { return .none }
+        guard let processedImage = measure("process", action: { pipeline.process(image: image) }) else { return .none }
         let imageRect = (processedImage.imageRect / canvasScale).rounded()
 
         return .loaded(ProcessedImage(image: processedImage.image, imageRect: imageRect))
@@ -185,4 +185,13 @@ private extension AssSubtitlesRenderer {
             .sink { [weak self] in self?.loadFrame(offset: $0) }
             .store(in: &cancellables)
     }
+}
+
+private func measure<T>(_ title: String, action: () -> T) -> T {
+    let startTime = CFAbsoluteTimeGetCurrent()
+    let value = action()
+    let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime
+    print("[measure] [\(title)] \(Int(timeElapsed * 1000)) ms")
+
+    return value
 }

@@ -27,43 +27,6 @@ struct ImagePipeline: ImagePipelineType {
         return allImages
     }
 
-    private func palettizedBitmap(_ image: ASS_Image) -> [UInt8]? {
-        if image.w == 0 || image.h == 0 { return nil }
-
-        let width = Int(image.w)
-        let height = Int(image.h)
-        let stride = Int(image.stride)
-
-        let red = UInt8((image.color >> 24) & 0xFF)
-        let green = UInt8((image.color >> 16) & 0xFF)
-        let blue = UInt8((image.color >> 8)  & 0xFF)
-        let alpha = 255 - UInt8(image.color & 0xFF)
-
-        let bufferCapacity = 4 * width * height
-        let buffer = UnsafeMutableBufferPointer<UInt8>.allocate(capacity: bufferCapacity)
-        buffer.initialize(repeating: 0)
-        defer { buffer.deallocate() }
-
-        var bufferPosition = 0
-        var bitmapPosition = 0
-
-        for _ in 0..<height {
-            for xPosition in 0..<width {
-                let alphaValue = image.bitmap.advanced(by: bitmapPosition + xPosition).pointee
-                let normalizedAlpha = Int(alphaValue) * Int(alpha) / 255
-                buffer[bufferPosition + 0] = red
-                buffer[bufferPosition + 1] = green
-                buffer[bufferPosition + 2] = blue
-                buffer[bufferPosition + 3] = UInt8(normalizedAlpha)
-                bufferPosition += 4
-
-            }
-            bitmapPosition += stride
-        }
-
-        return Array(buffer)
-    }
-
     // swiftlint:disable:next function_body_length
     private func process(_ images: [ASS_Image]) -> ProcessedImage? {
         let minCast: Float = 0.9 / 255
@@ -97,8 +60,8 @@ struct ImagePipeline: ImagePipelineType {
 
             var lineStart = imageY * Int(boundingRect.width)
             var bitmapStart = 0
-            for _ in 0..<imageHeight {
-                for xPosition in 0..<imageWidth {
+            loop(iterations: imageHeight) { _ in
+                loop(iterations: imageWidth) { xPosition in
                     let pixelAlpha = Float(image.bitmap[bitmapStart + xPosition]) * normalizedAlpha / 255
                     let invAlpha = 1 - pixelAlpha
                     let bufferCoordinate = (lineStart + imageX + xPosition) << 2
@@ -114,8 +77,8 @@ struct ImagePipeline: ImagePipelineType {
 
         var lineStart = 0
         let pixelBuffer = unsafeBitCast(buffer, to: UnsafeMutableBufferPointer<UInt32>.self)
-        for _ in 0..<Int(boundingRect.height) {
-            for xPosition in 0..<Int(boundingRect.width) {
+        loop(iterations: Int(boundingRect.height)) { _ in
+            loop(iterations: Int(boundingRect.width)) { xPosition in
                 var pixel: UInt32 = 0
                 let bufferCoordinate = (lineStart + xPosition) << 2
                 let alpha = buffer[bufferCoordinate + 3]
@@ -157,5 +120,14 @@ struct ImagePipeline: ImagePipelineType {
 private extension ASS_Image {
     var rect: CGRect {
         CGRect(x: CGFloat(dst_x), y: CGFloat(dst_y), width: CGFloat(w), height: CGFloat(h))
+    }
+}
+
+// This is more performant than for in loop 🤷‍♂️
+private func loop(iterations: Int, body: (Int) -> Void) {
+    var index = 0
+    while index < iterations {
+        body(index)
+        index += 1
     }
 }
