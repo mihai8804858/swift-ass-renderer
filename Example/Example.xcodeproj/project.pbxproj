@@ -12,8 +12,9 @@
 		995EF5F12B815F1C000B5E39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 995EF5F02B815F1C000B5E39 /* Assets.xcassets */; };
 		995EF5FD2B815FF8000B5E39 /* SwiftAssRenderer in Frameworks */ = {isa = PBXBuildFile; productRef = 995EF5FC2B815FF8000B5E39 /* SwiftAssRenderer */; };
 		997B6AE12BAF0C7000BD9689 /* video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 997B6AE02BAF0AF600BD9689 /* video.mp4 */; };
-		9994432B2BA643C00079247B /* Fonts.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 999443272BA643C00079247B /* Fonts.bundle */; };
 		9994432D2BA643C00079247B /* subtitle.ass in Resources */ = {isa = PBXBuildFile; fileRef = 999443292BA643C00079247B /* subtitle.ass */; };
+		99F7740F2BB9BBD000FA0544 /* arialuni.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 99F7740C2BB9BBD000FA0544 /* arialuni.ttf */; };
+		99F774102BB9BBD000FA0544 /* trebuc.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 99F7740D2BB9BBD000FA0544 /* trebuc.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,8 +23,9 @@
 		995EF5EE2B815F17000B5E39 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		995EF5F02B815F1C000B5E39 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		997B6AE02BAF0AF600BD9689 /* video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = video.mp4; sourceTree = "<group>"; };
-		999443272BA643C00079247B /* Fonts.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Fonts.bundle; sourceTree = "<group>"; };
 		999443292BA643C00079247B /* subtitle.ass */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = subtitle.ass; sourceTree = "<group>"; };
+		99F7740C2BB9BBD000FA0544 /* arialuni.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = arialuni.ttf; sourceTree = "<group>"; };
+		99F7740D2BB9BBD000FA0544 /* trebuc.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = trebuc.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,12 +69,21 @@
 		9994432A2BA643C00079247B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				999443272BA643C00079247B /* Fonts.bundle */,
+				99F7740E2BB9BBD000FA0544 /* Fonts */,
 				995EF5F02B815F1C000B5E39 /* Assets.xcassets */,
 				999443292BA643C00079247B /* subtitle.ass */,
 				997B6AE02BAF0AF600BD9689 /* video.mp4 */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		99F7740E2BB9BBD000FA0544 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				99F7740C2BB9BBD000FA0544 /* arialuni.ttf */,
+				99F7740D2BB9BBD000FA0544 /* trebuc.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,7 +151,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				997B6AE12BAF0C7000BD9689 /* video.mp4 in Resources */,
-				9994432B2BA643C00079247B /* Fonts.bundle in Resources */,
+				99F774102BB9BBD000FA0544 /* trebuc.ttf in Resources */,
+				99F7740F2BB9BBD000FA0544 /* arialuni.ttf in Resources */,
 				9994432D2BA643C00079247B /* subtitle.ass in Resources */,
 				995EF5F12B815F1C000B5E39 /* Assets.xcassets in Resources */,
 			);

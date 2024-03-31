@@ -29,8 +29,7 @@ let package = Package(
             ],
             path: "Sources/SwiftAssRenderer",
             resources: [
-                .copy("Resources/PrivacyInfo.xcprivacy"),
-                .copy("Resources/fonts.conf")
+                .copy("Resources/PrivacyInfo.xcprivacy")
             ]
         ),
         .target(
@@ -48,7 +47,7 @@ let package = Package(
             ],
             path: "Tests",
             resources: [
-                .copy("Resources/Fonts.bundle"),
+                .copy("Resources/Fonts"),
                 .copy("Resources/subtitle.ass")
             ]
         )

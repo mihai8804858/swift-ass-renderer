@@ -5,14 +5,12 @@ protocol FontConfigType {
 }
 
 public struct FontConfig: FontConfigType {
-    private static let fontsDirName = "fonts"
     private static let fontsCacheDirName = "fonts-cache"
-    private static let fontsConfFile = (name: "fonts", type: "conf")
+    private static let fontsConfFileName = "fonts.conf"
 
     private let fileManager: FileManagerType
     private let moduleBundle: BundleType
     private let libraryWrapper: LibraryWrapperType.Type
-    private let environment: EnvironmentVariablesType
 
     /// URL path to fonts directory.
     ///
@@ -49,7 +47,6 @@ public struct FontConfig: FontConfigType {
             fileManager: FileManager.default,
             moduleBundle: Bundle.module,
             libraryWrapper: LibraryWrapper.self,
-            environment: EnvironmentVariables(),
             fontsPath: fontsPath,
             fontsCachePath: fontsCachePath,
             defaultFontName: defaultFontName,
@@ -61,7 +58,6 @@ public struct FontConfig: FontConfigType {
         fileManager: FileManagerType,
         moduleBundle: BundleType,
         libraryWrapper: LibraryWrapperType.Type,
-        environment: EnvironmentVariablesType,
         fontsPath: URL,
         fontsCachePath: URL?,
         defaultFontName: String?,
@@ -70,7 +66,6 @@ public struct FontConfig: FontConfigType {
         self.fileManager = fileManager
         self.moduleBundle = moduleBundle
         self.libraryWrapper = libraryWrapper
-        self.environment = environment
         self.fontsPath = fontsPath
         self.fontsCachePath = fontsCachePath
         self.defaultFontName = defaultFontName
@@ -79,36 +74,26 @@ public struct FontConfig: FontConfigType {
 
     func configure(library: OpaquePointer, renderer: OpaquePointer) throws {
         try makeFontsCacheDirectory()
-        setFontConfigEnvironment()
+        try writeFontConfFile()
         configureLibrary(library, renderer: renderer)
     }
 
     // MARK: - Private
 
-    private var fontsConfPath: URL? {
-        moduleBundle.url(
-            forResource: FontConfig.fontsConfFile.name,
-            withExtension: FontConfig.fontsConfFile.type
-        )
+    private var fontsConfPath: URL {
+        fileManager.documentsURL.appendingPathComponent(FontConfig.fontsConfFileName)
     }
 
     private var cachePath: URL {
-        fontsCachePath ?? fileManager.documentsURL
+        (fontsCachePath ?? fileManager.documentsURL).appendingPathComponent(FontConfig.fontsCacheDirName)
     }
 
     private func makeFontsCacheDirectory() throws {
-        let fontsCachePath = cachePath.appendingPathComponent(FontConfig.fontsCacheDirName)
-        if fileManager.directoryExists(at: fontsCachePath) { return }
-        try fileManager.createDirectory(at: fontsCachePath)
-    }
-
-    private func setFontConfigEnvironment() {
-        environment.setValue(fontsPath.path, forName: "XDG_DATA_HOME", override: false)
-        environment.setValue(cachePath.path, forName: "XDG_CACHE_HOME", override: false)
+        if fileManager.directoryExists(at: cachePath) { return }
+        try fileManager.createDirectory(at: cachePath)
     }
 
     private func configureLibrary(_ library: OpaquePointer, renderer: OpaquePointer) {
-        guard let fontsConfPath else { return }
         libraryWrapper.setExtractFonts(library, extract: true)
         libraryWrapper.setFonts(
             renderer,
@@ -116,5 +101,49 @@ public struct FontConfig: FontConfigType {
             defaultFont: defaultFontName,
             defaultFamily: defaultFontFamily
         )
+    }
+
+    private func writeFontConfFile() throws {
+        try fileManager.createItem(at: fontsConfPath, contents: fontConfContents, override: true)
+    }
+
+    private var fontConfContents: String {
+        """
+        <?xml version="1.0"?>
+        <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+        <fontconfig>
+            <dir>\(fontsPath.path)</dir>
+            <cachedir>\(cachePath.path)</cachedir>
+            <match target="pattern">
+                <test qual="any" name="family">
+                    <string>mono</string>
+                </test>
+                <edit name="family" mode="assign" binding="same">
+                    <string>monospace</string>
+                </edit>
+            </match>
+            <match target="pattern">
+                <test qual="any" name="family">
+                    <string>sans serif</string>
+                </test>
+                <edit name="family" mode="assign" binding="same">
+                    <string>sans-serif</string>
+                </edit>
+            </match>
+            <match target="pattern">
+                <test qual="any" name="family">
+                    <string>sans</string>
+                </test>
+                <edit name="family" mode="assign" binding="same">
+                    <string>sans-serif</string>
+                </edit>
+            </match>
+            <config>
+                <rescan>
+                    <int>30</int>
+                </rescan>
+            </config>
+        </fontconfig>
+        """
     }
 }

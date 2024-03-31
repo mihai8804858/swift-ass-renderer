@@ -40,24 +40,11 @@ let fontsConfig = FontConfig(
 
 * `fontsPath` - URL path to fonts directory
 
-> [!IMPORTANT]
-> The fonts should be placed in `<PATH_TO_FONTS_DIR>/fonts` directory.
+* `fontsCachePath` - URL path to fonts cache directory. If no path is provided, application documents directory will be used instead. `fontsCachePath` should be a **writable** directory
 
-* `fontsCachePath` - URL path to fonts cache directory
-
-> [!NOTE]
-> The library will append `/fonts-cache` to the `fontsCachePath`.
-> If no path is provided, application documents directory will be instead.
-
-* `defaultFontName` - Default font (file name) from `<PATH_TO_FONTS_DIR>/fonts` directory
-
-> [!NOTE]
-> This font will be used as fallback when specified fonts in tracks are not found in fonts directory.
+* `defaultFontName` - Default font (file name) from `<PATH_TO_FONTS_DIR>` directory
 
 * `defaultFontFamily` - Default font family
-
-> [!NOTE]
-> This font family will be used as fallback when specified font family in tracks is not found in fonts directory.
 
 2. Create an instance of renderer
 

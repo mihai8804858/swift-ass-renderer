@@ -33,8 +33,8 @@ final class ImagePipelineTests: XCTestCase {
         renderer = try XCTUnwrap(LibraryWrapper.rendererInit(library))
         LibraryWrapper.setRendererSize(renderer, size: canvasSize * canvasScale)
 
-        let fontsPath = try XCTUnwrap(Bundle.module.path(forResource: "Fonts", ofType: "bundle"))
-        let fontConfig = FontConfig(fontsPath: URL(fileURLWithPath: fontsPath))
+        let fontsPath = try XCTUnwrap(Bundle.module.resourceURL)
+        let fontConfig = FontConfig(fontsPath: fontsPath)
         try fontConfig.configure(library: library, renderer: renderer)
 
         let contentsPath = try XCTUnwrap(Bundle.module.path(forResource: "subtitle", ofType: "ass"))

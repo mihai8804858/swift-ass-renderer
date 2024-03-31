@@ -7,7 +7,6 @@ final class FontConfigTests: XCTestCase {
     private var mockFileManager: MockFileManager!
     private var mockBundle: MockBundle!
     private var mockLibraryWrapper: MockLibraryWrapper.Type!
-    private var mockEnvironment: MockEnvironment!
 
     override func setUp() {
         super.setUp()
@@ -17,7 +16,6 @@ final class FontConfigTests: XCTestCase {
         mockFileManager = MockFileManager()
         mockBundle = MockBundle()
         mockLibraryWrapper = MockLibraryWrapper.self
-        mockEnvironment = MockEnvironment()
     }
 
     func createConfig(
@@ -30,7 +28,6 @@ final class FontConfigTests: XCTestCase {
             fileManager: mockFileManager,
             moduleBundle: mockBundle,
             libraryWrapper: mockLibraryWrapper,
-            environment: mockEnvironment,
             fontsPath: fontsPath,
             fontsCachePath: fontsCachePath,
             defaultFontName: defaultFontName,
@@ -83,61 +80,66 @@ final class FontConfigTests: XCTestCase {
         XCTAssert(mockFileManager.createDirectoryFunc.wasCalled(with: expectedURL))
     }
 
-    func test_configure_whenCachePathIsMissing_shouldSetDefaultPathsEnvironment() throws {
+    func test_configure_shouldCreateFontsConfFile() throws {
         // GIVEN
         let fontsPath = URL.downloadsDirectory
-        let defaultFontsCachePath = URL.documentsDirectory
-        let config = createConfig(fontsPath: fontsPath)
-        mockFileManager.documentsURL = defaultFontsCachePath
-
-        // WHEN
-        try config.configure(library: library, renderer: renderer)
-
-        // THEN
-        let arguments = [
-            (fontsPath.path, "XDG_DATA_HOME", false),
-            (defaultFontsCachePath.path, "XDG_CACHE_HOME", false)
-        ]
-        zip(arguments, mockEnvironment.setValueFunc.arguments).forEach { XCTAssert($0 == $1) }
-    }
-
-    func test_configure_whenCachePathIsPresent_shouldSetPathsEnvironment() throws {
-        // GIVEN
-        let fontsPath = URL.documentsDirectory
-        let fontsCachePath = URL.downloadsDirectory
+        let fontsCachePath = URL.desktopDirectory
         let config = createConfig(fontsPath: fontsPath, fontsCachePath: fontsCachePath)
+        mockFileManager.documentsURL = URL.documentsDirectory
 
         // WHEN
         try config.configure(library: library, renderer: renderer)
 
         // THEN
-        let arguments = [
-            (fontsPath.path, "XDG_DATA_HOME", false),
-            (fontsCachePath.path, "XDG_CACHE_HOME", false)
-        ]
-        zip(arguments, mockEnvironment.setValueFunc.arguments).forEach { XCTAssert($0 == $1) }
+        let createFileArgument = try XCTUnwrap(mockFileManager.createItemFunc.argument)
+        let expectedDir = fontsPath.path
+        let expectedCacheDir = fontsCachePath.appendingPathComponent("fonts-cache").path
+        let expectedConfFile = URL.documentsDirectory.appendingPathComponent("fonts.conf")
+        let expectedContents = """
+        <?xml version="1.0"?>
+        <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+        <fontconfig>
+            <dir>\(expectedDir)</dir>
+            <cachedir>\(expectedCacheDir)</cachedir>
+            <match target="pattern">
+                <test qual="any" name="family">
+                    <string>mono</string>
+                </test>
+                <edit name="family" mode="assign" binding="same">
+                    <string>monospace</string>
+                </edit>
+            </match>
+            <match target="pattern">
+                <test qual="any" name="family">
+                    <string>sans serif</string>
+                </test>
+                <edit name="family" mode="assign" binding="same">
+                    <string>sans-serif</string>
+                </edit>
+            </match>
+            <match target="pattern">
+                <test qual="any" name="family">
+                    <string>sans</string>
+                </test>
+                <edit name="family" mode="assign" binding="same">
+                    <string>sans-serif</string>
+                </edit>
+            </match>
+            <config>
+                <rescan>
+                    <int>30</int>
+                </rescan>
+            </config>
+        </fontconfig>
+        """
+        XCTAssert(createFileArgument == (expectedConfFile, expectedContents, true))
     }
 
-    func test_configure_whenFontConfPathIsMissing_shouldNotSetupFonts() throws {
+    func test_configure_shouldSetupFonts() throws {
         // GIVEN
         let fontsPath = URL.documentsDirectory
         let fontsCachePath = URL.downloadsDirectory
-        let config = createConfig(fontsPath: fontsPath, fontsCachePath: fontsCachePath)
-        mockBundle.urlStub = nil
-
-        // WHEN
-        try config.configure(library: library, renderer: renderer)
-
-        // THEN
-        XCTAssertFalse(mockLibraryWrapper.setExtractFontsFunc.wasCalled)
-        XCTAssertFalse(mockLibraryWrapper.setFontsFunc.wasCalled)
-    }
-
-    func test_configure_whenFontConfPathIsPresent_shouldSetupFonts() throws {
-        // GIVEN
-        let fontsPath = URL.documentsDirectory
-        let fontsCachePath = URL.downloadsDirectory
-        let fontConfPath = URL.homeDirectory
+        let fontConfPath = URL.documentsDirectory.appendingPathComponent("fonts.conf")
         let defaultFontName = "font.ttf"
         let defaultFontFamily = "Bold"
         let config = createConfig(
@@ -146,7 +148,6 @@ final class FontConfigTests: XCTestCase {
             defaultFontName: defaultFontName,
             defaultFontFamily: defaultFontFamily
         )
-        mockBundle.urlStub = fontConfPath
 
         // WHEN
         try config.configure(library: library, renderer: renderer)

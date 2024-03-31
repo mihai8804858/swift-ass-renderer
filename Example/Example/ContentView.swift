@@ -6,7 +6,7 @@ struct ContentView: View {
     private let defaultFont = "arialuni.ttf"
     private let videoURL = Bundle.main.url(forResource: "video", withExtension: "mp4")!
     private let subtitleURL = Bundle.main.url(forResource: "subtitle", withExtension: "ass")!
-    private let fontsURL = Bundle.main.url(forResource: "Fonts", withExtension: "bundle")!
+    private let fontsURL = Bundle.main.resourceURL!
 
     private let player: AVPlayer
     private let fontsConfig: FontConfig
