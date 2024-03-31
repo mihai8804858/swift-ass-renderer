@@ -1,5 +1,10 @@
 import Foundation
 
+public enum FontProvider: Equatable {
+    case fontConfig
+    case coreText
+}
+
 protocol FontConfigType {
     func configure(library: OpaquePointer, renderer: OpaquePointer) throws
 }
@@ -37,11 +42,15 @@ public struct FontConfig: FontConfigType {
     /// This font family will be used as fallback when specified font family in tracks is not found in fonts directory.
     public let defaultFontFamily: String?
 
+    /// Default font shaper.
+    public let fontProvider: FontProvider
+
     public init(
         fontsPath: URL,
         fontsCachePath: URL? = nil,
         defaultFontName: String? = nil,
-        defaultFontFamily: String? = nil
+        defaultFontFamily: String? = nil,
+        fontProvider: FontProvider = .fontConfig
     ) {
         self.init(
             fileManager: FileManager.default,
@@ -50,7 +59,8 @@ public struct FontConfig: FontConfigType {
             fontsPath: fontsPath,
             fontsCachePath: fontsCachePath,
             defaultFontName: defaultFontName,
-            defaultFontFamily: defaultFontFamily
+            defaultFontFamily: defaultFontFamily,
+            fontProvider: fontProvider
         )
     }
 
@@ -61,7 +71,8 @@ public struct FontConfig: FontConfigType {
         fontsPath: URL,
         fontsCachePath: URL?,
         defaultFontName: String?,
-        defaultFontFamily: String?
+        defaultFontFamily: String?,
+        fontProvider: FontProvider
     ) {
         self.fileManager = fileManager
         self.moduleBundle = moduleBundle
@@ -70,6 +81,7 @@ public struct FontConfig: FontConfigType {
         self.fontsCachePath = fontsCachePath
         self.defaultFontName = defaultFontName
         self.defaultFontFamily = defaultFontFamily
+        self.fontProvider = fontProvider
     }
 
     func configure(library: OpaquePointer, renderer: OpaquePointer) throws {
@@ -97,6 +109,7 @@ public struct FontConfig: FontConfigType {
         libraryWrapper.setExtractFonts(library, extract: true)
         libraryWrapper.setFonts(
             renderer,
+            provider: fontProvider,
             configPath: fontsConfPath.path,
             defaultFont: defaultFontName,
             defaultFamily: defaultFontFamily

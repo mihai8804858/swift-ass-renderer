@@ -45,14 +45,15 @@ final class MockLibraryWrapper: LibraryWrapperType {
     }
 
     // swiftlint:disable:next large_tuple
-    static let setFontsFunc = FuncCheck<(OpaquePointer, String, String?, String?)>()
+    static let setFontsFunc = FuncCheck<(OpaquePointer, FontProvider, String?, String?, String?)>()
     static func setFonts(
         _ renderer: OpaquePointer,
-        configPath: String,
+        provider: FontProvider,
+        configPath: String?,
         defaultFont: String?,
         defaultFamily: String?
     ) {
-        setFontsFunc.call((renderer, configPath, defaultFont, defaultFamily))
+        setFontsFunc.call((renderer, provider, configPath, defaultFont, defaultFamily))
     }
 
     static let readTrackFunc = FuncCheck<(OpaquePointer, String)>()

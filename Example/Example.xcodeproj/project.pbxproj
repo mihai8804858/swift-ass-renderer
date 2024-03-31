@@ -12,9 +12,14 @@
 		995EF5F12B815F1C000B5E39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 995EF5F02B815F1C000B5E39 /* Assets.xcassets */; };
 		995EF5FD2B815FF8000B5E39 /* SwiftAssRenderer in Frameworks */ = {isa = PBXBuildFile; productRef = 995EF5FC2B815FF8000B5E39 /* SwiftAssRenderer */; };
 		997B6AE12BAF0C7000BD9689 /* video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 997B6AE02BAF0AF600BD9689 /* video.mp4 */; };
-		9994432D2BA643C00079247B /* subtitle.ass in Resources */ = {isa = PBXBuildFile; fileRef = 999443292BA643C00079247B /* subtitle.ass */; };
-		99F7740F2BB9BBD000FA0544 /* arialuni.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 99F7740C2BB9BBD000FA0544 /* arialuni.ttf */; };
-		99F774102BB9BBD000FA0544 /* trebuc.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 99F7740D2BB9BBD000FA0544 /* trebuc.ttf */; };
+		9994432D2BA643C00079247B /* subtitle-en.ass in Resources */ = {isa = PBXBuildFile; fileRef = 999443292BA643C00079247B /* subtitle-en.ass */; };
+		99F774172BB9D40900FA0544 /* subtitle-ru.ass in Resources */ = {isa = PBXBuildFile; fileRef = 99F774152BB9D40900FA0544 /* subtitle-ru.ass */; };
+		99F774182BB9D40900FA0544 /* subtitle-ar.ass in Resources */ = {isa = PBXBuildFile; fileRef = 99F774162BB9D40900FA0544 /* subtitle-ar.ass */; };
+		99F774232BB9F87500FA0544 /* AdobeArabic-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 99F7741F2BB9F87500FA0544 /* AdobeArabic-Bold.otf */; };
+		99F774242BB9F87500FA0544 /* tahoma.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 99F774202BB9F87500FA0544 /* tahoma.ttf */; };
+		99F774252BB9F87500FA0544 /* arialuni.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 99F774212BB9F87500FA0544 /* arialuni.ttf */; };
+		99F774262BB9F87500FA0544 /* trebuc.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 99F774222BB9F87500FA0544 /* trebuc.ttf */; };
+		99F774282BBA0A7D00FA0544 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F774272BBA0A7D00FA0544 /* PlayerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,9 +28,14 @@
 		995EF5EE2B815F17000B5E39 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		995EF5F02B815F1C000B5E39 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		997B6AE02BAF0AF600BD9689 /* video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = video.mp4; sourceTree = "<group>"; };
-		999443292BA643C00079247B /* subtitle.ass */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = subtitle.ass; sourceTree = "<group>"; };
-		99F7740C2BB9BBD000FA0544 /* arialuni.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = arialuni.ttf; sourceTree = "<group>"; };
-		99F7740D2BB9BBD000FA0544 /* trebuc.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = trebuc.ttf; sourceTree = "<group>"; };
+		999443292BA643C00079247B /* subtitle-en.ass */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "subtitle-en.ass"; sourceTree = "<group>"; };
+		99F774152BB9D40900FA0544 /* subtitle-ru.ass */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "subtitle-ru.ass"; sourceTree = "<group>"; };
+		99F774162BB9D40900FA0544 /* subtitle-ar.ass */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "subtitle-ar.ass"; sourceTree = "<group>"; };
+		99F7741F2BB9F87500FA0544 /* AdobeArabic-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AdobeArabic-Bold.otf"; sourceTree = "<group>"; };
+		99F774202BB9F87500FA0544 /* tahoma.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = tahoma.ttf; sourceTree = "<group>"; };
+		99F774212BB9F87500FA0544 /* arialuni.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = arialuni.ttf; sourceTree = "<group>"; };
+		99F774222BB9F87500FA0544 /* trebuc.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = trebuc.ttf; sourceTree = "<group>"; };
+		99F774272BBA0A7D00FA0544 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +72,7 @@
 				9994432A2BA643C00079247B /* Resources */,
 				995EF5EC2B815F17000B5E39 /* ExampleApp.swift */,
 				995EF5EE2B815F17000B5E39 /* ContentView.swift */,
+				99F774272BBA0A7D00FA0544 /* PlayerView.swift */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -71,7 +82,9 @@
 			children = (
 				99F7740E2BB9BBD000FA0544 /* Fonts */,
 				995EF5F02B815F1C000B5E39 /* Assets.xcassets */,
-				999443292BA643C00079247B /* subtitle.ass */,
+				999443292BA643C00079247B /* subtitle-en.ass */,
+				99F774162BB9D40900FA0544 /* subtitle-ar.ass */,
+				99F774152BB9D40900FA0544 /* subtitle-ru.ass */,
 				997B6AE02BAF0AF600BD9689 /* video.mp4 */,
 			);
 			path = Resources;
@@ -80,8 +93,10 @@
 		99F7740E2BB9BBD000FA0544 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				99F7740C2BB9BBD000FA0544 /* arialuni.ttf */,
-				99F7740D2BB9BBD000FA0544 /* trebuc.ttf */,
+				99F7741F2BB9F87500FA0544 /* AdobeArabic-Bold.otf */,
+				99F774212BB9F87500FA0544 /* arialuni.ttf */,
+				99F774202BB9F87500FA0544 /* tahoma.ttf */,
+				99F774222BB9F87500FA0544 /* trebuc.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -150,10 +165,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				99F774262BB9F87500FA0544 /* trebuc.ttf in Resources */,
+				99F774242BB9F87500FA0544 /* tahoma.ttf in Resources */,
+				99F774232BB9F87500FA0544 /* AdobeArabic-Bold.otf in Resources */,
 				997B6AE12BAF0C7000BD9689 /* video.mp4 in Resources */,
-				99F774102BB9BBD000FA0544 /* trebuc.ttf in Resources */,
-				99F7740F2BB9BBD000FA0544 /* arialuni.ttf in Resources */,
-				9994432D2BA643C00079247B /* subtitle.ass in Resources */,
+				99F774182BB9D40900FA0544 /* subtitle-ar.ass in Resources */,
+				99F774172BB9D40900FA0544 /* subtitle-ru.ass in Resources */,
+				99F774252BB9F87500FA0544 /* arialuni.ttf in Resources */,
+				9994432D2BA643C00079247B /* subtitle-en.ass in Resources */,
 				995EF5F12B815F1C000B5E39 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -165,6 +184,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				99F774282BBA0A7D00FA0544 /* PlayerView.swift in Sources */,
 				995EF5EF2B815F17000B5E39 /* ContentView.swift in Sources */,
 				995EF5ED2B815F17000B5E39 /* ExampleApp.swift in Sources */,
 			);

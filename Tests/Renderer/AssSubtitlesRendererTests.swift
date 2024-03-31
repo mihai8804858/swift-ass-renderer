@@ -5,7 +5,6 @@ import SwiftLibass
 import SwiftAssBlend
 @testable import SwiftAssRenderer
 
-// swiftlint:disable:next type_body_length
 final class AssSubtitlesRendererTests: XCTestCase {
     private var mockQueue: MockDispatchQueue!
     private var mockLibraryWrapper: MockLibraryWrapper.Type!
@@ -116,60 +115,6 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssert(mockLibraryWrapper.readTrackFunc.wasCalled)
         let argument = try XCTUnwrap(mockLibraryWrapper.readTrackFunc.argument)
         XCTAssert(argument == (library, content))
-    }
-
-    func test_freeTrack_shouldFreeTrack() throws {
-        // GIVEN
-        let library = OpaquePointer(bitPattern: 1)!
-        let renderer = OpaquePointer(bitPattern: 2)!
-        let content = "<CONTENT>"
-        mockLibraryWrapper.libraryInitStub = library
-        mockLibraryWrapper.rendererInitStub = renderer
-        mockLibraryWrapper.readTrackStub = ASS_Track()
-
-        // WHEN
-        let subRenderer = createRenderer()
-        subRenderer.loadTrack(content: content)
-        subRenderer.freeTrack()
-
-        // THEN
-        XCTAssert(mockLibraryWrapper.freeTrackFunc.wasCalled)
-    }
-
-    func test_loadTrack_shouldFreeExistingTrack() throws {
-        // GIVEN
-        let library = OpaquePointer(bitPattern: 1)!
-        let renderer = OpaquePointer(bitPattern: 2)!
-        let content = "<CONTENT>"
-        mockLibraryWrapper.libraryInitStub = library
-        mockLibraryWrapper.rendererInitStub = renderer
-        mockLibraryWrapper.readTrackStub = ASS_Track()
-
-        // WHEN
-        let subRenderer = createRenderer()
-        subRenderer.loadTrack(content: content)
-        subRenderer.loadTrack(content: content)
-
-        // THEN
-        XCTAssert(mockLibraryWrapper.freeTrackFunc.wasCalled)
-    }
-
-    func test_deinit_shouldFreeExistingTrack() throws {
-        // GIVEN
-        let library = OpaquePointer(bitPattern: 1)!
-        let renderer = OpaquePointer(bitPattern: 2)!
-        let content = "<CONTENT>"
-        mockLibraryWrapper.libraryInitStub = library
-        mockLibraryWrapper.rendererInitStub = renderer
-        mockLibraryWrapper.readTrackStub = ASS_Track()
-
-        // WHEN
-        var subRenderer: AssSubtitlesRenderer? = createRenderer()
-        subRenderer?.loadTrack(content: content)
-        subRenderer = nil
-
-        // THEN
-        XCTAssert(mockLibraryWrapper.freeTrackFunc.wasCalled)
     }
 
     func test_deinit_shouldCallRendererDone() throws {

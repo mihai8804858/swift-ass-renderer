@@ -137,7 +137,7 @@ private extension AssSubtitlesRenderer {
             return .none
         }
         guard result.changed else { return .unchanged }
-        guard let processedImage = measure("process", action: { pipeline.process(image: result.image) }) else {
+        guard let processedImage = pipeline.process(image: result.image) else {
             return .none
         }
         let imageRect = (processedImage.imageRect / canvasScale).rounded()
@@ -177,14 +177,5 @@ private extension AssSubtitlesRenderer {
         } catch {
             logger.log(message: "Failed settings fonts - \(error)", messageLevel: .fatal)
         }
-    }
-
-    func measure<T>(_ title: String, action: () -> T) -> T {
-        let startTime = CFAbsoluteTimeGetCurrent()
-        let value = action()
-        let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime
-        logger.log(message: "[measure] [\(title)] \(Int(timeElapsed * 1000_000)) µs", messageLevel: .verbose)
-
-        return value
     }
 }

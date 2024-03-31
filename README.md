@@ -46,6 +46,8 @@ let fontsConfig = FontConfig(
 
 * `defaultFontFamily` - Default font family
 
+* `fontProvider` - Default font shaper. Defaults to `fontConfig`.
+
 2. Create an instance of renderer
 
 ```swift

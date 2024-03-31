@@ -26,27 +26,37 @@ final class ImagePipelineTests: XCTestCase {
         1354.62
     ]
 
-    override func setUp() async throws {
-        try await super.setUp()
-
-        library = try XCTUnwrap(LibraryWrapper.libraryInit())
-        renderer = try XCTUnwrap(LibraryWrapper.rendererInit(library))
-        LibraryWrapper.setRendererSize(renderer, size: canvasSize * canvasScale)
-
-        let fontsPath = try XCTUnwrap(Bundle.module.resourceURL)
-        let fontConfig = FontConfig(fontsPath: fontsPath)
-        try fontConfig.configure(library: library, renderer: renderer)
-
-        let contentsPath = try XCTUnwrap(Bundle.module.path(forResource: "subtitle", ofType: "ass"))
-        let content = try String(contentsOfFile: contentsPath)
-        track = try XCTUnwrap(LibraryWrapper.readTrack(library, content: content))
-    }
-
     func test_processImage() throws {
+        try setUp(fontProvider: .fontConfig)
+
         for offset in offsets {
             let image = try XCTUnwrap(LibraryWrapper.renderImage(renderer, track: &track, at: offset))
             let processedImage = try XCTUnwrap(pipeline.process(image: image.image))
             assertSnapshot(of: value(image: processedImage), as: .image, named: snapshotName(offset: offset))
+        }
+    }
+
+    func test_processImage_fontConfig_shouldNotCrash() throws {
+        try setUp(fontProvider: .fontConfig)
+
+        measure {
+            for event in Array(UnsafeBufferPointer(start: track.events, count: Int(track.n_events))) {
+                let offset = TimeInterval(event.Start) / 1000
+                guard let image = LibraryWrapper.renderImage(renderer, track: &track, at: offset) else { continue }
+                _ = pipeline.process(image: image.image)
+            }
+        }
+    }
+
+    func test_processImage_coreText_shouldNotCrash() throws {
+        try setUp(fontProvider: .coreText)
+
+        measure {
+            for event in Array(UnsafeBufferPointer(start: track.events, count: Int(track.n_events))) {
+                let offset = TimeInterval(event.Start) / 1000
+                guard let image = LibraryWrapper.renderImage(renderer, track: &track, at: offset) else { continue }
+                _ = pipeline.process(image: image.image)
+            }
         }
     }
 
@@ -75,5 +85,19 @@ final class ImagePipelineTests: XCTestCase {
         layer.contentsGravity = .center
 
         return layer
+    }
+
+    private func setUp(fontProvider: FontProvider) throws {
+        library = try XCTUnwrap(LibraryWrapper.libraryInit())
+        renderer = try XCTUnwrap(LibraryWrapper.rendererInit(library))
+        LibraryWrapper.setRendererSize(renderer, size: canvasSize * canvasScale)
+
+        let fontsPath = try XCTUnwrap(Bundle.module.resourceURL)
+        let fontConfig = FontConfig(fontsPath: fontsPath, fontProvider: fontProvider)
+        try fontConfig.configure(library: library, renderer: renderer)
+
+        let contentsPath = try XCTUnwrap(Bundle.module.path(forResource: "subtitle", ofType: "ass"))
+        let content = try String(contentsOfFile: contentsPath)
+        track = try XCTUnwrap(LibraryWrapper.readTrack(library, content: content))
     }
 }

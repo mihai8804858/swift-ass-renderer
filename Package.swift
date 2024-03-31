@@ -5,11 +5,11 @@ import Foundation
 let package = Package(
     name: "swift-ass-renderer",
     platforms: [
-        .iOS(.v16),
-        .tvOS(.v16),
+        .iOS(.v15),
+        .tvOS(.v15),
         .visionOS(.v1),
-        .macOS(.v13),
-        .macCatalyst(.v16)
+        .macOS(.v12),
+        .macCatalyst(.v15)
     ],
     products: [
         .library(name: "SwiftAssRenderer", targets: ["SwiftAssRenderer"])
@@ -17,7 +17,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/mihai8804858/swift-libass", branch: "main"),
         .package(url: "https://github.com/pointfreeco/combine-schedulers", .upToNextMajor(from: "1.0.0")),
-        .package(url: "https://github.com/mihai8804858/swift-snapshot-testing", branch: "visionos-support")
+        .package(url: "https://github.com/mihai8804858/swift-snapshot-testing", branch: "main")
     ],
     targets: [
         .target(

@@ -6,6 +6,15 @@ struct LibraryRenderResult {
     let changed: Bool
 }
 
+extension FontProvider {
+    var assFontProvider: Int32 {
+        switch self {
+        case .fontConfig: Int32(ASS_FONTPROVIDER_FONTCONFIG.rawValue)
+        case .coreText: Int32(ASS_FONTPROVIDER_CORETEXT.rawValue)
+        }
+    }
+}
+
 protocol LibraryWrapperType {
     static var libraryLogger: (Int, String) -> Void { get set }
     static func setLogCallback(_ library: OpaquePointer)
@@ -20,7 +29,8 @@ protocol LibraryWrapperType {
     static func setExtractFonts(_ library: OpaquePointer, extract: Bool)
     static func setFonts(
         _ renderer: OpaquePointer,
-        configPath: String,
+        provider: FontProvider,
+        configPath: String?,
         defaultFont: String?,
         defaultFamily: String?
     )
@@ -79,16 +89,16 @@ enum LibraryWrapper: LibraryWrapperType {
 
     static func setFonts(
         _ renderer: OpaquePointer,
-        configPath: String,
+        provider: FontProvider,
+        configPath: String? = nil,
         defaultFont: String? = nil,
         defaultFamily: String? = nil
     ) {
         let defaultFont = defaultFont.flatMap { $0.cString(using: .utf8) }
         let defaultFamily = defaultFamily.flatMap { $0.cString(using: .utf8) }
-        let fontProvider = Int32(ASS_FONTPROVIDER_FONTCONFIG.rawValue)
-        let fontConfig = configPath.cString(using: .utf8)
+        let fontConfig = configPath.flatMap { $0.cString(using: .utf8) }
         let update: Int32 = 1
-        ass_set_fonts(renderer, defaultFont, defaultFamily, fontProvider, fontConfig, update)
+        ass_set_fonts(renderer, defaultFont, defaultFamily, provider.assFontProvider, fontConfig, update)
     }
 
     static func readTrack(_ library: OpaquePointer, content: String) -> ASS_Track? {

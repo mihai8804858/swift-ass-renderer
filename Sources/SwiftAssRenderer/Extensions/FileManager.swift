@@ -12,7 +12,11 @@ protocol FileManagerType {
 
 extension FileManager: FileManagerType {
     var documentsURL: URL {
-        URL.documentsDirectory
+        if #available(iOS 16.0, tvOS 16.0, visionOS 1.0, macOS 13.0, *) {
+            URL.documentsDirectory
+        } else {
+            urls(for: .documentDirectory, in: .userDomainMask).first!
+        }
     }
 
     func fileExists(at path: URL) -> Bool {
