@@ -2,7 +2,7 @@ import SwiftUI
 import AVKit
 import SwiftAssRenderer
 
-struct PlayerView: View {
+struct VideoPlayerView: View {
     private let defaultFont = "arialuni.ttf"
     private let videoURL = Bundle.main.url(forResource: "video", withExtension: "mp4")!
     private let fontsURL = Bundle.main.resourceURL!
@@ -10,6 +10,8 @@ struct PlayerView: View {
     private let renderer: AssSubtitlesRenderer
     private let subtitleURL: URL
     private let fontProvider: FontProvider
+
+    @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
 
     init(subtitleURL: URL, fontProvider: FontProvider) {
         self.subtitleURL = subtitleURL
@@ -24,9 +26,29 @@ struct PlayerView: View {
 
     var body: some View {
         playerView
-            .padding()
+            #if os(visionOS)
+            .padding(48)
+            #else
+            .padding(8)
+            #endif
             .onAppear(perform: setupPlayer)
             .onAppear(perform: loadSubtitleTrack)
+            #if os(visionOS) || os(macOS)
+            .overlay(alignment: .topLeading) {
+                Button {
+                    presentationMode.wrappedValue.dismiss()
+                } label: {
+                    Text("Back")
+                }
+                #if os(visionOS)
+                .padding(72)
+                #elseif os(macOS)
+                .padding()
+                #endif
+            }
+            .frame(width: 1920, height: 1080)
+            .fixedSize()
+            #endif
     }
 
     @ViewBuilder

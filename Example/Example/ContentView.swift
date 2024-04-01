@@ -3,6 +3,14 @@ import AVKit
 import SwiftAssRenderer
 
 struct ContentView: View {
+    private enum PlayerKind: CaseIterable {
+        case videoPlayer
+        #if !os(macOS)
+        case playerLayer
+        case playerViewController
+        #endif
+    }
+
     private let shapers: [FontProvider] = [.fontConfig, .coreText]
     private let subtitles: [String: URL] = [
         "English": Bundle.main.url(forResource: "subtitle-en", withExtension: "ass")!,
@@ -12,6 +20,7 @@ struct ContentView: View {
 
     @State private var selectedLanguage = "English"
     @State private var selectedShaper = FontProvider.fontConfig
+    @State private var selectedPlayerKind = PlayerKind.videoPlayer
     @State private var isPlaying = false
 
     var body: some View {
@@ -29,6 +38,12 @@ struct ContentView: View {
                     shaperPickerView
                         .gridColumnAlignment(.leading)
                 }
+                GridRow {
+                    Text("Player")
+                        .gridColumnAlignment(.trailing)
+                    playerPickerView
+                        .gridColumnAlignment(.leading)
+                }
             }
             Button {
                 isPlaying = true
@@ -39,10 +54,16 @@ struct ContentView: View {
                 )
             }
         }.sheet(isPresented: $isPlaying) {
-            PlayerView(
-                subtitleURL: subtitles[selectedLanguage]!,
-                fontProvider: selectedShaper
-            )
+            switch selectedPlayerKind {
+            case .videoPlayer:
+                VideoPlayerView(subtitleURL: subtitles[selectedLanguage]!, fontProvider: selectedShaper)
+            #if !os(macOS)
+            case .playerLayer:
+                PlayerLayerView(subtitleURL: subtitles[selectedLanguage]!, fontProvider: selectedShaper)
+            case .playerViewController:
+                PlayerView(subtitleURL: subtitles[selectedLanguage]!, fontProvider: selectedShaper)
+            #endif
+            }
         }.padding()
     }
 
@@ -52,7 +73,7 @@ struct ContentView: View {
             ForEach(Array(subtitles.keys), id: \.self) { language in
                 Text(language)
             }
-        }
+        }.pickerStyle(.menu)
     }
 
     @ViewBuilder
@@ -62,6 +83,21 @@ struct ContentView: View {
                 switch shaper {
                 case .fontConfig: Text("FontConfig")
                 case .coreText: Text("CoreText")
+                }
+            }
+        }.pickerStyle(.menu)
+    }
+
+    @ViewBuilder
+    private var playerPickerView: some View {
+        Picker("Player", selection: $selectedPlayerKind) {
+            ForEach(PlayerKind.allCases, id: \.self) { player in
+                switch player {
+                case .videoPlayer: Text("Video Player")
+                #if !os(macOS)
+                case .playerLayer: Text("Player Layer")
+                case .playerViewController: Text("Player View Controller")
+                #endif
                 }
             }
         }.pickerStyle(.menu)
