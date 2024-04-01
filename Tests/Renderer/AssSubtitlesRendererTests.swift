@@ -153,7 +153,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssert(mockLibraryWrapper.libraryDoneFunc.wasCalled)
     }
 
-    func test_setTimeCanvasSize_shouldSetRendererSize() throws {
+    func test_setCanvasSize_shouldSetRendererSize() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
         let renderer = OpaquePointer(bitPattern: 2)!

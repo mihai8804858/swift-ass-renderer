@@ -48,7 +48,7 @@ let package = Package(
             path: "Tests",
             resources: [
                 .copy("Resources/Fonts"),
-                .copy("Resources/subtitle.ass")
+                .copy("Resources/Subs")
             ]
         )
     ]

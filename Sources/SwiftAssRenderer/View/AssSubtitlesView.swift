@@ -6,6 +6,8 @@ import AppKit
 import SwiftUI
 import Combine
 
+/// `UIView` /  `NSView` capable or drawing rendered image bitmaps to the screen,
+/// by subscriging to `AssSubtitlesRenderer`  events and rendering output `ProcessedImage` in a image view.
 public final class AssSubtitlesView: PlatformView {
     public let renderer: AssSubtitlesRenderer
 
@@ -59,6 +61,11 @@ private extension AssSubtitlesView {
 
     func setupView() {
         addSubview(imageView)
+        #if canImport(UIKit)
+        backgroundColor = .clear
+        #elseif canImport(AppKit)
+        layer?.backgroundColor = NSColor.clear.cgColor
+        #endif
     }
 
     func subscribeToEvents() {

@@ -36,7 +36,6 @@ protocol LibraryWrapperType {
     )
 
     static func readTrack(_ library: OpaquePointer, content: String) -> ASS_Track?
-    static func freeTrack(_ track: inout ASS_Track)
 
     static func renderImage(
         _ renderer: OpaquePointer,
@@ -104,10 +103,6 @@ enum LibraryWrapper: LibraryWrapperType {
     static func readTrack(_ library: OpaquePointer, content: String) -> ASS_Track? {
         guard var buffer = content.cString(using: .utf8) else { return nil }
         return ass_read_memory(library, &buffer, buffer.count, nil).pointee
-    }
-
-    static func freeTrack(_ track: inout ASS_Track) {
-        ass_free_track(&track)
     }
 
     static func renderImage(

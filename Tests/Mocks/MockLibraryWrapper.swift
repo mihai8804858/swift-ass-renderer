@@ -63,11 +63,6 @@ final class MockLibraryWrapper: LibraryWrapperType {
         return readTrackStub
     }
 
-    static let freeTrackFunc = FuncCheck<ASS_Track>()
-    static func freeTrack(_ track: inout ASS_Track) {
-        freeTrackFunc.call(track)
-    }
-
     // swiftlint:disable:next large_tuple
     static let renderImageFunc = FuncCheck<(OpaquePointer, ASS_Track, TimeInterval)>()
     static var renderImageStub: LibraryRenderResult?

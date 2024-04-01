@@ -3,8 +3,10 @@ import Foundation
 import SwiftLibass
 import CombineSchedulers
 
+/// ASS/SSA subtitles renderer. Manages the current ASS track, 
+/// current time offset and current visible frame (`ProcessedImage`).
 public final class AssSubtitlesRenderer {
-    private let queue: DispatchQueueType
+    private let workQueue: DispatchQueueType
     private let scheduler: AnySchedulerOf<DispatchQueue>
     private let wrapper: LibraryWrapperType.Type
     private let fontConfig: FontConfigType
@@ -21,26 +23,30 @@ public final class AssSubtitlesRenderer {
     private var currentOffset: TimeInterval = 0
     private var currentFrame = CurrentValueSubject<ProcessedImage?, Never>(nil)
 
-    public convenience init(fontConfig: FontConfig, logLevel: LogLevel? = nil) {
+    /// - Parameters:
+    ///   - fontConfig: Fonts configuration. Defines where the fonts and fonts cache is located, 
+    ///   fallbacks for missing fonts and the default `FontProvider` to use.
+    ///   - logLevel: Console output log level. Defaults to `.default` in DEBUG and `.fatal` in RELEASE.
+    public convenience init(fontConfig: FontConfig, logOutput: LogOutput? = nil) {
         self.init(
-            queue: DispatchQueue(label: "com.swift-ass-renderer.work", qos: .userInteractive),
+            workQueue: DispatchQueue(label: "com.swift-ass-renderer.work", qos: .userInteractive),
             scheduler: .main,
             wrapper: LibraryWrapper.self,
             fontConfig: fontConfig,
-            pipeline: ImagePipeline(),
-            logger: Logger(level: logLevel, prefix: "swift-ass")
+            pipeline: BlendImagePipeline(),
+            logger: Logger(output: logOutput)
         )
     }
 
     init(
-        queue: DispatchQueueType,
+        workQueue: DispatchQueueType,
         scheduler: AnySchedulerOf<DispatchQueue>,
         wrapper: LibraryWrapperType.Type,
         fontConfig: FontConfigType,
         pipeline: ImagePipelineType,
         logger: LoggerType
     ) {
-        self.queue = queue
+        self.workQueue = workQueue
         self.scheduler = scheduler
         self.wrapper = wrapper
         self.fontConfig = fontConfig
@@ -55,45 +61,72 @@ public final class AssSubtitlesRenderer {
         library.flatMap(wrapper.libraryDone)
     }
 
+    /// Parse and load ASS/SSA subtitle track in memory.
+    ///
+    /// - Parameters:
+    ///   - content: Raw ASS/SSA subtitle contents.
+    ///
+    /// Always call this methos before starting to update the time offset.
     public func loadTrack(content: String) {
         guard let library else {
-            return logger.log(
+            return logger.log(message: LogMessage(
                 message: "Track cannot be loaded since library has not been initialized",
-                messageLevel: .verbose
-            )
+                level: .verbose
+            ))
         }
-        freeTrack()
-        currentTrack = wrapper.readTrack(library, content: content)
+        workQueue.executeAsync { [weak self] in
+            guard let self else { return }
+            freeTrack()
+            currentTrack = wrapper.readTrack(library, content: content)
+        }
     }
 
+    /// Removes current track and resets the time offset and current visible frame.
     public func freeTrack() {
-        guard var track = currentTrack else { return }
-        wrapper.freeTrack(&track)
         currentTrack = nil
         currentFrame.value = nil
         currentOffset = 0
     }
 
-    public func setTimeOffset(_ offset: TimeInterval) {
-        currentOffset = offset
-        loadFrame(offset: offset)
-    }
-}
-
-extension AssSubtitlesRenderer {
-    func setCanvasSize(_ size: CGSize, scale: CGFloat) {
+    /// Set subtitles canvas size and scale.
+    ///
+    /// - Parameters:
+    ///   - size: Canvas size. Should match the video canvas for proper subtitle positioning.
+    ///   - scale: Screen scale. Bigger scale results in sharper images, but lower performance.
+    ///
+    /// Always call this methos before starting to update the time offset.
+    /// When using the renderer with `AssSubtitles` / `AssSubtitlesView`, you don't have to call this method.
+    public func setCanvasSize(_ size: CGSize, scale: CGFloat) {
         canvasSize = size
         canvasScale = scale
         guard let renderer else {
-            return logger.log(
+            return logger.log(message: LogMessage(
                 message: "Can't set canvas size since renderer has not been initialized",
-                messageLevel: .verbose
-            )
+                level: .verbose
+            ))
         }
         wrapper.setRendererSize(renderer, size: size * scale)
     }
 
-    func framesPublisher() -> AnyPublisher<ProcessedImage?, Never> {
+    /// Set current visible subtitle offset.
+    ///
+    /// - Parameters:
+    ///   - offset: Time interval (in seconds) from where to render the current visible subtitle.
+    ///
+    /// This method should be called periodically to update the current visible subtitle. 
+    /// If called too often, it might result in lower performance.
+    public func setTimeOffset(_ offset: TimeInterval) {
+        currentOffset = offset
+        loadFrame(offset: offset)
+    }
+
+    /// Publisher where the rendered images to be drawn are being publisherd.
+    ///
+    /// - Returns: A Combine publisher where `ProcessedImage` that have to be drawn on the canvas are being published.
+    ///
+    /// When using the renderer with `AssSubtitles` / `AssSubtitlesView`, 
+    /// you don't have to subscribe to this publisher and render the images.
+    public func framesPublisher() -> AnyPublisher<ProcessedImage?, Never> {
         currentFrame
             .share()
             .removeDuplicates { $0 == nil && $1 == nil }
@@ -101,7 +134,10 @@ extension AssSubtitlesRenderer {
             .eraseToAnyPublisher()
     }
 
-    func reloadFrame() {
+    /// Forces the current visible subtitle to be reloaded and redrawn.
+    ///
+    /// When using the renderer with `AssSubtitles` / `AssSubtitlesView`, you don't have to call this method.
+    public func reloadFrame() {
         loadFrame(offset: currentOffset)
     }
 }
@@ -114,7 +150,7 @@ private extension AssSubtitlesRenderer {
     }
 
     func loadFrame(offset: TimeInterval) {
-        queue.executeAsync { [weak self] in
+        workQueue.executeAsync { [weak self] in
             guard let self else { return }
             switch frame(at: offset) {
             case .unchanged: break
@@ -126,11 +162,17 @@ private extension AssSubtitlesRenderer {
 
     func frame(at offset: TimeInterval) -> FrameResult {
         guard let renderer else {
-            logger.log(message: "Can't render frame since renderer has not been initialized", messageLevel: .verbose)
+            logger.log(message: LogMessage(
+                message: "Can't render frame since renderer has not been initialized",
+                level: .verbose
+            ))
             return .none
         }
         guard var currentTrack else {
-            logger.log(message: "Can't render frame since track has not been loaded", messageLevel: .verbose)
+            logger.log(message: LogMessage(
+                message: "Can't render frame since track has not been loaded",
+                level: .verbose
+            ))
             return .none
         }
         guard let result = wrapper.renderImage(renderer, track: &currentTrack, at: offset) else {
@@ -148,18 +190,21 @@ private extension AssSubtitlesRenderer {
 
 private extension AssSubtitlesRenderer {
     func configure() {
-        configureLibrary()
-        configureFonts()
-        setCanvasSize(canvasSize, scale: canvasScale)
+        workQueue.executeAsync { [weak self] in
+            guard let self else { return }
+            configureLibrary()
+            configureFonts()
+            setCanvasSize(canvasSize, scale: canvasScale)
+        }
     }
 
     func configureLibrary() {
         library = wrapper.libraryInit()
         guard let library else {
-            return logger.log(
+            return logger.log(message: LogMessage(
                 message: "Library could not be initialized",
-                messageLevel: .fatal
-            )
+                level: .fatal
+            ))
         }
         logger.configureLibrary(wrapper, library: library)
         renderer = wrapper.rendererInit(library)
@@ -168,14 +213,14 @@ private extension AssSubtitlesRenderer {
     func configureFonts() {
         do {
             guard let library, let renderer else {
-                return logger.log(
+                return logger.log(message: LogMessage(
                     message: "Library and renderer have not been initialized before setting fonts",
-                    messageLevel: .fatal
-                )
+                    level: .fatal
+                ))
             }
             try fontConfig.configure(library: library, renderer: renderer)
         } catch {
-            logger.log(message: "Failed settings fonts - \(error)", messageLevel: .fatal)
+            logger.log(message: LogMessage(message: "Failed settings fonts - \(error)", level: .fatal))
         }
     }
 }

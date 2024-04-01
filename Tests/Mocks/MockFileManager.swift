@@ -2,11 +2,11 @@ import Foundation
 @testable import SwiftAssRenderer
 
 final class MockFileManager: FileManagerType {
-    var documentsURL: URL = {
+    var cachesDirectory: URL = {
         if #available(iOS 16.0, tvOS 16.0, visionOS 1.0, macOS 13.0, *) {
-            URL.documentsDirectory
+            URL.cachesDirectory
         } else {
-            FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
         }
     }()
 

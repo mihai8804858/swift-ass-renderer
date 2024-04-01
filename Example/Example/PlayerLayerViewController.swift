@@ -124,11 +124,14 @@ final class PlayerLayerViewController: UIViewController {
         self.subtitleURL = subtitleURL
         self.fontProvider = fontProvider
         self.player = AVPlayer(url: videoURL)
-        self.renderer = AssSubtitlesRenderer(fontConfig: FontConfig(
-            fontsPath: fontsURL,
-            defaultFontName: defaultFont,
-            fontProvider: fontProvider
-        ), logLevel: .verbose)
+        self.renderer = AssSubtitlesRenderer(
+            fontConfig: FontConfig(
+                fontsPath: fontsURL,
+                defaultFontName: defaultFont,
+                fontProvider: fontProvider
+            ),
+            logOutput: .console(.verbose)
+        )
         super.init(nibName: nil, bundle: nil)
     }
 

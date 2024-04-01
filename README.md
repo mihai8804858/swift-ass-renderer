@@ -38,16 +38,6 @@ let fontsConfig = FontConfig(
 )
 ```
 
-* `fontsPath` - URL path to fonts directory
-
-* `fontsCachePath` - URL path to fonts cache directory. If no path is provided, application documents directory will be used instead. `fontsCachePath` should be a **writable** directory
-
-* `defaultFontName` - Default font (file name) from `<PATH_TO_FONTS_DIR>` directory
-
-* `defaultFontFamily` - Default font family
-
-* `fontProvider` - Default font shaper. Defaults to `fontConfig`.
-
 2. Create an instance of renderer
 
 ```swift

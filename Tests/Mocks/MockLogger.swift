@@ -6,8 +6,8 @@ final class MockLogger: LoggerType {
         configureLibraryFunc.call((wrapper, library))
     }
 
-    let logFunc = FuncCheck<(String, LogLevel)>()
-    func log(message: String, messageLevel: LogLevel) {
-        logFunc.call((message, messageLevel))
+    let logFunc = FuncCheck<LogMessage>()
+    func log(message: LogMessage) {
+        logFunc.call(message)
     }
 }

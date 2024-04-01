@@ -17,11 +17,14 @@ struct VideoPlayerView: View {
         self.subtitleURL = subtitleURL
         self.fontProvider = fontProvider
         self.player = AVPlayer(url: videoURL)
-        self.renderer = AssSubtitlesRenderer(fontConfig: FontConfig(
-            fontsPath: fontsURL,
-            defaultFontName: defaultFont,
-            fontProvider: fontProvider
-        ), logLevel: .verbose)
+        self.renderer = AssSubtitlesRenderer(
+            fontConfig: FontConfig(
+                fontsPath: fontsURL,
+                defaultFontName: defaultFont,
+                fontProvider: fontProvider
+            ),
+            logOutput: .console(.verbose)
+        )
     }
 
     var body: some View {

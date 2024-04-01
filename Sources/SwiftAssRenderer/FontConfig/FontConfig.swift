@@ -1,7 +1,12 @@
 import Foundation
 
+/// Which provider to use for character rendering and font management.
 public enum FontProvider: Equatable {
+    /// Uses [fontconfig](https://www.freedesktop.org/wiki/Software/fontconfig/)
+    /// to manage the fonts and render the characters.
     case fontConfig
+
+    /// Uses `CoreText` to render the character using system fonts.
     case coreText
 }
 
@@ -9,6 +14,8 @@ protocol FontConfigType {
     func configure(library: OpaquePointer, renderer: OpaquePointer) throws
 }
 
+/// Fonts configuration. Defines where the fonts and fonts cache is located,
+/// fallbacks for missing fonts and the default `FontProvider` to use.
 public struct FontConfig: FontConfigType {
     private static let fontsCacheDirName = "fonts-cache"
     private static let fontsConfFileName = "fonts.conf"
@@ -16,35 +23,23 @@ public struct FontConfig: FontConfigType {
     private let fileManager: FileManagerType
     private let moduleBundle: BundleType
     private let libraryWrapper: LibraryWrapperType.Type
+    private let fontsPath: URL
+    private let fontsCachePath: URL?
+    private let defaultFontName: String?
+    private let defaultFontFamily: String?
+    private let fontProvider: FontProvider
 
-    /// URL path to fonts directory.
-    ///
-    /// Can be read-only.
-    ///
-    /// - warning: The fonts should be placed in `<fontsPath>/fonts` directory.
-    public let fontsPath: URL
-
-    /// URL path to fonts cache directory.
-    ///
-    /// The library will append `/fonts-cache` to the `fontsCachePath`.
-    /// If no path is provided, application documents directory will be instead.
-    ///
-    /// - warning: The `fontsCachePath` should be a **writable** directory.
-    public let fontsCachePath: URL?
-
-    /// Default font (file name) from `<fontsPath>/fonts` directory.
-    ///
-    /// This font will be used as fallback when specified fonts in tracks are not found in fonts directory.
-    public let defaultFontName: String?
-
-    /// Default font family.
-    ///
-    /// This font family will be used as fallback when specified font family in tracks is not found in fonts directory.
-    public let defaultFontFamily: String?
-
-    /// Default font shaper.
-    public let fontProvider: FontProvider
-
+    /// - Parameters:
+    ///   - fontsPath: URL path to fonts directory. Can be read-only.
+    ///   - fontsCachePath: URL path to fonts cache directory. 
+    ///   The library will append `/fonts-cache` to the `fontsCachePath`.
+    ///   If no path is provided, caches directory will be used instead. 
+    ///   The `fontsCachePath` should be a **writable** directory.
+    ///   - defaultFontName: Default font (file name) from `<fontsPath>` directory.
+    ///   This font will be used as fallback when specified fonts in tracks are not found.
+    ///   - defaultFontFamily: Default font family.
+    ///   This font family will be used as fallback when specified font family in tracks is not found.
+    ///   - fontProvider: Default font shaper.
     public init(
         fontsPath: URL,
         fontsCachePath: URL? = nil,
@@ -93,11 +88,11 @@ public struct FontConfig: FontConfigType {
     // MARK: - Private
 
     private var fontsConfPath: URL {
-        fileManager.documentsURL.appendingPathComponent(FontConfig.fontsConfFileName)
+        fileManager.cachesDirectory.appendingPathComponent(FontConfig.fontsConfFileName)
     }
 
     private var cachePath: URL {
-        (fontsCachePath ?? fileManager.documentsURL).appendingPathComponent(FontConfig.fontsCacheDirName)
+        (fontsCachePath ?? fileManager.cachesDirectory).appendingPathComponent(FontConfig.fontsCacheDirName)
     }
 
     private func makeFontsCacheDirectory() throws {

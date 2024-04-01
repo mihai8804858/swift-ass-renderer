@@ -31,11 +31,14 @@ final class PlayerViewController: AVPlayerViewController {
     init(subtitleURL: URL, fontProvider: FontProvider) {
         self.subtitleURL = subtitleURL
         self.fontProvider = fontProvider
-        self.renderer = AssSubtitlesRenderer(fontConfig: FontConfig(
-            fontsPath: fontsURL,
-            defaultFontName: defaultFont,
-            fontProvider: fontProvider
-        ), logLevel: .verbose)
+        self.renderer = AssSubtitlesRenderer(
+            fontConfig: FontConfig(
+                fontsPath: fontsURL,
+                defaultFontName: defaultFont,
+                fontProvider: fontProvider
+            ),
+            logOutput: .console(.verbose)
+        )
 
         super.init(nibName: nil, bundle: nil)
     }

@@ -2,15 +2,11 @@ import CoreGraphics
 import SwiftLibass
 import SwiftAssBlend
 
-protocol ImagePipelineType {
-    func process(image: ASS_Image?) -> ProcessedImage?
-}
-
-final class ImagePipeline: ImagePipelineType {
+final class BlendImagePipeline: ImagePipelineType {
     func process(image: ASS_Image?) -> ProcessedImage? {
         guard var image, image.bitmap != nil else { return nil }
         let blendResult = renderBlend(&image)
-        guard blendResult.buffer != nil else { return nil}
+        guard blendResult.buffer != nil else { return nil }
 
         let boundingRect = CGRect(
             x: Int(blendResult.bounding_rect_x),
