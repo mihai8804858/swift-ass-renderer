@@ -4,7 +4,7 @@ import SwiftLibass
 import CombineSchedulers
 
 /// ASS/SSA subtitles renderer. Manages the current ASS track, 
-/// current time offset and current visible frame (`ProcessedImage`).
+/// current time offset and current visible frame (``ProcessedImage``).
 public final class AssSubtitlesRenderer {
     private let workQueue: DispatchQueueType
     private let scheduler: AnySchedulerOf<DispatchQueue>
@@ -25,7 +25,7 @@ public final class AssSubtitlesRenderer {
 
     /// - Parameters:
     ///   - fontConfig: Fonts configuration. Defines where the fonts and fonts cache is located, 
-    ///   fallbacks for missing fonts and the default `FontProvider` to use.
+    ///   fallbacks for missing fonts and the default ``FontProvider`` to use.
     ///   - logLevel: Console output log level. Defaults to `.default` in DEBUG and `.fatal` in RELEASE.
     public convenience init(fontConfig: FontConfig, logOutput: LogOutput? = nil) {
         self.init(
@@ -95,7 +95,7 @@ public final class AssSubtitlesRenderer {
     ///   - scale: Screen scale. Bigger scale results in sharper images, but lower performance.
     ///
     /// Always call this methos before starting to update the time offset.
-    /// When using the renderer with `AssSubtitles` / `AssSubtitlesView`, you don't have to call this method.
+    /// When using the renderer with ``AssSubtitles`` / ``AssSubtitlesView``, you don't have to call this method.
     public func setCanvasSize(_ size: CGSize, scale: CGFloat) {
         canvasSize = size
         canvasScale = scale
@@ -122,9 +122,9 @@ public final class AssSubtitlesRenderer {
 
     /// Publisher where the rendered images to be drawn are being publisherd.
     ///
-    /// - Returns: A Combine publisher where `ProcessedImage` that have to be drawn on the canvas are being published.
+    /// - Returns: A Combine publisher where ``ProcessedImage`` that have to be drawn on the canvas are being published.
     ///
-    /// When using the renderer with `AssSubtitles` / `AssSubtitlesView`, 
+    /// When using the renderer with ``AssSubtitles`` / ``AssSubtitlesView``,
     /// you don't have to subscribe to this publisher and render the images.
     public func framesPublisher() -> AnyPublisher<ProcessedImage?, Never> {
         currentFrame
@@ -136,7 +136,7 @@ public final class AssSubtitlesRenderer {
 
     /// Forces the current visible subtitle to be reloaded and redrawn.
     ///
-    /// When using the renderer with `AssSubtitles` / `AssSubtitlesView`, you don't have to call this method.
+    /// When using the renderer with ``AssSubtitles`` / ``AssSubtitlesView``, you don't have to call this method.
     public func reloadFrame() {
         loadFrame(offset: currentOffset)
     }

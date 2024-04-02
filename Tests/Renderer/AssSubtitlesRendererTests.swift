@@ -26,7 +26,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
 
     func createRenderer() -> AssSubtitlesRenderer {
         AssSubtitlesRenderer(
-            queue: mockQueue,
+            workQueue: mockQueue,
             scheduler: .immediate,
             wrapper: mockLibraryWrapper,
             fontConfig: mockFontConfig,

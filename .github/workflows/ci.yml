@@ -21,7 +21,8 @@ jobs:
     name: Lint
     runs-on: macos-14
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Install tools
         run: brew install swiftlint
@@ -36,9 +37,11 @@ jobs:
       matrix:
         config: ['debug', 'release']
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: extractions/netrc@v2
+      - name: Setup netrc
+        uses: extractions/netrc@v2
         with:
           machine: github.com
           username: user
@@ -47,7 +50,8 @@ jobs:
       - name: Install tools
         run: gem install xcpretty
 
-      - uses: maxim-lobanov/setup-xcode@v1
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable
 
@@ -58,9 +62,11 @@ jobs:
     name: Test
     runs-on: macos-14
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: extractions/netrc@v2
+      - name: Setup netrc
+        uses: extractions/netrc@v2
         with:
           machine: github.com
           username: user
@@ -69,7 +75,8 @@ jobs:
       - name: Install tools
         run: gem install xcpretty
 
-      - uses: maxim-lobanov/setup-xcode@v1
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable
 

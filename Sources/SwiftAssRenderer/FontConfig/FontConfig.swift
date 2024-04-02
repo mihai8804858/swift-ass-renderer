@@ -15,7 +15,7 @@ protocol FontConfigType {
 }
 
 /// Fonts configuration. Defines where the fonts and fonts cache is located,
-/// fallbacks for missing fonts and the default `FontProvider` to use.
+/// fallbacks for missing fonts and the default ``FontProvider`` to use.
 public struct FontConfig: FontConfigType {
     private static let fontsCacheDirName = "fonts-cache"
     private static let fontsConfFileName = "fonts.conf"

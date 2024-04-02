@@ -1,6 +1,10 @@
 NAME = SwiftAssRenderer
 CONFIG = debug
 
+DOCC_DIR = docs
+DOCC_BASE_PATH = swift-ass-renderer
+DOCC_ARCHIVE = SwiftAssRenderer.doccarchive
+
 BUILD_PLATFORM_IOS = generic/platform=iOS
 BUILD_PLATFORM_TVOS = generic/platform=tvOS
 BUILD_PLATFORM_VISIONOS = generic/platform=visionOS
@@ -49,10 +53,31 @@ test-all-platforms:
 			-destination "$$platform" | xcpretty || exit 1; \
 	done;
 
+build-docs:
+	echo -e "\n${GREEN}Building DocC${NC}\n"
+	set -o pipefail && xcrun xcodebuild docbuild \
+		-workspace $(NAME).xcworkspace \
+		-scheme $(NAME) \
+		-derivedDataPath .build \
+		-destination "$(BUILD_PLATFORM_IOS)" \
+		-parallelizeTargets | xcpretty || exit 1
+
+	echo -e "\n${GREEN}Copying DocC archives to .docarchives${NC}\n"
+	rm -rf .docarchives
+	mkdir .docarchives
+	cp -R `find .build -type d -name "*.doccarchive"` .docarchives
+
+	echo -e "\n${GREEN}Generate static site${NC}\n"
+	rm -rf $(DOCC_DIR)
+	mkdir $(DOCC_DIR)
+	xcrun docc process-archive transform-for-static-hosting .docarchives/$(DOCC_ARCHIVE)/ \
+		--hosting-base-path $(DOCC_BASE_PATH) \
+		--output-path $(DOCC_DIR)
+
 lint:
 	swiftlint lint --strict
 
-.PHONY: build-all-platforms test-all-platforms lint
+.PHONY: build-all-platforms test-all-platforms build-docs lint
 
 define udid_for
 $(shell xcrun simctl list devices available '$(1)' | grep '$(2)' | sort -r | head -1 | awk -F '[()]' '{ print $$(NF-3) }')

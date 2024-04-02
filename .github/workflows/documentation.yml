@@ -1,0 +1,60 @@
+name: Documentation
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build Docs
+    runs-on: macos-14
+    steps:
+      - name: Setup netrc
+        uses: extractions/netrc@v2
+        with:
+          machine: github.com
+          username: user
+          password: ${{ secrets.GH_PAT }}
+
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: docs
+
+      - name: Build Docs
+        run: |
+          set -e
+          rm -rf docs/.git
+          make build-docs
+
+      - name: Fix permissions
+        run: 'sudo chown -R $USER docs'
+
+      - name: Publish to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: docs
+          target-folder: docs
+          single-commit: true
+          force: true
