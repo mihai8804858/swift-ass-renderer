@@ -7,13 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9919A7522BBCB5DA00898523 /* VideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9919A74F2BBCB5DA00898523 /* VideoPlayer.swift */; };
 		995EF5ED2B815F17000B5E39 /* ExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995EF5EC2B815F17000B5E39 /* ExampleApp.swift */; };
 		995EF5EF2B815F17000B5E39 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995EF5EE2B815F17000B5E39 /* ContentView.swift */; };
 		995EF5F12B815F1C000B5E39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 995EF5F02B815F1C000B5E39 /* Assets.xcassets */; };
 		995EF5FD2B815FF8000B5E39 /* SwiftAssRenderer in Frameworks */ = {isa = PBXBuildFile; productRef = 995EF5FC2B815FF8000B5E39 /* SwiftAssRenderer */; };
 		997B6AE12BAF0C7000BD9689 /* video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 997B6AE02BAF0AF600BD9689 /* video.mp4 */; };
-		99F5D3582BBB019C00C6644F /* PlayerLayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F5D3572BBB019C00C6644F /* PlayerLayerViewController.swift */; };
-		99F5D35A2BBB01A900C6644F /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F5D3592BBB01A900C6644F /* PlayerViewController.swift */; };
+		99CC520F2BBDC36D00E3F147 /* AVPlayerLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99CC520C2BBDC36D00E3F147 /* AVPlayerLayer.swift */; };
+		99CC52102BBDC36D00E3F147 /* AVPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99CC520D2BBDC36D00E3F147 /* AVPlayerViewController.swift */; };
+		99CC52112BBDC36D00E3F147 /* AVPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99CC520E2BBDC36D00E3F147 /* AVPlayerView.swift */; };
 		99F5D35F2BBB54E000C6644F /* subtitle-ar.ass in Resources */ = {isa = PBXBuildFile; fileRef = 99F5D35B2BBB54E000C6644F /* subtitle-ar.ass */; };
 		99F5D3602BBB54E000C6644F /* subtitle-en.ass in Resources */ = {isa = PBXBuildFile; fileRef = 99F5D35C2BBB54E000C6644F /* subtitle-en.ass */; };
 		99F5D3612BBB54E000C6644F /* subtitle-ru.ass in Resources */ = {isa = PBXBuildFile; fileRef = 99F5D35D2BBB54E000C6644F /* subtitle-ru.ass */; };
@@ -21,17 +23,19 @@
 		99F774242BB9F87500FA0544 /* tahoma.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 99F774202BB9F87500FA0544 /* tahoma.ttf */; };
 		99F774252BB9F87500FA0544 /* arialuni.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 99F774212BB9F87500FA0544 /* arialuni.ttf */; };
 		99F774262BB9F87500FA0544 /* trebuc.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 99F774222BB9F87500FA0544 /* trebuc.ttf */; };
-		99F774282BBA0A7D00FA0544 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F774272BBA0A7D00FA0544 /* VideoPlayerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9919A74F2BBCB5DA00898523 /* VideoPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayer.swift; sourceTree = "<group>"; };
 		995EF5E92B815F17000B5E39 /* ASS Subtitles.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ASS Subtitles.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		995EF5EC2B815F17000B5E39 /* ExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleApp.swift; sourceTree = "<group>"; };
 		995EF5EE2B815F17000B5E39 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		995EF5F02B815F1C000B5E39 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		997B6AE02BAF0AF600BD9689 /* video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = video.mp4; sourceTree = "<group>"; };
-		99F5D3572BBB019C00C6644F /* PlayerLayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerLayerViewController.swift; sourceTree = "<group>"; };
-		99F5D3592BBB01A900C6644F /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
+		99CC520C2BBDC36D00E3F147 /* AVPlayerLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVPlayerLayer.swift; sourceTree = "<group>"; };
+		99CC520D2BBDC36D00E3F147 /* AVPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVPlayerViewController.swift; sourceTree = "<group>"; };
+		99CC520E2BBDC36D00E3F147 /* AVPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVPlayerView.swift; sourceTree = "<group>"; };
+		99CC52132BBE013800E3F147 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		99F5D35B2BBB54E000C6644F /* subtitle-ar.ass */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "subtitle-ar.ass"; sourceTree = "<group>"; };
 		99F5D35C2BBB54E000C6644F /* subtitle-en.ass */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "subtitle-en.ass"; sourceTree = "<group>"; };
 		99F5D35D2BBB54E000C6644F /* subtitle-ru.ass */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "subtitle-ru.ass"; sourceTree = "<group>"; };
@@ -39,7 +43,6 @@
 		99F774202BB9F87500FA0544 /* tahoma.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = tahoma.ttf; sourceTree = "<group>"; };
 		99F774212BB9F87500FA0544 /* arialuni.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = arialuni.ttf; sourceTree = "<group>"; };
 		99F774222BB9F87500FA0544 /* trebuc.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = trebuc.ttf; sourceTree = "<group>"; };
-		99F774272BBA0A7D00FA0544 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,12 +76,14 @@
 		995EF5EB2B815F17000B5E39 /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				99CC52142BBE013800E3F147 /* SupportingFiles */,
 				9994432A2BA643C00079247B /* Resources */,
 				995EF5EC2B815F17000B5E39 /* ExampleApp.swift */,
 				995EF5EE2B815F17000B5E39 /* ContentView.swift */,
-				99F774272BBA0A7D00FA0544 /* VideoPlayerView.swift */,
-				99F5D3572BBB019C00C6644F /* PlayerLayerViewController.swift */,
-				99F5D3592BBB01A900C6644F /* PlayerViewController.swift */,
+				99CC520C2BBDC36D00E3F147 /* AVPlayerLayer.swift */,
+				99CC520E2BBDC36D00E3F147 /* AVPlayerView.swift */,
+				99CC520D2BBDC36D00E3F147 /* AVPlayerViewController.swift */,
+				9919A74F2BBCB5DA00898523 /* VideoPlayer.swift */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -92,6 +97,14 @@
 				997B6AE02BAF0AF600BD9689 /* video.mp4 */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		99CC52142BBE013800E3F147 /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				99CC52132BBE013800E3F147 /* Info.plist */,
+			);
+			path = SupportingFiles;
 			sourceTree = "<group>";
 		};
 		99F5D35E2BBB54E000C6644F /* Subs */ = {
@@ -198,11 +211,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				99F774282BBA0A7D00FA0544 /* VideoPlayerView.swift in Sources */,
+				99CC52112BBDC36D00E3F147 /* AVPlayerView.swift in Sources */,
+				99CC52102BBDC36D00E3F147 /* AVPlayerViewController.swift in Sources */,
 				995EF5EF2B815F17000B5E39 /* ContentView.swift in Sources */,
 				995EF5ED2B815F17000B5E39 /* ExampleApp.swift in Sources */,
-				99F5D3582BBB019C00C6644F /* PlayerLayerViewController.swift in Sources */,
-				99F5D35A2BBB01A900C6644F /* PlayerViewController.swift in Sources */,
+				9919A7522BBCB5DA00898523 /* VideoPlayer.swift in Sources */,
+				99CC520F2BBDC36D00E3F147 /* AVPlayerLayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,6 +353,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Example/SupportingFiles/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -357,7 +372,7 @@
 				PRODUCT_NAME = "ASS Subtitles";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator macosx xros xrsimulator";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -380,6 +395,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Example/SupportingFiles/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -398,7 +414,7 @@
 				PRODUCT_NAME = "ASS Subtitles";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator macosx xros xrsimulator";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;

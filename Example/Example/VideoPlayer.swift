@@ -51,6 +51,15 @@ struct VideoPlayerView: View {
             }
             .frame(width: 1920, height: 1080)
             .fixedSize()
+            #elseif targetEnvironment(macCatalyst)
+            .overlay(alignment: .topLeading) {
+                Button {
+                    presentationMode.wrappedValue.dismiss()
+                } label: {
+                    Text("Back")
+                }
+                .padding()
+            }
             #endif
     }
 
@@ -58,6 +67,7 @@ struct VideoPlayerView: View {
     private var playerView: some View {
         VideoPlayer(player: player) {
             AssSubtitles(renderer: renderer)
+                .attach(player: player, updateInterval: CMTime(value: 1, timescale: 10))
         }
         .aspectRatio(16 / 9, contentMode: .fit)
         .clipShape(RoundedRectangle(cornerSize: CGSize(width: 8, height: 8)))
@@ -65,11 +75,6 @@ struct VideoPlayerView: View {
 
     private func setupPlayer() {
         player.play()
-        player.addPeriodicTimeObserver(
-            forInterval: CMTime(value: 1, timescale: 60),
-            queue: .main,
-            using: setTimeOffset
-        )
     }
 
     private func loadSubtitleTrack() {
@@ -78,9 +83,5 @@ struct VideoPlayerView: View {
         } catch {
             print(error)
         }
-    }
-
-    private func setTimeOffset(_ offset: CMTime) {
-        renderer.setTimeOffset(offset.seconds)
     }
 }

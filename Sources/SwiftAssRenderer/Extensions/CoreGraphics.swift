@@ -7,6 +7,10 @@ extension CGPoint {
 }
 
 extension CGSize {
+    var isEmpty: Bool {
+        width == 0 || height == 0
+    }
+
     func rounded() -> CGSize {
         CGSize(width: width.rounded(.toNearestOrAwayFromZero), height: height.rounded(.toNearestOrAwayFromZero))
     }

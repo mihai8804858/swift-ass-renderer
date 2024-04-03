@@ -1,52 +1,39 @@
-NAME = SwiftAssRenderer
 CONFIG = debug
+WORKSPACE = SwiftAssRenderer
+LIB_SCHEME = SwiftAssRenderer
+EXAMPLE_SCHEME = Example
 
 DOCC_DIR = docs
 DOCC_BASE_PATH = swift-ass-renderer
 DOCC_ARCHIVE = SwiftAssRenderer.doccarchive
 
-BUILD_PLATFORM_IOS = generic/platform=iOS
-BUILD_PLATFORM_TVOS = generic/platform=tvOS
-BUILD_PLATFORM_VISIONOS = generic/platform=visionOS
-BUILD_PLATFORM_MACOS = platform=macOS,arch=arm64
-BUILD_PLATFORM_MAC_CATALYST = platform=macOS,variant=Mac Catalyst,arch=arm64
+GENERIC_PLATFORM_IOS = generic/platform=iOS
+GENERIC_PLATFORM_TVOS = generic/platform=tvOS
+GENERIC_PLATFORM_VISIONOS = generic/platform=visionOS
+GENERIC_PLATFORM_MACOS = platform=macOS,arch=arm64
+GENERIC_PLATFORM_MAC_CATALYST = platform=macOS,variant=Mac Catalyst,arch=arm64
 
-TEST_PLATFORM_IOS = platform=iOS Simulator,id=$(call udid_for,iOS,iPhone \d\+ Pro [^M])
-TEST_PLATFORM_TVOS = platform=tvOS Simulator,id=$(call udid_for,tvOS,TV)
-TEST_PLATFORM_VISIONOS = platform=visionOS Simulator,id=$(call udid_for,visionOS,Vision)
-TEST_PLATFORM_MACOS = platform=macOS,arch=arm64
-TEST_PLATFORM_MAC_CATALYST = platform=macOS,variant=Mac Catalyst,arch=arm64
+SIM_PLATFORM_IOS = platform=iOS Simulator,id=$(call udid_for,iOS 17.4,iPhone \d\+ Pro [^M])
+SIM_PLATFORM_TVOS = platform=tvOS Simulator,id=$(call udid_for,tvOS 17.4,TV)
+SIM_PLATFORM_VISIONOS = platform=visionOS Simulator,id=$(call udid_for,visionOS 1.1,Vision)
+SIM_PLATFORM_MACOS = platform=macOS,arch=arm64
+SIM_PLATFORM_MAC_CATALYST = platform=macOS,variant=Mac Catalyst,arch=arm64
 
 GREEN='\033[0;32m'
 NC='\033[0m'
 
 build-all-platforms:
 	for platform in \
-	  "$(BUILD_PLATFORM_IOS)" \
-	  "$(BUILD_PLATFORM_TVOS)" \
-	  "$(BUILD_PLATFORM_VISIONOS)" \
-	  "$(BUILD_PLATFORM_MACOS)" \
-	  "$(BUILD_PLATFORM_MAC_CATALYST)"; \
+	  "$(GENERIC_PLATFORM_IOS)" \
+	  "$(GENERIC_PLATFORM_TVOS)" \
+	  "$(GENERIC_PLATFORM_VISIONOS)" \
+	  "$(GENERIC_PLATFORM_MACOS)" \
+	  "$(GENERIC_PLATFORM_MAC_CATALYST)"; \
 	do \
 		echo -e "\n${GREEN}Building $$platform ${NC}"\n; \
-		set -o pipefail && xcrun xcodebuild build \
-			-workspace $(NAME).xcworkspace \
-			-scheme $(NAME) \
-			-configuration $(CONFIG) \
-			-scmProvider system \
-			-usePackageSupportBuiltinSCM \
-			-destination "$$platform" | xcpretty || exit 1; \
-	done;
-
-test-all-platforms:
-	for platform in \
-	  "$(TEST_PLATFORM_IOS)" \
-	  "$(TEST_PLATFORM_TVOS)"; \
-	do \
-		echo -e "\n${GREEN}Testing $$platform ${NC}\n"; \
-		set -o pipefail && xcrun xcodebuild test \
-			-workspace $(NAME).xcworkspace \
-			-scheme $(NAME) \
+		set -o pipefail && xcrun xcodebuild clean build \
+			-workspace $(WORKSPACE).xcworkspace \
+			-scheme $(LIB_SCHEME) \
 			-configuration $(CONFIG) \
 			-scmProvider system \
 			-usePackageSupportBuiltinSCM \
@@ -55,11 +42,11 @@ test-all-platforms:
 
 build-docs:
 	echo -e "\n${GREEN}Building DocC${NC}\n"
-	set -o pipefail && xcrun xcodebuild docbuild \
-		-workspace $(NAME).xcworkspace \
-		-scheme $(NAME) \
+	set -o pipefail && xcrun xcodebuild clean docbuild \
+		-workspace $(WORKSPACE).xcworkspace \
+		-scheme $(LIB_SCHEME) \
 		-derivedDataPath .build \
-		-destination "$(BUILD_PLATFORM_IOS)" \
+		-destination "$(GENERIC_PLATFORM_IOS)" \
 		-parallelizeTargets | xcpretty || exit 1
 
 	echo -e "\n${GREEN}Copying DocC archives to .docarchives${NC}\n"
@@ -74,10 +61,78 @@ build-docs:
 		--hosting-base-path $(DOCC_BASE_PATH) \
 		--output-path $(DOCC_DIR)
 
+build-example:
+ifeq ($(CI),true)
+	for platform in \
+	  "$(SIM_PLATFORM_IOS)" \
+	  "$(SIM_PLATFORM_TVOS)"; \
+	do \
+		echo -e "\n${GREEN}Building example on $$platform ${NC}"\n; \
+		set -o pipefail && xcrun xcodebuild clean build \
+			-workspace $(WORKSPACE).xcworkspace \
+			-scheme $(EXAMPLE_SCHEME) \
+			-configuration Debug \
+			-scmProvider system \
+			-usePackageSupportBuiltinSCM \
+			-destination "$$platform" | xcpretty || exit 1; \
+	done;
+else
+	for platform in \
+	  "$(SIM_PLATFORM_IOS)" \
+	  "$(SIM_PLATFORM_TVOS)" \
+	  "$(SIM_PLATFORM_VISIONOS)" \
+	  "$(SIM_PLATFORM_MACOS)" \
+	  "$(SIM_PLATFORM_MAC_CATALYST)"; \
+	do \
+		echo -e "\n${GREEN}Building example on $$platform ${NC}"\n; \
+		set -o pipefail && xcrun xcodebuild clean build \
+			-workspace $(WORKSPACE).xcworkspace \
+			-scheme $(EXAMPLE_SCHEME) \
+			-configuration Debug \
+			-scmProvider system \
+			-usePackageSupportBuiltinSCM \
+			-destination "$$platform" | xcpretty || exit 1; \
+	done;
+endif
+
+test-all-platforms:
+ifeq ($(CI),true)
+	for platform in \
+	  "$(SIM_PLATFORM_IOS)" \
+	  "$(SIM_PLATFORM_TVOS)"; \
+	do \
+		echo -e "\n${GREEN}Testing $$platform ${NC}\n"; \
+		set -o pipefail && xcrun xcodebuild clean test \
+			-workspace $(WORKSPACE).xcworkspace \
+			-scheme $(LIB_SCHEME) \
+			-configuration $(CONFIG) \
+			-scmProvider system \
+			-usePackageSupportBuiltinSCM \
+			-destination "$$platform" | xcpretty || exit 1; \
+	done;
+else
+	for platform in \
+	  "$(SIM_PLATFORM_IOS)" \
+	  "$(SIM_PLATFORM_TVOS)" \
+	  "$(SIM_PLATFORM_VISIONOS)" \
+	  "$(SIM_PLATFORM_MACOS)" \
+	  "$(SIM_PLATFORM_MAC_CATALYST)"; \
+	do \
+		echo -e "\n${GREEN}Testing $$platform ${NC}\n"; \
+		set -o pipefail && xcrun xcodebuild clean test \
+			-workspace $(WORKSPACE).xcworkspace \
+			-scheme $(LIB_SCHEME) \
+			-configuration $(CONFIG) \
+			-scmProvider system \
+			-usePackageSupportBuiltinSCM \
+			-destination "$$platform" | xcpretty || exit 1; \
+	done;
+endif
+
 lint:
 	swiftlint lint --strict
 
-.PHONY: build-all-platforms test-all-platforms build-docs lint
+.PHONY: build-all-platforms build-example build-docs test-all-platforms lint
 
 define udid_for
 $(shell xcrun simctl list devices available '$(1)' | grep '$(2)' | sort -r | head -1 | awk -F '[()]' '{ print $$(NF-3) }')

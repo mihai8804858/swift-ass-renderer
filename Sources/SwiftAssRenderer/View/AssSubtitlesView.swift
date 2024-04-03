@@ -36,9 +36,9 @@ public final class AssSubtitlesView: PlatformView {
         renderer.reloadFrame()
     }
     #elseif canImport(AppKit)
-    public init(renderer: AssSubtitlesRenderer) {
+    public init(renderer: AssSubtitlesRenderer, scale: CGFloat = 2.0) {
         self.renderer = renderer
-        self.canvasScale = 2.0
+        self.canvasScale = scale
         super.init(frame: .zero)
         configure()
     }
@@ -93,7 +93,7 @@ private extension AssSubtitlesView {
 
     func resizeImageView(for image: ProcessedImage) {
         lastRenderBounds = bounds
-        imageView.frame = image.imageRect
+        imageView.frame = imageFrame(for: image.imageRect)
     }
 
     func resizeImageAtLayout() {
@@ -106,5 +106,19 @@ private extension AssSubtitlesView {
         CATransaction.begin()
         imageView.frame = newFrame
         CATransaction.commit()
+    }
+
+    func imageFrame(for rect: CGRect) -> CGRect {
+        #if os(macOS)
+        // macOS has the origin on bottom left corner
+        CGRect(
+            x: rect.origin.x,
+            y: -(rect.origin.y - bounds.height + rect.height),
+            width: rect.width,
+            height: rect.height
+        )
+        #else
+        rect
+        #endif
     }
 }

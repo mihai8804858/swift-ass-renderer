@@ -5,8 +5,10 @@ import SwiftAssRenderer
 struct ContentView: View {
     private enum PlayerKind: CaseIterable {
         case videoPlayer
-        #if !os(macOS)
         case playerLayer
+        #if os(macOS)
+        case playerView
+        #else
         case playerViewController
         #endif
     }
@@ -57,9 +59,12 @@ struct ContentView: View {
             switch selectedPlayerKind {
             case .videoPlayer:
                 VideoPlayerView(subtitleURL: subtitles[selectedLanguage]!, fontProvider: selectedShaper)
-            #if !os(macOS)
             case .playerLayer:
                 PlayerLayerView(subtitleURL: subtitles[selectedLanguage]!, fontProvider: selectedShaper)
+            #if os(macOS)
+            case .playerView:
+                PlayerView(subtitleURL: subtitles[selectedLanguage]!, fontProvider: selectedShaper)
+            #else
             case .playerViewController:
                 PlayerView(subtitleURL: subtitles[selectedLanguage]!, fontProvider: selectedShaper)
             #endif
@@ -94,8 +99,10 @@ struct ContentView: View {
             ForEach(PlayerKind.allCases, id: \.self) { player in
                 switch player {
                 case .videoPlayer: Text("Video Player")
-                #if !os(macOS)
                 case .playerLayer: Text("Player Layer")
+                #if os(macOS)
+                case .playerView: Text("Player View")
+                #else
                 case .playerViewController: Text("Player View Controller")
                 #endif
                 }
