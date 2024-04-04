@@ -2,8 +2,12 @@ import CoreGraphics
 import SwiftLibass
 import SwiftAssBlend
 
-final class BlendImagePipeline: ImagePipelineType {
-    func process(image: ASS_Image?) -> ProcessedImage? {
+/// Pipeline that processed an ``ASS_Image`` into a ``ProcessedImage`` 
+/// by alpha blending in place all the layers one by one.
+public final class BlendImagePipeline: ImagePipelineType {
+    public init() {}
+
+    public func process(image: ASS_Image?) -> ProcessedImage? {
         guard var image, image.bitmap != nil else { return nil }
         let blendResult = renderBlend(&image)
         guard blendResult.buffer != nil else { return nil }

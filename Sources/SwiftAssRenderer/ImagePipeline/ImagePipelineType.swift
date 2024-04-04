@@ -1,5 +1,6 @@
 import SwiftLibass
 
-protocol ImagePipelineType {
+/// Pipeline that processed an ``ASS_Image`` into a ``ProcessedImage`` that can be drawn on the screen.
+public protocol ImagePipelineType {
     func process(image: ASS_Image?) -> ProcessedImage?
 }

@@ -5,12 +5,15 @@ import SwiftLibass
 import SwiftAssBlend
 @testable import SwiftAssRenderer
 
+// swiftlint:disable:next type_body_length
 final class AssSubtitlesRendererTests: XCTestCase {
     private var mockQueue: MockDispatchQueue!
     private var mockLibraryWrapper: MockLibraryWrapper.Type!
     private var mockFontConfig: MockFontConfig!
     private var mockImagePipeline: MockImagePipeline!
     private var mockLogger: MockLogger!
+    private var librarySetupFunc: FuncCheck<OpaquePointer>!
+    private var rendererSetupFunc: FuncCheck<(OpaquePointer, OpaquePointer)>!
     private var cancellables = Set<AnyCancellable>()
 
     override func setUp() {
@@ -21,6 +24,8 @@ final class AssSubtitlesRendererTests: XCTestCase {
         mockFontConfig = MockFontConfig()
         mockImagePipeline = MockImagePipeline()
         mockLogger = MockLogger()
+        librarySetupFunc = FuncCheck<OpaquePointer>()
+        rendererSetupFunc = FuncCheck<(OpaquePointer, OpaquePointer)>()
         cancellables.removeAll()
     }
 
@@ -31,7 +36,9 @@ final class AssSubtitlesRendererTests: XCTestCase {
             wrapper: mockLibraryWrapper,
             fontConfig: mockFontConfig,
             pipeline: mockImagePipeline,
-            logger: mockLogger
+            logger: mockLogger,
+            librarySetup: { self.librarySetupFunc.call($0) },
+            rendererSetup: { self.rendererSetupFunc.call(($0, $1)) }
         )
     }
 
@@ -53,6 +60,36 @@ final class AssSubtitlesRendererTests: XCTestCase {
 
         // THEN
         XCTAssert(mockLibraryWrapper.rendererInitFunc.wasCalled(with: library))
+    }
+
+    func test_init_shouldCallLibrarySetup() throws {
+        // GIVEN
+        let library = OpaquePointer(bitPattern: 1)!
+        let renderer = OpaquePointer(bitPattern: 2)!
+        mockLibraryWrapper.libraryInitStub = library
+        mockLibraryWrapper.rendererInitStub = renderer
+
+        // WHEN
+        _ = createRenderer()
+
+        // THEN
+        XCTAssert(librarySetupFunc.wasCalled(with: library))
+    }
+
+    func test_init_shouldCallRendererSetup() throws {
+        // GIVEN
+        let library = OpaquePointer(bitPattern: 1)!
+        let renderer = OpaquePointer(bitPattern: 2)!
+        mockLibraryWrapper.libraryInitStub = library
+        mockLibraryWrapper.rendererInitStub = renderer
+
+        // WHEN
+        _ = createRenderer()
+
+        // THEN
+        let argument = try XCTUnwrap(rendererSetupFunc.argument)
+        XCTAssert(rendererSetupFunc.wasCalled)
+        XCTAssert(argument == (library, renderer))
     }
 
     func test_init_shouldConfigureLoggerLibrary() throws {

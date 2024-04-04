@@ -3,6 +3,9 @@ import Foundation
 import SwiftLibass
 import CombineSchedulers
 
+public typealias LibrarySetup = (_ library: OpaquePointer) -> Void
+public typealias RendererSetup = (_ library: OpaquePointer, _ renderer: OpaquePointer) -> Void
+
 /// ASS/SSA subtitles renderer. Manages the current ASS track, 
 /// current time offset and current visible frame (``ProcessedImage``).
 public final class AssSubtitlesRenderer {
@@ -12,6 +15,8 @@ public final class AssSubtitlesRenderer {
     private let fontConfig: FontConfigType
     private let pipeline: ImagePipelineType
     private let logger: LoggerType
+    private let librarySetup: LibrarySetup?
+    private let rendererSetup: RendererSetup?
 
     private var library: OpaquePointer?
     private var renderer: OpaquePointer?
@@ -26,15 +31,27 @@ public final class AssSubtitlesRenderer {
     /// - Parameters:
     ///   - fontConfig: Fonts configuration. Defines where the fonts and fonts cache is located, 
     ///   fallbacks for missing fonts and the default ``FontProvider`` to use.
-    ///   - logLevel: Console output log level. Defaults to `.default` in DEBUG and `.fatal` in RELEASE.
-    public convenience init(fontConfig: FontConfig, logOutput: LogOutput? = nil) {
+    ///   - pipeline: Image pipeline to use for precessing ``ASS_Image`` into ``ProcessedImage``.
+    ///   - logOutput: Log output. 
+    ///   Defaults to logging to console with `.default` level in DEBUG and `.fatal` in RELEASE.
+    ///   - librarySetup: Custom actions to run when initializing the ``ASS_Library``.
+    ///   - rendererSetup: Custom actions to run when initializing the ``ASS_Renderer``.
+    public convenience init(
+        fontConfig: FontConfig,
+        pipeline: ImagePipelineType = BlendImagePipeline(),
+        logOutput: LogOutput? = nil,
+        librarySetup: LibrarySetup? = nil,
+        rendererSetup: RendererSetup? = nil
+    ) {
         self.init(
             workQueue: DispatchQueue(label: "com.swift-ass-renderer.work", qos: .userInteractive),
             scheduler: .main,
             wrapper: LibraryWrapper.self,
             fontConfig: fontConfig,
-            pipeline: BlendImagePipeline(),
-            logger: Logger(output: logOutput)
+            pipeline: pipeline,
+            logger: Logger(output: logOutput),
+            librarySetup: librarySetup,
+            rendererSetup: rendererSetup
         )
     }
 
@@ -44,7 +61,9 @@ public final class AssSubtitlesRenderer {
         wrapper: LibraryWrapperType.Type,
         fontConfig: FontConfigType,
         pipeline: ImagePipelineType,
-        logger: LoggerType
+        logger: LoggerType,
+        librarySetup: LibrarySetup?,
+        rendererSetup: RendererSetup?
     ) {
         self.workQueue = workQueue
         self.scheduler = scheduler
@@ -52,6 +71,8 @@ public final class AssSubtitlesRenderer {
         self.fontConfig = fontConfig
         self.pipeline = pipeline
         self.logger = logger
+        self.librarySetup = librarySetup
+        self.rendererSetup = rendererSetup
         configure()
     }
 
@@ -208,6 +229,14 @@ private extension AssSubtitlesRenderer {
         }
         logger.configureLibrary(wrapper, library: library)
         renderer = wrapper.rendererInit(library)
+        guard let renderer else {
+            return logger.log(message: LogMessage(
+                message: "Renderer could not be initialized",
+                level: .fatal
+            ))
+        }
+        librarySetup?(library)
+        rendererSetup?(library, renderer)
     }
 
     func configureFonts() {
