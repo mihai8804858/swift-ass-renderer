@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// SwiftUI `View` capable or drawing rendered image bitmaps to the screen, by subscriging to ``AssSubtitlesRenderer``
+/// SwiftUI `View` capable or drawing rendered image bitmaps to the screen, by subscribing to ``AssSubtitlesRenderer``
 /// events and rendering output ``ProcessedImage`` in a image view.
 public struct AssSubtitles: PlatformViewRepresentable {
     let renderer: AssSubtitlesRenderer

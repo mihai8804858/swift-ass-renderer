@@ -67,7 +67,7 @@ view.insertSubview(subtitlesView, above: playerView)
 ```
 > [!TIP]
 > Make sure to center `AssSubtitlesView` with the player, and resize it using the actual aspect ratio of the video playing.
-> [`presentationSize`](https://developer.apple.com/documentation/avfoundation/avplayeritem/1388962-presentationsize) and [`AVMakeRect`](https://developer.apple.com/documentation/avfoundation/1390116-avmakerect) helpers can help in defining the size the subtitles view should use. This is necesarry so the canvas the subtitles are rendered on matched the actual video playing.
+> [`presentationSize`](https://developer.apple.com/documentation/avfoundation/avplayeritem/1388962-presentationsize) and [`AVMakeRect`](https://developer.apple.com/documentation/avfoundation/1390116-avmakerect) helpers can help in defining the size the subtitles view should use. This is necessary so the canvas the subtitles are rendered on matched the actual video playing.
 
 ```swift
 let subtitlesCanvas = AVMakeRect(

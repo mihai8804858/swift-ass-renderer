@@ -132,7 +132,10 @@ endif
 lint:
 	swiftlint lint --strict
 
-.PHONY: build-all-platforms build-example build-docs test-all-platforms lint
+spell:
+	cspell-cli lint --no-progress
+
+.PHONY: build-all-platforms build-example build-docs test-all-platforms lint spell
 
 define udid_for
 $(shell xcrun simctl list devices available '$(1)' | grep '$(2)' | sort -r | head -1 | awk -F '[()]' '{ print $$(NF-3) }')

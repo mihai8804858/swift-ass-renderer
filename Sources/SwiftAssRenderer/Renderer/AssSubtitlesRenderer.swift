@@ -87,7 +87,7 @@ public final class AssSubtitlesRenderer {
     /// - Parameters:
     ///   - content: Raw ASS/SSA subtitle contents.
     ///
-    /// Always call this methos before starting to update the time offset.
+    /// Always call this method before starting to update the time offset.
     public func loadTrack(content: String) {
         guard let library else {
             return logger.log(message: LogMessage(
@@ -115,7 +115,7 @@ public final class AssSubtitlesRenderer {
     ///   - size: Canvas size. Should match the video canvas for proper subtitle positioning.
     ///   - scale: Screen scale. Bigger scale results in sharper images, but lower performance.
     ///
-    /// Always call this methos before starting to update the time offset.
+    /// Always call this method before starting to update the time offset.
     /// When using the renderer with ``AssSubtitles`` / ``AssSubtitlesView``, you don't have to call this method.
     public func setCanvasSize(_ size: CGSize, scale: CGFloat) {
         canvasSize = size
@@ -141,7 +141,7 @@ public final class AssSubtitlesRenderer {
         loadFrame(offset: offset)
     }
 
-    /// Publisher where the rendered images to be drawn are being publisherd.
+    /// Publisher where the rendered images to be drawn are being published.
     ///
     /// - Returns: A Combine publisher where ``ProcessedImage`` that have to be drawn on the canvas are being published.
     ///

@@ -3,7 +3,7 @@ public enum LogLevel: Int {
     /// Only fatal errors that result in subtitles not being rendered.
     case fatal = 0
 
-    /// Fatal errors and additional usefull information.
+    /// Fatal errors and additional useful information.
     case `default` = 5
 
     /// All messages

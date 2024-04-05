@@ -1,0 +1,24 @@
+files:
+  - Sources/**/*.swift
+  - Tests/**/*.swift
+  - Example/**/*.swift
+  - Package.swift
+  - README.md
+ignoreWords:
+  - libass
+  - fontconfig
+  - fontprovider
+  - xcprivacy
+  - struct
+  - subview
+  - subviews
+  - swiftlint
+  - snapshotting
+  - cachedir
+  - coretext
+  - autoresizing
+  - visionos
+  - arialuni
+  - gobackward
+  - goforward
+  - rescan
