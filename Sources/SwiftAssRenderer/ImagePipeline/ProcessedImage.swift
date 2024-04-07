@@ -4,4 +4,9 @@ import CoreGraphics
 public struct ProcessedImage: Equatable {
     public let image: CGImage
     public let imageRect: CGRect
+
+    public init(image: CGImage, imageRect: CGRect) {
+        self.image = image
+        self.imageRect = imageRect
+    }
 }

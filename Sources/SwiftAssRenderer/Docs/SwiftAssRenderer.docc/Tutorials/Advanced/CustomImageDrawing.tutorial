@@ -1,0 +1,126 @@
+@Tutorial(time: 10) {
+    @Intro(title: "Custom Drawing") {
+        Learn how to manually integrate `AssSubtitlesRenderer` with your view.
+    }
+
+    @Section(title: "Custom Drawing") {
+        @ContentAndMedia {
+            In this section we will create a basic view controller and manually draw the processed `CGImage` on the screen. We will also learn how we can periodically update the subtitles by creating a timer and updating the renderer, and also how we can subscribe to renderer frame changes and update the screen.
+
+            @Image(source: "logo-rounded.png", alt: "Logo image")
+        }
+
+        @Steps {
+            @Step {
+                Let's start by creating a new view controller called `SubtitlesViewController`. We also need to import `UIKit` and `SwiftAssRenderer`.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customdrawing-1.swift")
+            }
+
+            @Step {
+                Next, let's create our renderer. We need to at least specify the URL path where the fonts are located that will be used to render the subtitles.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customdrawing-2.swift")
+            }
+
+            @Step {
+                We'll have to do some setup in `viewDidLoad()` so let's override it.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customdrawing-3.swift")
+            }
+
+            @Step {
+                We need a method called from `viewDidLoad()` that will load the subtitle contents and provide it to renderer.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customdrawing-4.swift")
+            }
+
+            @Step {
+                Next, let's load the subtitles contents, either from local disk for web.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customdrawing-5.swift")
+            }
+
+            @Step {
+                After contents have been loaded, we need to provide the contents for the renderer by calling `loadTrack(contents:)`.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customdrawing-6.swift")
+            }
+
+            @Step {
+                We need another method called from `viewDidLoad()` that will create a `Timer` to periodically update the subtitles time offset.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customdrawing-7.swift")
+            }
+
+            @Step {
+                Let's setup the timer to fire each 0.1 seconds on `.main` queue.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customdrawing-8.swift")
+            }
+
+            @Step {
+                In the timer output closure, we need to update the renderer with the time offset since the start date.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customdrawing-9.swift")
+            }
+
+            @Step {
+                We need another method called from `viewDidLoad()` that will subscribe to view's frame changes and update the renderer's canvas size and scale.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customdrawing-10.swift")
+            }
+
+            @Step {
+                We can use `Combine`'s KVO publisher to subscribe to `frame` changes and execute a closure.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customdrawing-11.swift")
+            }
+
+            @Step {
+                When `frame` changed, we need to update the canvas size by calling `setCanvasSize(_:scale:)` on renderer, 
+                we can use the display scale as the scale at which the images will be created.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customdrawing-12.swift")
+            }
+
+            @Step {
+                We need another method called from `viewDidLoad()` that will subscribe to renderer's frame changes and update the drawn image.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customdrawing-13.swift")
+            }
+
+            @Step {
+                `AssSubtitlesRenderer` privides a publisher where the image changes are being published so they can be drawn on the screen.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customdrawing-14.swift")
+            }
+
+            @Step {
+                When a new processed image arrives, we need to handle it so let's create a separate method for it.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customdrawing-15.swift")
+            }
+
+            @Step {
+                Do display the processed image, we can use an `UIImageView`, so let's create one and add it as a subview. 
+                We don't need to setup any autolayout constraints since we will manually update the image view frame based on processed image rect provided to us by the renderer.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customdrawing-16.swift")
+            }
+
+            @Step {
+                In the processed image handler, we can check if we have an image to render or not, if not we can reset the image view and hide it. 
+                When we do have an image, let's assign that image to image view and update the image view frame to processed image rect.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customdrawing-17.swift")
+            }
+
+            @Step {
+                Finally, let's run the app. And as expected, we can see the subtitles showing and being updated.
+
+                @Image(source: "custom-drawing.gif", alt: "Black rectangle with a text at the bottom that says \"Wow!\"")
+            }
+        }
+    }
+}

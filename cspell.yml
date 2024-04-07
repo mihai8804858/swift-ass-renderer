@@ -22,3 +22,5 @@ ignoreWords:
   - gobackward
   - goforward
   - rescan
+  - autoconnect
+  - palettized

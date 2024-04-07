@@ -19,26 +19,10 @@ public final class BlendImagePipeline: ImagePipelineType {
             height: Int(blendResult.bounding_rect_h)
         )
 
-        return CGDataProvider(
-            dataInfo: nil,
-            data: blendResult.buffer,
-            size: 4 * Int(boundingRect.width) * Int(boundingRect.height),
-            releaseData: { _, buffer, _ in buffer.deallocate() }
-        ).flatMap { provider in
-            CGImage(
-                width: Int(boundingRect.width),
-                height: Int(boundingRect.height),
-                bitsPerComponent: 8,
-                bitsPerPixel: 8 * 4,
-                bytesPerRow: 4 * Int(boundingRect.width),
-                space: CGColorSpaceCreateDeviceRGB(),
-                bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.last.rawValue),
-                provider: provider,
-                decode: nil,
-                shouldInterpolate: false,
-                intent: .defaultIntent
-            )
-        }.flatMap { image in
+        return makeCGImage(buffer: blendResult.buffer,
+                           size: boundingRect.size,
+                           colorSpace: CGColorSpaceCreateDeviceRGB(),
+                           bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.last.rawValue)).flatMap { image in
             ProcessedImage(image: image, imageRect: boundingRect)
         }
     }

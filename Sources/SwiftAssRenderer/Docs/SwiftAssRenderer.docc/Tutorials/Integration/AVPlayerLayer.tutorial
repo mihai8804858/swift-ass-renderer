@@ -1,0 +1,105 @@
+@Tutorial(time: 10) {
+    @Intro(title: "AVPlayerLayer Integration") {
+        Learn how to easily integrate `SwiftAssRenderer` with `AVKit`'s `AVPlayerLayer`.
+    }
+
+    @Section(title: "AVPlayerLayer") {
+        @ContentAndMedia {
+            In this section we will create a basic video player using `AVPlayerLayer`, and we will add the subtitles as an overlay on top of the player. We will also learn how we can periodically update the subtitles by attaching the `AVPlayer` to subtitles view.
+
+            @Image(source: "logo-rounded.png", alt: "Logo image")
+        }
+
+        @Steps {
+            @Step {
+                Let's start by creating a new view controller called `VideoPlayerViewController` and inherit it from `UIViewController`. We also need to import `UIKit`, `AVFoundation` and `SwiftAssRenderer`.
+
+                @Code(name: "VideoPlayer.swift", file: "avplayerlayer-1.swift")
+            }
+
+            @Step {
+                In order for us to be able to use `AVPlayerLayer`, let's create a `UIView` subclass called `ViewPlayerView`, and override the `layerClass` to `AVPlayerLayer.self`, which will be used when creating the underlaying layer for the view. We can also add a convenience initializer that takes an `AVPlayer` and assigns it to the `AVPlayerLayer`.
+
+                @Code(name: "VideoPlayer.swift", file: "avplayerlayer-2.swift")
+            }
+
+            @Step {
+                Now let's create our `AVPlayer` by providing an URL to either a local or remote file.
+
+                @Code(name: "VideoPlayer.swift", file: "avplayerlayer-3.swift")
+            }
+
+            @Step {
+                Next, let's create our renderer. We need to at least specify the URL path where the fonts are located that will be used to render the subtitles.
+
+                @Code(name: "VideoPlayer.swift", file: "avplayerlayer-4.swift")
+            }
+
+            @Step {
+                Now that we have our `AVPlayer`, let's instantiate the previously created `VideoPlayerView` and add it as a property.
+
+                @Code(name: "VideoPlayer.swift", file: "avplayerlayer-5.swift")
+            }
+
+            @Step {
+                We will also need an instance of `AssSubtitlesView` that we'll add to view hierarchy on top of the player.
+
+                @Code(name: "VideoPlayer.swift", file: "avplayerlayer-6.swift")
+            }
+
+            @Step {
+                To add the player view to hierarchy, let's create a separate method for it and call it from `viewDidLoad()`.
+
+                @Code(name: "VideoPlayer.swift", file: "avplayerlayer-7.swift")
+            }
+
+            @Step {
+                We can use autolayout to attach the player view to `view`'s top, bottom, leading and trailing anchors.
+
+                @Code(name: "VideoPlayer.swift", file: "avplayerlayer-8.swift")
+            }
+
+            @Step {
+                To add the subtitles view to hierarchy, let's create another separate method for it and call it from `viewDidLoad()`.
+
+                @Code(name: "VideoPlayer.swift", file: "avplayerlayer-9.swift")
+            }
+
+            @Step {
+                `SwiftAssRenderer` provides a helper method to attach the subtitles view to `AVPlayerLayer`, automatically resize itself based on layer's `videoBounds`, and observe the player's current time to update the renderer subtitles.
+
+                @Code(name: "VideoPlayer.swift", file: "avplayerlayer-10.swift")
+            }
+
+            @Step {
+                We need another method called from `viewDidLoad()` that will load the subtitle contents and provide it to renderer.
+
+                @Code(name: "VideoPlayer.swift", file: "avplayerlayer-11.swift")
+            }
+
+            @Step {
+                Next, let's load the subtitles contents, either from local disk for web.
+
+                @Code(name: "VideoPlayer.swift", file: "avplayerlayer-12.swift")
+            }
+
+            @Step {
+                After contents have been loaded, we need to provide the contents for the renderer by calling `loadTrack(contents:)`.
+
+                @Code(name: "VideoPlayer.swift", file: "avplayerlayer-13.swift")
+            }
+
+            @Step {
+                In order for the playback to automatically start when view loads, let's call `play()` in `viewDidLoad()`.
+
+                @Code(name: "VideoPlayer.swift", file: "avplayerlayer-14.swift")
+            }
+
+            @Step {
+                Finally, let's run the app. And as expected, we can see the video playing and the subtitles being updated.
+
+                @Image(source: "avplayerlayer.gif", alt: "Green video rectangle with a text  at the bottom that says \"Wow!\"")
+            }
+        }
+    }
+}

@@ -72,7 +72,7 @@ jobs:
         run: make CONFIG=${{ matrix.config }} build-all-platforms
 
   build-example:
-    name: Build Example
+    name: Build (example)
     runs-on: macos-14
     steps:
       - name: Checkout

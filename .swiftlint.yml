@@ -5,3 +5,5 @@ included:
   - Package.swift
 excluded:
   - .build
+  - .docarchives
+  - Sources/SwiftAssRenderer/Docs

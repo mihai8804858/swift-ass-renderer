@@ -1,0 +1,93 @@
+@Tutorial(time: 10) {
+    @Intro(title: "Custom View Integration") {
+        Learn how to integrate `AssSubtitlesView` into any view.
+    }
+
+    @Section(title: "Custom View Integration") {
+        @ContentAndMedia {
+            In this section we will create a basic view controller and add the subtitles view in the hierarchy. We will also learn how we can periodically update the subtitles by creating a timer and updating the renderer.
+
+            @Image(source: "logo-rounded.png", alt: "Logo image")
+        }
+
+        @Steps {
+            @Step {
+                Let's start by creating a new view controller called `SubtitlesViewController`. We also need to import `UIKit` and `SwiftAssRenderer`.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customview-1.swift")
+            }
+
+            @Step {
+                Now let's create our renderer. We need to at least specify the URL path where the fonts are located that will be used to render the subtitles.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customview-2.swift")
+            }
+
+            @Step {
+                We will also need an instance of `AssSubtitlesView` that we'll add to view hierarchy on top of the player.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customview-3.swift")
+            }
+
+            @Step {
+                We'll have to do some setup in `viewDidLoad()` so let's override it.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customview-4.swift")
+            }
+
+            @Step {
+                To add the subtitles view to hierarchy, let's create a separate method for it and call it from `viewDidLoad()`.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customview-5.swift")
+            }
+
+            @Step {
+                In `addSubtitlesView()` method, let's add the subtitles view as a subview, and setup the autolayout constraints.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customview-6.swift")
+            }
+
+            @Step {
+                We need another method called from `viewDidLoad()` that will load the subtitle contents and provide it to renderer.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customview-7.swift")
+            }
+
+            @Step {
+                Next, let's load the subtitles contents, either from local disk for web.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customview-8.swift")
+            }
+
+            @Step {
+                After contents have been loaded, we need to provide the contents for the renderer by calling `loadTrack(contents:)`.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customview-9.swift")
+            }
+
+            @Step {
+                We need another method called from `viewDidLoad()` that will create a `Timer` to periodically update the subtitles time offset.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customview-10.swift")
+            }
+
+            @Step {
+                Let's setup the timer to fire each 0.1 seconds on `.main` queue.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customview-11.swift")
+            }
+
+            @Step {
+                In the timer output closure, we need to update the renderer with the time offset since the start date.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customview-12.swift")
+            }
+
+            @Step {
+                Finally, let's run the app. And as expected, we can see the subtitles being updated.
+
+                @Image(source: "custom-view.gif", alt: "Black rectangle with a text at the bottom that says \"Wow!\"")
+            }
+        }
+    }
+}

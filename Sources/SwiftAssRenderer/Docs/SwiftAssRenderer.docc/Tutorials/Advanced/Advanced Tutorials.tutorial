@@ -1,0 +1,29 @@
+@Tutorials(name: "Advanced") {
+    @Intro(title: "Advanced") {
+        `SwiftAssRenderer` can be extended with custom implementations for image processing, image drawing, and also integrating it in a custom view.
+    }
+
+    @Chapter(name: "Custom View Integration") {
+        Learn how to integrate the ``AssSubtitlesView`` into a custom view.
+
+        @Image(source: "logo-rounded.png")
+
+        @TutorialReference(tutorial: "doc:CustomViewIntegration")
+    }
+
+    @Chapter(name: "Custom Image Drawing") {
+        Learn how to customise the drawing on the ``ProcessedImage``.
+
+        @Image(source: "logo-rounded.png")
+
+        @TutorialReference(tutorial: "doc:CustomImageDrawing")
+    }
+
+    @Chapter(name: "Custom Image Processing") {
+        Learn how to create a custom ``ImagePipelineType`` that can process the incoming subtitle images and combine them to produce a final `CGImage` ready to be drawn on the screen.
+
+        @Image(source: "logo-rounded.png")
+
+        @TutorialReference(tutorial: "doc:CustomImageProcessing")
+    }
+}

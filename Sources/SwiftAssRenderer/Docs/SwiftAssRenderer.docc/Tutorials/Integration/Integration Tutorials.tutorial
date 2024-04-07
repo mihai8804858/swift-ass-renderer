@@ -1,0 +1,37 @@
+@Tutorials(name: "Integration") {
+    @Intro(title: "Integration") {
+        `SwiftAssRenderer` can be integrated with most players available in `SwiftUI`, `UIKit` and `AppKit`.
+    }
+
+    @Chapter(name: "VideoPlayer Integration") {
+        Learn how to easily integrate `SwiftAssRenderer` with SwiftUI's `VideoPlayer`.
+
+        @Image(source: "logo-rounded.png")
+
+        @TutorialReference(tutorial: "doc:VideoPlayer")
+    }
+
+    @Chapter(name: "AVPlayerLayer Integration") {
+        Learn how to easily integrate `SwiftAssRenderer` with AVKit's `AVPlayerLayer`.
+
+        @Image(source: "logo-rounded.png")
+
+        @TutorialReference(tutorial: "doc:AVPlayerLayer")
+    }
+
+    @Chapter(name: "AVPlayerView Integration") {
+        Learn how to easily integrate `SwiftAssRenderer` with AVKit's `AVPlayerView`.
+
+        @Image(source: "logo-rounded.png")
+
+        @TutorialReference(tutorial: "doc:AVPlayerView")
+    }
+
+    @Chapter(name: "AVPlayerViewController Integration") {
+        Learn how to easily integrate `SwiftAssRenderer` with AVKit's `AVPlayerViewController`.
+
+        @Image(source: "logo-rounded.png")
+
+        @TutorialReference(tutorial: "doc:AVPlayerViewController")
+    }
+}

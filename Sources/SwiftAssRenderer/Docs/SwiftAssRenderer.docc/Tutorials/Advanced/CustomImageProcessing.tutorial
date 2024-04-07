@@ -1,0 +1,147 @@
+@Tutorial(time: 30) {
+    @Intro(title: "Custom Processing") {
+        Learn how to create a custom image pipeline to process and combine the incoming images into a final image.
+    }
+
+    @Section(title: "Custom Processing") {
+        @ContentAndMedia {
+            In this section we will create a basic view controller and a custom implementation of `ImagePipelineType`, 
+            that we will use to process the incoming images by creating `CGImage`s and combining them using `UIGraphicsImageRenderer`.
+
+            @Image(source: "logo-rounded.png", alt: "Logo image")
+        }
+
+        @Steps {
+            @Step {
+                Let's start by creating a new view and naming it `VideoPlayerView`. We also need to import `SwiftUI`, `AVKit`, `SwiftLibass` and `SwiftAssRenderer`.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customprocessing-1.swift")
+            }
+
+            @Step {
+                We will need an instance of `AVPlayer`. Let's create one by providing either a local or remove URL. 
+                Let's also create the `AssSubtitlesRenderer` by providing the URL path to where the fonts are localted.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customprocessing-2.swift")
+            }
+
+            @Step {
+                Now let's add a `VideoPlayer` to view hierarchy and on appearance start the playback.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customprocessing-3.swift")
+            }
+
+            @Step {
+                Next, we can add the `AssSubtitles` view as a video overlay and attach the player so the subtitles offset is updated.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customprocessing-4.swift")
+            }
+
+            @Step {
+                Now let's load the subtitles contents and load the track into the renderer.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customprocessing-5.swift")
+            }
+
+            @Step {
+                In order to customise the image processing, we need to create a new type conforming to `ImagePipelineType`, and inject this new pipeline into the renderer.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customprocessing-6.swift")
+            }
+
+            @Step {
+                The `ASS_Image` that we have to process is actually a linked list of images that have to be rendered one on top of each other. 
+                The library provides a helper method that loads all images into an array in order they have to be rendered.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customprocessing-7.swift")
+            }
+
+            @Step {
+                Each `ASS_Image` has to be rendered at a specific origin in the canvas size. 
+                Since in the end we will have a single image, we need to know what is the origin and size of the final image given the bounds of multiple images. 
+                The library provides a helper method to find this bounding rect.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customprocessing-8.swift")
+            }
+
+            @Step {
+                In order for us to be able to "merge" all the images into one single image, we we will need a helper method that will convert an `ASS_Image` into a `CGImage`, 
+                and also will give us the rect where that image should be rendered in the canvas.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customprocessing-9.swift")
+            }
+
+            @Step {
+                Let's create another helper method that will take a list of `CGImage`s and the bounding rect of the final image, and will combine all the images into one.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customprocessing-10.swift")
+            }
+
+            @Step {
+                We can construct the rect for an `ASS_Image` by using the provided width, height, x and y position from `libass`.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customprocessing-11.swift")
+            }
+
+            @Step {
+                Since the `bitmap` from `ASS_Image` is a single alpha channel monochrome bitmap plus a color, we need to convert this bitmap into a 4-channel RGBA bitmap. 
+                The library provides a helper to convert a monochrome to a palettized bitmap, also to construct a `CGImage` from a RGBA bitmap.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customprocessing-12.swift")
+            }
+
+            @Step {
+                We will use the `UIGraphicsImageRenderer` to render all `CGImage`s into a single `CGContext`. 
+                We will render this images at a 1x scale since `AssSubtitlesRender` already takes care of scaling the canvas and the images based on the screen scale.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customprocessing-13.swift")
+            }
+
+            @Step {
+                Let's use the `image(_:)` method to render in the `CGContext` and create a final `UIImage` from the context.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customprocessing-14.swift")
+            }
+
+            @Step {
+                Because the coordinate system when rendering in the `CGContext` is different from the usual coordinate system (the origin starts at bottom left corner), 
+                we will use a `CGAffineTransform` to vertically flip the `CGContext` so we can render from top left corner.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customprocessing-15.swift")
+            }
+
+            @Step {
+                We need another helper method that will use the previous helper to flip the context, perform some actions, and then reset the context back to previous coordinate system.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customprocessing-16.swift")
+            }
+
+            @Step {
+                In the rendering block, let's iterate over all images and use the previous helper to render in the context from top left position.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customprocessing-17.swift")
+            }
+
+            @Step {
+                While the `CGContext` rendering will happen from top left cornet, the image rect y position still need to be adjusted by flipping it. 
+                Also, since the image rect is in the canvas coordinate system, but we're rendering in the final image bounding rect, 
+                we need to convert the origin by substracting from canvas origin the bounding rect origin.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customprocessing-18.swift")
+            }
+
+            
+            @Step {
+                The last thing left to do is to draw the `CGImage` into the `CGContext`.
+
+                @Code(name: "SubtitlesViewController.swift", file: "customprocessing-19.swift")
+            }
+
+            @Step {
+                Finally, let's run the app. And as expected, we can see the subtitles showing and being updated.
+
+                @Image(source: "custom-processing.gif", alt: "Black rectangle with a text at the bottom that says \"Wow!\"")
+            }
+        }
+    }
+}
