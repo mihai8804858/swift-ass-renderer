@@ -50,7 +50,7 @@ final class ImagePipeline: ImagePipelineType {
         let origin = CGPoint(x: Int(image.dst_x), y: Int(image.dst_y))
         let size = CGSize(width: Int(image.w), height: Int(image.h))
         let rect = CGRect(origin: origin, size: size)
-        guard let bitmap = palettizedBitmap(image),
+        guard let bitmap = palettizedBitmapRGBA(image),
               let buffer = bitmap.baseAddress,
               let cgImage = makeCGImage(
                 buffer: buffer,

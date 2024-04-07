@@ -44,7 +44,7 @@ public extension ImagePipelineType {
         return CGRect(x: minX, y: minY, width: maxX - minX, height: maxY - minY)
     }
 
-    /// Creates an RGBA bytes buffer from an `ASS_Image`.
+    /// Creates a RGBA bytes buffer from an `ASS_Image`.
     ///
     /// - Parameters:
     ///   - image: The image to process.
@@ -55,7 +55,58 @@ public extension ImagePipelineType {
     /// In order to combine all images and produce a palettized image, first all monochrome bitmaps
     /// need to be converted into palettized RGBA bitmaps, and then combined into a
     /// final RGBA image by alpha blending the images one by one.
-    func palettizedBitmap(_ image: ASS_Image) -> UnsafeMutableBufferPointer<UInt8>? {
+    func palettizedBitmapRGBA(_ image: ASS_Image) -> UnsafeMutableBufferPointer<UInt8>? {
+        palettizedBitmap(image) { buffer, position, red, green, blue, alpha in
+            buffer[position + 0] = red
+            buffer[position + 1] = green
+            buffer[position + 2] = blue
+            buffer[position + 3] = alpha
+        }
+    }
+
+    /// Creates a ARGB bytes buffer from an `ASS_Image`.
+    ///
+    /// - Parameters:
+    ///   - image: The image to process.
+    ///
+    /// - Returns: A  new RGBA bytes buffer based on the `ASS_Image` bitmap.
+    ///
+    /// The `ASS_Image` only contains a monochrome alpha channel bitmap and a color.
+    /// In order to combine all images and produce a palettized image, first all monochrome bitmaps
+    /// need to be converted into palettized RGBA bitmaps, and then combined into a
+    /// final RGBA image by alpha blending the images one by one.
+    func palettizedBitmapARGB(_ image: ASS_Image) -> UnsafeMutableBufferPointer<UInt8>? {
+        palettizedBitmap(image) { buffer, position, red, green, blue, alpha in
+            buffer[position + 0] = alpha
+            buffer[position + 1] = red
+            buffer[position + 2] = green
+            buffer[position + 3] = blue
+        }
+    }
+
+    /// Creates a bytes buffer from an `ASS_Image`.
+    ///
+    /// - Parameters:
+    ///   - image: The image to process.
+    ///   - fillPixel: Closure to set the pixel bytes at the given position.
+    ///
+    /// - Returns: A  new bytes buffer based on the `ASS_Image` bitmap.
+    ///
+    /// The `ASS_Image` only contains a monochrome alpha channel bitmap and a color.
+    /// In order to combine all images and produce a palettized image, first all monochrome bitmaps
+    /// need to be converted into palettized RGBA bitmaps, and then combined into a
+    /// final RGBA image by alpha blending the images one by one.
+    func palettizedBitmap(
+        _ image: ASS_Image,
+        fillPixel: (
+            _ buffer: UnsafeMutableBufferPointer<UInt8>,
+            _ position: Int,
+            _ red: UInt8,
+            _ green: UInt8,
+            _ blue: UInt8,
+            _ alpha: UInt8
+        ) -> Void
+    ) -> UnsafeMutableBufferPointer<UInt8>? {
         if image.w == 0 || image.h == 0 { return nil }
 
         let width = Int(image.w)
@@ -78,10 +129,7 @@ public extension ImagePipelineType {
             loop(iterations: width) { xPosition in
                 let alphaValue = image.bitmap.advanced(by: bitmapPosition + xPosition).pointee
                 let normalizedAlpha = Int(alphaValue) * Int(alpha) / 255
-                buffer[bufferPosition + 0] = red
-                buffer[bufferPosition + 1] = green
-                buffer[bufferPosition + 2] = blue
-                buffer[bufferPosition + 3] = UInt8(normalizedAlpha)
+                fillPixel(buffer, bufferPosition, red, green, blue, UInt8(normalizedAlpha))
                 bufferPosition += 4
             }
             bitmapPosition += stride

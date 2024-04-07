@@ -24,3 +24,6 @@ ignoreWords:
   - rescan
   - autoconnect
   - palettized
+  - nonpremultiplied
+  - ARGB
+  - RGBA
