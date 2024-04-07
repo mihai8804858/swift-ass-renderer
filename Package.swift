@@ -15,8 +15,8 @@ let package = Package(
         .library(name: "SwiftAssRenderer", targets: ["SwiftAssRenderer"])
     ],
     dependencies: [
-        .package(url: "https://github.com/mihai8804858/swift-libass", branch: "main"),
         .package(url: "https://github.com/mihai8804858/swift-snapshot-testing", branch: "main"),
+        .package(url: "https://github.com/mihai8804858/swift-libass", .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/pointfreeco/combine-schedulers", .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/CombineCommunity/CombineExt.git", .upToNextMajor(from: "1.0.0"))
     ],
