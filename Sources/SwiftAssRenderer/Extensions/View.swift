@@ -34,9 +34,12 @@ private struct SizeReaderView: View {
         GeometryReader { geometry in
             Color.clear.onAppear {
                 size = geometry.frame(in: .local).size
-            }.onChange(of: geometry.frame(in: .local).size) { newValue in
-                size = newValue
             }
+            #if os(visionOS)
+            .onChange(of: geometry.frame(in: .local).size) { size = $1 }
+            #else
+            .onChange(of: geometry.frame(in: .local).size) { size = $0 }
+            #endif
         }
     }
 }
