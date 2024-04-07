@@ -1,5 +1,6 @@
 
-![logo](Sources/SwiftAssRenderer/Docs/SwiftAssRenderer.docc/Resources/Images/logo-transparent.png)
+![logo](Sources/SwiftAssRenderer/Docs/SwiftAssRenderer.docc/Resources/Images/logo-transparent-light.png#gh-light-mode-only)
+![logo](Sources/SwiftAssRenderer/Docs/SwiftAssRenderer.docc/Resources/Images/logo-transparent-dark.png#gh-dark-mode-only)
 
 SSA/ASS subtitles renderer based on [`libass`](https://github.com/libass/libass).
 
