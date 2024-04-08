@@ -5,13 +5,14 @@ import SwiftLibass
 import SwiftAssBlend
 @testable import SwiftAssRenderer
 
-// swiftlint:disable:next type_body_length
+// swiftlint:disable type_body_length file_length
 final class AssSubtitlesRendererTests: XCTestCase {
     private var mockQueue: MockDispatchQueue!
     private var mockLibraryWrapper: MockLibraryWrapper.Type!
     private var mockFontConfig: MockFontConfig!
     private var mockImagePipeline: MockImagePipeline!
     private var mockLogger: MockLogger!
+    private var mockContentsLoader: MockContentsLoader!
     private var librarySetupFunc: FuncCheck<OpaquePointer>!
     private var rendererSetupFunc: FuncCheck<(OpaquePointer, OpaquePointer)>!
     private var cancellables = Set<AnyCancellable>()
@@ -24,6 +25,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         mockFontConfig = MockFontConfig()
         mockImagePipeline = MockImagePipeline()
         mockLogger = MockLogger()
+        mockContentsLoader = MockContentsLoader()
         librarySetupFunc = FuncCheck<OpaquePointer>()
         rendererSetupFunc = FuncCheck<(OpaquePointer, OpaquePointer)>()
         cancellables.removeAll()
@@ -37,6 +39,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
             fontConfig: mockFontConfig,
             pipeline: mockImagePipeline,
             logger: mockLogger,
+            contentsLoader: mockContentsLoader,
             librarySetup: { self.librarySetupFunc.call($0) },
             rendererSetup: { self.rendererSetupFunc.call(($0, $1)) }
         )
@@ -136,7 +139,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssert(argument == (renderer, .zero))
     }
 
-    func test_loadTrack_shouldReadTrack() throws {
+    func test_loadTrackContent_shouldReadTrack() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
         let renderer = OpaquePointer(bitPattern: 2)!
@@ -147,6 +150,28 @@ final class AssSubtitlesRendererTests: XCTestCase {
         // WHEN
         let subRenderer = createRenderer()
         subRenderer.loadTrack(content: content)
+
+        // THEN
+        XCTAssert(mockLibraryWrapper.readTrackFunc.wasCalled)
+        let argument = try XCTUnwrap(mockLibraryWrapper.readTrackFunc.argument)
+        XCTAssert(argument == (library, content))
+    }
+
+    func test_loadTrackURL_shouldReadTrack() throws {
+        // GIVEN
+        let library = OpaquePointer(bitPattern: 1)!
+        let renderer = OpaquePointer(bitPattern: 2)!
+        let content = "<CONTENT>"
+        let url = URL(string: "file://path/to/subtitle.ass")!
+        mockLibraryWrapper.libraryInitStub = library
+        mockLibraryWrapper.rendererInitStub = renderer
+        mockContentsLoader.loadContentsStub = Just(content)
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
+
+        // WHEN
+        let subRenderer = createRenderer()
+        subRenderer.loadTrack(url: url)
 
         // THEN
         XCTAssert(mockLibraryWrapper.readTrackFunc.wasCalled)
@@ -375,3 +400,4 @@ private extension CGImage {
     }
 }
 #endif
+// swiftlint:enable type_body_length file_length

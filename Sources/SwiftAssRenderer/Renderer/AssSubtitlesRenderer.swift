@@ -15,6 +15,7 @@ public final class AssSubtitlesRenderer {
     private let fontConfig: FontConfigType
     private let pipeline: ImagePipelineType
     private let logger: LoggerType
+    private let contentsLoader: ContentsLoaderType
     private let librarySetup: LibrarySetup?
     private let rendererSetup: RendererSetup?
 
@@ -23,6 +24,7 @@ public final class AssSubtitlesRenderer {
 
     private var canvasSize: CGSize = .zero
     private var canvasScale: CGFloat = 1.0
+    private var cancellables: Set<AnyCancellable> = []
 
     private var currentTrack: ASS_Track?
     private var currentOffset: TimeInterval = 0
@@ -50,6 +52,7 @@ public final class AssSubtitlesRenderer {
             fontConfig: fontConfig,
             pipeline: pipeline,
             logger: Logger(output: logOutput),
+            contentsLoader: ContentsLoader(),
             librarySetup: librarySetup,
             rendererSetup: rendererSetup
         )
@@ -62,6 +65,7 @@ public final class AssSubtitlesRenderer {
         fontConfig: FontConfigType,
         pipeline: ImagePipelineType,
         logger: LoggerType,
+        contentsLoader: ContentsLoaderType,
         librarySetup: LibrarySetup?,
         rendererSetup: RendererSetup?
     ) {
@@ -71,6 +75,7 @@ public final class AssSubtitlesRenderer {
         self.fontConfig = fontConfig
         self.pipeline = pipeline
         self.logger = logger
+        self.contentsLoader = contentsLoader
         self.librarySetup = librarySetup
         self.rendererSetup = rendererSetup
         configure()
@@ -100,6 +105,34 @@ public final class AssSubtitlesRenderer {
             freeTrack()
             currentTrack = wrapper.readTrack(library, content: content)
         }
+    }
+
+    /// Parse and load ASS/SSA subtitle track in memory.
+    ///
+    /// - Parameters:
+    ///   - url: File or remote URL to subtitle contents .
+    ///
+    /// Always call this method before starting to update the time offset.
+    public func loadTrack(url: URL) {
+        workQueue.executeAsync { [weak self] in
+            guard let self else { return }
+            freeTrack()
+        }
+        contentsLoader
+            .loadContents(from: url)
+            .sink { [weak self] completion in
+                guard let self, case .failure(let error) = completion else { return }
+                logger.log(
+                    message: LogMessage(message: "Could not load subtitle contents: \(error)",
+                    level: .default
+                ))
+            } receiveValue: { [weak self] contents in
+                guard let self, let contents else { return }
+                workQueue.executeAsync { [weak self] in
+                    guard let self else { return }
+                    loadTrack(content: contents)
+                }
+            }.store(in: &cancellables)
     }
 
     /// Removes current track and resets the time offset and current visible frame.
