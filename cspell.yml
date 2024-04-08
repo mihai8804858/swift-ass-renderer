@@ -1,5 +1,6 @@
 files:
   - Sources/**/*.swift
+  - Sources/**/*.md
   - Tests/**/*.swift
   - Example/**/*.swift
   - Package.swift
