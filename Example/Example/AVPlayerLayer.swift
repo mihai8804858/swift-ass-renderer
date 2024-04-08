@@ -6,17 +6,28 @@ import SwiftAssRenderer
 struct PlayerLayerView: PlatformViewControllerRepresentable {
     let subtitleURL: URL
     let fontProvider: FontProvider
+    let pipeline: ImagePipelineType
     @Environment(\.dismiss) private var dismiss
 
     #if os(macOS)
     func makeNSViewController(context: Context) -> PlayerLayerViewController {
-        PlayerLayerViewController(subtitleURL: subtitleURL, fontProvider: fontProvider, dismiss: dismiss)
+        PlayerLayerViewController(
+            subtitleURL: subtitleURL,
+            fontProvider: fontProvider,
+            pipeline: pipeline,
+            dismiss: dismiss
+        )
     }
 
     func updateNSViewController(_ nsViewController: PlayerLayerViewController, context: Context) {}
     #else
     func makeUIViewController(context: Context) -> PlayerLayerViewController {
-        PlayerLayerViewController(subtitleURL: subtitleURL, fontProvider: fontProvider, dismiss: dismiss)
+        PlayerLayerViewController(
+            subtitleURL: subtitleURL,
+            fontProvider: fontProvider,
+            pipeline: pipeline,
+            dismiss: dismiss
+        )
     }
 
     func updateUIViewController(_ uiViewController: PlayerLayerViewController, context: Context) {}
@@ -187,7 +198,7 @@ final class PlayerLayerViewController: PlatformViewController {
     )
     #endif
 
-    init(subtitleURL: URL, fontProvider: FontProvider, dismiss: DismissAction) {
+    init(subtitleURL: URL, fontProvider: FontProvider, pipeline: ImagePipelineType, dismiss: DismissAction) {
         self.subtitleURL = subtitleURL
         self.fontProvider = fontProvider
         self.dismiss = dismiss
@@ -197,6 +208,7 @@ final class PlayerLayerViewController: PlatformViewController {
                 defaultFontName: defaultFont,
                 fontProvider: fontProvider
             ),
+            pipeline: pipeline,
             logOutput: .console(.verbose)
         )
         super.init(nibName: nil, bundle: nil)

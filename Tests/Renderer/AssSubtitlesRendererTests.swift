@@ -5,7 +5,6 @@ import SwiftLibass
 import SwiftAssBlend
 @testable import SwiftAssRenderer
 
-// swiftlint:disable type_body_length file_length
 final class AssSubtitlesRendererTests: XCTestCase {
     private var mockQueue: MockDispatchQueue!
     private var mockLibraryWrapper: MockLibraryWrapper.Type!
@@ -246,7 +245,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         let scale = 3.0
         let rect = CGRect(x: 10, y: 10, width: 100, height: 100)
         let image = ProcessedImage(image: .from(color: .black), imageRect: rect)
-        let scaledDownImage = ProcessedImage(image: image.image, imageRect: (rect / scale).rounded())
+        let scaledDownImage = ProcessedImage(image: image.image, imageRect: (rect / scale).integral)
         let assImage = ASS_Image()
         let changed = true
         mockLibraryWrapper.libraryInitStub = library
@@ -282,7 +281,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         let size = CGSize(width: 1920, height: 1080)
         let rect = CGRect(x: 10, y: 10, width: 100, height: 100)
         let image = ProcessedImage(image: .from(color: .black), imageRect: rect)
-        let scaledDownImage = ProcessedImage(image: image.image, imageRect: (rect / scale).rounded())
+        let scaledDownImage = ProcessedImage(image: image.image, imageRect: (rect / scale).integral)
         mockLibraryWrapper.libraryInitStub = library
         mockLibraryWrapper.rendererInitStub = renderer
         mockLibraryWrapper.readTrackStub = ASS_Track()
@@ -348,7 +347,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         let scale = 3.0
         let rect = CGRect(x: 10, y: 10, width: 100, height: 100)
         let image = ProcessedImage(image: .from(color: .black), imageRect: rect)
-        let scaledDownImage = ProcessedImage(image: image.image, imageRect: (rect / scale).rounded())
+        let scaledDownImage = ProcessedImage(image: image.image, imageRect: (rect / scale).integral)
         let assImage = ASS_Image()
         let changed = true
         mockLibraryWrapper.libraryInitStub = library
@@ -400,4 +399,3 @@ private extension CGImage {
     }
 }
 #endif
-// swiftlint:enable type_body_length file_length

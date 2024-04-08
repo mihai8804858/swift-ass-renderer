@@ -25,15 +25,8 @@ public func linkedImages(from image: ASS_Image) -> [ASS_Image] {
 ///   - images: Images list to find the bounding rect for.
 ///
 /// - Returns: A `CGRect` containing all image rectangles.
-public func boundingRect(images: [ASS_Image]) -> CGRect {
-    let imagesRect = images.map { image in
-        CGRect(
-            x: CGFloat(image.dst_x),
-            y: CGFloat(image.dst_y),
-            width: CGFloat(image.w),
-            height: CGFloat(image.h)
-        )
-    }
+public func imagesBoundingRect(images: [ASS_Image]) -> CGRect {
+    let imagesRect = images.map(\.imageRect)
     guard let minX = imagesRect.map(\.minX).min(),
           let minY = imagesRect.map(\.minY).min(),
           let maxX = imagesRect.map(\.maxX).max(),
@@ -118,7 +111,6 @@ public func palettizedBitmap(
 
     let bufferCapacity = 4 * width * height
     let buffer = UnsafeMutableBufferPointer<UInt8>.allocate(capacity: bufferCapacity)
-    buffer.initialize(repeating: 0)
 
     var bufferPosition = 0
     var bitmapPosition = 0

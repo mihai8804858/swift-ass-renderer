@@ -109,7 +109,9 @@ private extension AssSubtitlesView {
     }
 
     func imageFrame(for rect: CGRect) -> CGRect {
-        #if os(macOS)
+        #if canImport(UIKit)
+        rect
+        #elseif canImport(AppKit)
         // macOS has the origin on bottom left corner
         CGRect(
             x: rect.origin.x,
@@ -117,8 +119,6 @@ private extension AssSubtitlesView {
             width: rect.width,
             height: rect.height
         )
-        #else
-        rect
         #endif
     }
 }

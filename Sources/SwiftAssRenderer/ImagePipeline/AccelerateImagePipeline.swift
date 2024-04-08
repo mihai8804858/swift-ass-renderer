@@ -17,31 +17,45 @@ public final class AccelerateImagePipeline: ImagePipelineType {
 
     private func blendImages(_ images: [ASS_Image], boundingRect: CGRect) -> CGImage? {
         guard let size = vImage.Size(exactly: boundingRect.size) else { return nil }
-        let destinationBuffer = makePixelBuffer(size: size, fillColor: (0, 0, 0, 0))
-        for image in images {
-            translateImage(image, into: destinationBuffer, size: size, boundingRect: boundingRect)
-        }
+        let buffers = images.compactMap { translateBuffer($0, size: size, boundingRect: boundingRect) }
+        let composedBuffers = composeBuffers(buffers, size: size)
 
-        return makeImage(from: destinationBuffer, alphaInfo: .first)
+        return makeImage(from: composedBuffers, alphaInfo: .first)
     }
 
-    private func translateImage(
+    private func translateBuffer(
         _ image: ASS_Image,
-        into destinationBuffer: vImage.PixelBuffer<vImage.Interleaved8x4>,
         size: vImage.Size,
         boundingRect: CGRect
-    ) {
-        guard let sourceBuffer = makePixelBuffer(from: image, size: size) else { return }
+    ) -> vImage.PixelBuffer<vImage.Interleaved8x4>? {
+        guard let sourceBuffer = makePixelBuffer(from: image, size: size) else { return nil }
+        let destinationBuffer = makePixelBuffer(size: size, fillColor: (0, 0, 0, 0))
         let relativeRect = image.relativeImageRect(to: boundingRect)
-        let transform = CGAffineTransform.identity.translatedBy(
-            x: relativeRect.minX,
-            y: -(relativeRect.minY - boundingRect.height + relativeRect.height)
-        )
+        let transformY = -(relativeRect.minY - boundingRect.height + relativeRect.height)
+        let transform = CGAffineTransform.identity.translatedBy(x: relativeRect.minX, y: transformY)
         sourceBuffer.transform(
             transform,
             backgroundColor: (0, 0, 0, 0),
             destination: destinationBuffer
         )
+
+        return destinationBuffer
+    }
+
+    private func composeBuffers(
+        _ buffers: [vImage.PixelBuffer<vImage.Interleaved8x4>],
+        size: vImage.Size
+    ) -> vImage.PixelBuffer<vImage.Interleaved8x4> {
+        let destinationBuffer = makePixelBuffer(size: size, fillColor: (0, 0, 0, 0))
+        for buffer in buffers {
+            destinationBuffer.alphaComposite(
+                .nonpremultiplied,
+                topLayer: buffer,
+                destination: destinationBuffer
+            )
+        }
+
+        return destinationBuffer
     }
 
     private func makePixelBuffer(
@@ -91,8 +105,8 @@ public final class AccelerateImagePipeline: ImagePipelineType {
     }
 }
 
-private extension ASS_Image {
-    func imageRect() -> CGRect {
+extension ASS_Image {
+    var imageRect: CGRect {
         let origin = CGPoint(x: Int(dst_x), y: Int(dst_y))
         let size = CGSize(width: Int(w), height: Int(h))
 
@@ -100,7 +114,7 @@ private extension ASS_Image {
     }
 
     func relativeImageRect(to boundingRect: CGRect) -> CGRect {
-        let rect = imageRect()
+        let rect = imageRect
         let origin = CGPoint(x: rect.minX - boundingRect.minX, y: rect.minY - boundingRect.minY)
 
         return CGRect(origin: origin, size: rect.size)

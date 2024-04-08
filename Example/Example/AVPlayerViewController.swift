@@ -7,9 +7,10 @@ import SwiftAssRenderer
 struct PlayerView: PlatformViewControllerRepresentable {
     let subtitleURL: URL
     let fontProvider: FontProvider
+    let pipeline: ImagePipelineType
 
     func makeUIViewController(context: Context) -> PlayerViewController {
-        PlayerViewController(subtitleURL: subtitleURL, fontProvider: fontProvider)
+        PlayerViewController(subtitleURL: subtitleURL, fontProvider: fontProvider, pipeline: pipeline)
     }
 
     func updateUIViewController(_ uiViewController: PlayerViewController, context: Context) {}
@@ -26,7 +27,7 @@ final class PlayerViewController: AVPlayerViewController {
 
     private var cancellables = Set<AnyCancellable>()
 
-    init(subtitleURL: URL, fontProvider: FontProvider) {
+    init(subtitleURL: URL, fontProvider: FontProvider, pipeline: ImagePipelineType) {
         self.subtitleURL = subtitleURL
         self.fontProvider = fontProvider
         self.renderer = AssSubtitlesRenderer(
@@ -35,6 +36,7 @@ final class PlayerViewController: AVPlayerViewController {
                 defaultFontName: defaultFont,
                 fontProvider: fontProvider
             ),
+            pipeline: pipeline,
             logOutput: .console(.verbose)
         )
         self.subtitlesView = AssSubtitlesView(renderer: renderer)

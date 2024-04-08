@@ -13,6 +13,7 @@ ignoreWords:
   - struct
   - subview
   - subviews
+  - superview
   - swiftlint
   - snapshotting
   - cachedir

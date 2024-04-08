@@ -7,10 +7,16 @@ import SwiftAssRenderer
 struct PlayerView: PlatformViewControllerRepresentable {
     let subtitleURL: URL
     let fontProvider: FontProvider
+    let pipeline: ImagePipelineType
     @Environment(\.dismiss) private var dismiss
 
     func makeNSViewController(context: Context) -> PlayerViewController {
-        PlayerViewController(subtitleURL: subtitleURL, fontProvider: fontProvider, dismiss: dismiss)
+        PlayerViewController(
+            subtitleURL: subtitleURL,
+            fontProvider: fontProvider,
+            pipeline: pipeline,
+            dismiss: dismiss
+        )
     }
 
     func updateNSViewController(_ nsViewController: PlayerViewController, context: Context) {}
@@ -39,7 +45,7 @@ final class PlayerViewController: PlatformViewController {
         dismiss()
     }
 
-    init(subtitleURL: URL, fontProvider: FontProvider, dismiss: DismissAction) {
+    init(subtitleURL: URL, fontProvider: FontProvider, pipeline: ImagePipelineType, dismiss: DismissAction) {
         self.subtitleURL = subtitleURL
         self.fontProvider = fontProvider
         self.dismiss = dismiss
@@ -49,6 +55,7 @@ final class PlayerViewController: PlatformViewController {
                 defaultFontName: defaultFont,
                 fontProvider: fontProvider
             ),
+            pipeline: pipeline,
             logOutput: .console(.verbose)
         )
         self.subtitlesView = AssSubtitlesView(renderer: renderer)

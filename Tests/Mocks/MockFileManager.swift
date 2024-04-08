@@ -34,7 +34,6 @@ final class MockFileManager: FileManagerType {
         removeItemFunc.call(path)
     }
 
-    // swiftlint:disable:next large_tuple
     let createItemFunc = FuncCheck<(URL, String, Bool)>()
     func createItem(at path: URL, contents: String, override: Bool) throws {
         createItemFunc.call((path, contents, override))

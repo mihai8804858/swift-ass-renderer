@@ -234,12 +234,11 @@ private extension AssSubtitlesRenderer {
         }
         guard result.changed else { return .unchanged }
         let images = linkedImages(from: result.image)
-        let boundingRect = boundingRect(images: images)
-        guard !images.isEmpty,
-            let processedImage = pipeline.process(images: images, boundingRect: boundingRect) else {
+        let boundingRect = imagesBoundingRect(images: images)
+        guard let processedImage = pipeline.process(images: images, boundingRect: boundingRect) else {
             return .none
         }
-        let imageRect = (processedImage.imageRect / canvasScale).rounded()
+        let imageRect = (processedImage.imageRect / canvasScale).integral
 
         return .loaded(ProcessedImage(image: processedImage.image, imageRect: imageRect))
     }

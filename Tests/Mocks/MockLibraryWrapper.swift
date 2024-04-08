@@ -44,7 +44,6 @@ final class MockLibraryWrapper: LibraryWrapperType {
         setExtractFontsFunc.call((library, extract))
     }
 
-    // swiftlint:disable:next large_tuple
     static let setFontsFunc = FuncCheck<(OpaquePointer, FontProvider, String?, String?, String?)>()
     static func setFonts(
         _ renderer: OpaquePointer,
@@ -63,7 +62,6 @@ final class MockLibraryWrapper: LibraryWrapperType {
         return readTrackStub
     }
 
-    // swiftlint:disable:next large_tuple
     static let renderImageFunc = FuncCheck<(OpaquePointer, ASS_Track, TimeInterval)>()
     static var renderImageStub: LibraryRenderResult?
     static func renderImage(

@@ -13,6 +13,11 @@ struct ContentView: View {
         #endif
     }
 
+    private enum PipelineKind: CaseIterable {
+        case blend
+        case accelerate
+    }
+
     private let shapers: [FontProvider] = [.fontConfig, .coreText]
     private let subtitles: [String: URL] = [
         "English": Bundle.main.url(forResource: "subtitle-en", withExtension: "ass")!,
@@ -23,6 +28,7 @@ struct ContentView: View {
     @State private var selectedLanguage = "English"
     @State private var selectedShaper = FontProvider.fontConfig
     @State private var selectedPlayerKind = PlayerKind.videoPlayer
+    @State private var selectedPipelineKind = PipelineKind.blend
     @State private var isPlaying = false
 
     var body: some View {
@@ -38,6 +44,12 @@ struct ContentView: View {
                     Text("Shaper")
                         .gridColumnAlignment(.trailing)
                     shaperPickerView
+                        .gridColumnAlignment(.leading)
+                }
+                GridRow {
+                    Text("Pipeline")
+                        .gridColumnAlignment(.trailing)
+                    pipelinePickerView
                         .gridColumnAlignment(.leading)
                 }
                 GridRow {
@@ -58,18 +70,41 @@ struct ContentView: View {
         }.sheet(isPresented: $isPlaying) {
             switch selectedPlayerKind {
             case .videoPlayer:
-                VideoPlayerView(subtitleURL: subtitles[selectedLanguage]!, fontProvider: selectedShaper)
+                VideoPlayerView(
+                    subtitleURL: subtitles[selectedLanguage]!,
+                    fontProvider: selectedShaper,
+                    pipeline: selectedPipeline
+                )
             case .playerLayer:
-                PlayerLayerView(subtitleURL: subtitles[selectedLanguage]!, fontProvider: selectedShaper)
+                PlayerLayerView(
+                    subtitleURL: subtitles[selectedLanguage]!,
+                    fontProvider: selectedShaper,
+                    pipeline: selectedPipeline
+                )
             #if os(macOS)
             case .playerView:
-                PlayerView(subtitleURL: subtitles[selectedLanguage]!, fontProvider: selectedShaper)
+                PlayerView(
+                    subtitleURL: subtitles[selectedLanguage]!,
+                    fontProvider: selectedShaper,
+                    pipeline: selectedPipeline
+                )
             #else
             case .playerViewController:
-                PlayerView(subtitleURL: subtitles[selectedLanguage]!, fontProvider: selectedShaper)
+                PlayerView(
+                    subtitleURL: subtitles[selectedLanguage]!,
+                    fontProvider: selectedShaper,
+                    pipeline: selectedPipeline
+                )
             #endif
             }
         }.padding()
+    }
+
+    private var selectedPipeline: ImagePipelineType {
+        switch selectedPipelineKind {
+        case .blend: BlendImagePipeline()
+        case .accelerate: AccelerateImagePipeline()
+        }
     }
 
     @ViewBuilder
@@ -77,6 +112,18 @@ struct ContentView: View {
         Picker("Subtitle Language", selection: $selectedLanguage) {
             ForEach(Array(subtitles.keys), id: \.self) { language in
                 Text(language)
+            }
+        }.pickerStyle(.menu)
+    }
+
+    @ViewBuilder
+    private var pipelinePickerView: some View {
+        Picker("Pipeline", selection: $selectedPipelineKind) {
+            ForEach(PipelineKind.allCases, id: \.self) { pipeline in
+                switch pipeline {
+                case .blend: Text("Blend")
+                case .accelerate: Text("Accelerate")
+                }
             }
         }.pickerStyle(.menu)
     }

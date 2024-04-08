@@ -13,7 +13,7 @@ struct VideoPlayerView: View {
 
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
 
-    init(subtitleURL: URL, fontProvider: FontProvider) {
+    init(subtitleURL: URL, fontProvider: FontProvider, pipeline: ImagePipelineType) {
         self.subtitleURL = subtitleURL
         self.fontProvider = fontProvider
         self.player = AVPlayer(url: videoURL)
@@ -23,6 +23,7 @@ struct VideoPlayerView: View {
                 defaultFontName: defaultFont,
                 fontProvider: fontProvider
             ),
+            pipeline: pipeline,
             logOutput: .console(.verbose)
         )
     }

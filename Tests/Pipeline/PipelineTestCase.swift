@@ -15,7 +15,7 @@ open class PipelineTestCase: XCTestCase {
     func render(offset: TimeInterval, pipeline: ImagePipelineType) -> ProcessedImage? {
         guard let image = LibraryWrapper.renderImage(renderer, track: &track, at: offset) else { return nil }
         let images = linkedImages(from: image.image)
-        let boundingRect = boundingRect(images: images)
+        let boundingRect = imagesBoundingRect(images: images)
 
         return pipeline.process(images: images, boundingRect: boundingRect)
     }
