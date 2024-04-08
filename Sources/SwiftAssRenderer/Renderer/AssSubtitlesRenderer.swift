@@ -31,11 +31,11 @@ public final class AssSubtitlesRenderer {
     /// - Parameters:
     ///   - fontConfig: Fonts configuration. Defines where the fonts and fonts cache is located, 
     ///   fallbacks for missing fonts and the default ``FontProvider`` to use.
-    ///   - pipeline: Image pipeline to use for precessing ``ASS_Image`` into ``ProcessedImage``.
+    ///   - pipeline: Image pipeline to use for precessing `ASS_Image` into ``ProcessedImage``.
     ///   - logOutput: Log output. 
     ///   Defaults to logging to console with `.default` level in DEBUG and `.fatal` in RELEASE.
-    ///   - librarySetup: Custom actions to run when initializing the ``ASS_Library``.
-    ///   - rendererSetup: Custom actions to run when initializing the ``ASS_Renderer``.
+    ///   - librarySetup: Custom actions to run when initializing the `ASS_Library`.
+    ///   - rendererSetup: Custom actions to run when initializing the `ASS_Renderer`.
     public convenience init(
         fontConfig: FontConfig,
         pipeline: ImagePipelineType = BlendImagePipeline(),
@@ -200,7 +200,10 @@ private extension AssSubtitlesRenderer {
             return .none
         }
         guard result.changed else { return .unchanged }
-        guard let processedImage = pipeline.process(image: result.image) else {
+        let images = linkedImages(from: result.image)
+        let boundingRect = boundingRect(images: images)
+        guard !images.isEmpty,
+            let processedImage = pipeline.process(images: images, boundingRect: boundingRect) else {
             return .none
         }
         let imageRect = (processedImage.imageRect / canvasScale).rounded()

@@ -36,10 +36,7 @@ struct VideoPlayerView: View {
 }
 
 final class ImagePipeline: ImagePipelineType {
-    func process(image: ASS_Image?) -> ProcessedImage? {
-        guard let image else { return nil }
-        let images = linkedImages(from: image)
-        let boundingRect = boundingRect(image: image)
+    func process(images: [ASS_Image], boundingRect: CGRect) -> ProcessedImage? {
         let cgImages = images.compactMap(makeCGImage)
         let finalImage = combineCGImages(cgImages, boundingRect: boundingRect)
 
@@ -67,7 +64,11 @@ final class ImagePipeline: ImagePipelineType {
         let rendererFormat = UIGraphicsImageRendererFormat(for: traitCollection)
         let renderer = UIGraphicsImageRenderer(size: boundingRect.size, format: rendererFormat)
         let image = renderer.image { context in
+            for (rect, cgImage) in images {
+                context.cgContext.byFlippingVertically(height: rect.size.height) {
 
+                }
+            }
         }
 
         return image.cgImage
@@ -80,5 +81,14 @@ extension CGAffineTransform {
         transform = transform.translatedBy(x: 0, y: -height)
 
         return transform
+    }
+}
+
+extension CGContext {
+    func byFlippingVertically(height: CGFloat, actions: () -> Void) {
+        let transform = CGAffineTransform.flippingVertically(height)
+        concatenate(transform)
+        actions()
+        concatenate(transform.inverted())
     }
 }

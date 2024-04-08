@@ -1,12 +1,13 @@
+import CoreGraphics
 import SwiftLibass
 import SwiftAssBlend
 @testable import SwiftAssRenderer
 
 final class MockImagePipeline: ImagePipelineType {
-    let processFunc = FuncCheck<ASS_Image?>()
+    let processFunc = FuncCheck<([ASS_Image], CGRect)>()
     var processStub: ProcessedImage?
-    func process(image: ASS_Image?) -> ProcessedImage? {
-        processFunc.call(image)
+    func process(images: [ASS_Image], boundingRect: CGRect) -> ProcessedImage? {
+        processFunc.call((images, boundingRect))
         return processStub
     }
 }

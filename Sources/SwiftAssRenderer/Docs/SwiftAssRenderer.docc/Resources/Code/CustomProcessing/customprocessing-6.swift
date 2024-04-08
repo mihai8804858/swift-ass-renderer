@@ -36,7 +36,7 @@ struct VideoPlayerView: View {
 }
 
 final class ImagePipeline: ImagePipelineType {
-    func process(image: ASS_Image?) -> ProcessedImage? {
+    func process(images: [ASS_Image], boundingRect: CGRect) -> ProcessedImage? {
 
     }
 }

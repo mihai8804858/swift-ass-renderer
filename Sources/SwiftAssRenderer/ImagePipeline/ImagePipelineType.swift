@@ -1,6 +1,7 @@
+import CoreGraphics
 import SwiftLibass
 
-/// Pipeline that processed an ``ASS_Image`` into a ``ProcessedImage`` that can be drawn on the screen.
+/// Pipeline that processed an `ASS_Image` into a ``ProcessedImage`` that can be drawn on the screen.
 public protocol ImagePipelineType {
-    func process(image: ASS_Image?) -> ProcessedImage?
+    func process(images: [ASS_Image], boundingRect: CGRect) -> ProcessedImage?
 }

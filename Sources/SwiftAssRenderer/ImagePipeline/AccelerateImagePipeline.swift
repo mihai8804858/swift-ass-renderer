@@ -2,17 +2,14 @@ import Accelerate
 import CoreGraphics
 import SwiftLibass
 
+/// Pipeline that processed an `ASS_Image` into a ``ProcessedImage``
+/// by combining all images using `vImage.PixelBuffer`.
 @available(iOS 16.0, tvOS 16.0, visionOS 1.0, macOS 13.0, macCatalyst 16.0, *)
 public final class AccelerateImagePipeline: ImagePipelineType {
     public init() {}
 
-    public func process(image: ASS_Image?) -> ProcessedImage? {
-        guard let image, image.bitmap != nil else { return nil }
-        let images = linkedImages(from: image)
-        let boundingRect = boundingRect(image: image)
-        if images.isEmpty { return nil }
+    public func process(images: [ASS_Image], boundingRect: CGRect) -> ProcessedImage? {
         guard let cgImage = blendImages(images, boundingRect: boundingRect) else { return nil }
-
         return ProcessedImage(image: cgImage, imageRect: boundingRect)
     }
 

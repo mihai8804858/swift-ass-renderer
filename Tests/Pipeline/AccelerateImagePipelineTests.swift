@@ -4,8 +4,9 @@ import SwiftLibass
 import SnapshotTesting
 @testable import SwiftAssRenderer
 
-final class BlendImagePipelineTests: PipelineTestCase {
-    private let pipeline = BlendImagePipeline()
+@available(iOS 16.0, tvOS 16.0, visionOS 1.0, macOS 13.0, macCatalyst 16.0, *)
+final class AccelerateImagePipelineTests: PipelineTestCase {
+    private let pipeline = AccelerateImagePipeline()
     private let offsets: [TimeInterval] = [
         40.0,
         72.72,
@@ -20,21 +21,6 @@ final class BlendImagePipelineTests: PipelineTestCase {
         862.48,
         1354.62
     ]
-
-    func test_processImage() throws {
-        for subtitle in ["en", "ru", "ar"] {
-            try setup(fontProvider: .fontConfig, subtitle: subtitle)
-            for offset in offsets {
-                let image = try XCTUnwrap(try XCTUnwrap(render(offset: offset, pipeline: pipeline)))
-                assertSnapshot(
-                    of: value(image: image),
-                    as: .image,
-                    named: snapshotName(offset: offset),
-                    snapshotDirectory: snapshotsDirectory(pathComponents: platformName(), subtitle)
-                )
-            }
-        }
-    }
 
     func test_processImage_fontConfig_shouldNotCrash() throws {
         for subtitle in ["en", "ru", "ar"] {

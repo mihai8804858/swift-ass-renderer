@@ -36,14 +36,20 @@ struct VideoPlayerView: View {
 }
 
 final class ImagePipeline: ImagePipelineType {
-    func process(image: ASS_Image?) -> ProcessedImage? {
-        guard let image else { return nil }
-        let images = linkedImages(from: image)
-        let boundingRect = boundingRect(image: image)
+    func process(images: [ASS_Image], boundingRect: CGRect) -> ProcessedImage? {
         let cgImages = images.compactMap(makeCGImage)
+        let finalImage = combineCGImages(cgImages, boundingRect: boundingRect)
+
+        return finalImage.flatMap { ProcessedImage(image: $0, imageRect: boundingRect) }
     }
 
     private func makeCGImage(from image: ASS_Image) -> (CGRect, CGImage)? {
+        let origin = CGPoint(x: Int(image.dst_x), y: Int(image.dst_y))
+        let size = CGSize(width: Int(image.w), height: Int(image.h))
+        let rect = CGRect(origin: origin, size: size)
+    }
+
+    private func combineCGImages(_ images: [(CGRect, CGImage)], boundingRect: CGRect) -> CGImage? {
 
     }
 }
