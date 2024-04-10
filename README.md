@@ -9,7 +9,7 @@ SSA/ASS subtitles renderer based on [`libass`](https://github.com/libass/libass)
 ## Documentation
 
 * [Installation](https://mihai8804858.github.io/swift-ass-renderer/documentation/swiftassrenderer)
-* [Overview](https://mihai8804858.github.io/swift-ass-renderer/documentation/swiftassrenderer/overview)
+* [Getting Started](https://mihai8804858.github.io/swift-ass-renderer/documentation/swiftassrenderer/getting-started)
 * [Integration](https://mihai8804858.github.io/swift-ass-renderer/tutorials/integration-tutorials/)
   * [VideoPlayer Integration](https://mihai8804858.github.io/swift-ass-renderer/tutorials/swiftassrenderer/videoplayer/)
   * [AVPlayerLayer Integration](https://mihai8804858.github.io/swift-ass-renderer/tutorials/swiftassrenderer/avplayerlayer/)
