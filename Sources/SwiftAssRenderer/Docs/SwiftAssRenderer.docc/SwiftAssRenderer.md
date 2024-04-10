@@ -27,9 +27,9 @@ And then adding the product to any target that needs access to the library:
 
 ## Topics
 
-### Overview
+### Getting Started
 
-- <doc:Overview>
+- <doc:Getting-Started>
 
 ### Tutorials
 

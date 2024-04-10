@@ -48,6 +48,7 @@ let package = Package(
                 .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
             ],
             path: "Tests",
+            exclude: ["Pipeline/__Snapshots__"],
             resources: [
                 .copy("Resources/Fonts"),
                 .copy("Resources/Subs")
