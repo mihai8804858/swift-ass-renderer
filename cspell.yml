@@ -25,7 +25,9 @@ ignoreWords:
   - goforward
   - rescan
   - autoconnect
+  - subheadline
   - palettized
   - nonpremultiplied
   - ARGB
   - RGBA
+  - AVURL

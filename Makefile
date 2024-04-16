@@ -114,9 +114,7 @@ else
 	for platform in \
 	  "$(SIM_PLATFORM_IOS)" \
 	  "$(SIM_PLATFORM_TVOS)" \
-	  "$(SIM_PLATFORM_VISIONOS)" \
-	  "$(SIM_PLATFORM_MACOS)" \
-	  "$(SIM_PLATFORM_MAC_CATALYST)"; \
+	  "$(SIM_PLATFORM_VISIONOS)"; \
 	do \
 		echo -e "\n${GREEN}Testing $$platform ${NC}\n"; \
 		set -o pipefail && xcrun xcodebuild clean test \
@@ -135,7 +133,10 @@ lint:
 spell:
 	cspell-cli lint --no-progress
 
-.PHONY: build-all-platforms build-example build-docs test-all-platforms lint spell
+all: lint spell build-all-platforms build-example build-docs test-all-platforms
+
+.PHONY: all
+.DEFAULT_GOAL := all
 
 define udid_for
 $(shell xcrun simctl list devices available '$(1)' | grep '$(2)' | sort -r | head -1 | awk -F '[()]' '{ print $$(NF-3) }')

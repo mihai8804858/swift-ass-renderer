@@ -156,6 +156,35 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssert(argument == (library, content))
     }
 
+    func test_reloadTrackContent_shouldReadTrackAndLoadLastKnownOffset() throws {
+        // GIVEN
+        let library = OpaquePointer(bitPattern: 1)!
+        let renderer = OpaquePointer(bitPattern: 2)!
+        let content = "<CONTENT>"
+        let newContent = "<NEW_CONTENT>"
+        let offset = 10.0
+        mockLibraryWrapper.libraryInitStub = library
+        mockLibraryWrapper.rendererInitStub = renderer
+
+        let subRenderer = createRenderer()
+        subRenderer.loadTrack(content: content)
+        subRenderer.setTimeOffset(offset)
+
+        mockLibraryWrapper.readTrackFunc.reset()
+        mockLibraryWrapper.renderImageFunc.reset()
+
+        // WHEN
+        subRenderer.reloadTrack(content: newContent)
+
+        // THEN
+        XCTAssert(mockLibraryWrapper.readTrackFunc.wasCalled)
+        XCTAssert(mockLibraryWrapper.renderImageFunc.wasCalled)
+        let contentArgument = try XCTUnwrap(mockLibraryWrapper.readTrackFunc.argument)
+        let offsetArgument = try XCTUnwrap(mockLibraryWrapper.renderImageFunc.argument)
+        XCTAssert(contentArgument.1 == newContent)
+        XCTAssert(offsetArgument.2 == offset)
+    }
+
     func test_loadTrackURL_shouldReadTrack() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -176,6 +205,46 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssert(mockLibraryWrapper.readTrackFunc.wasCalled)
         let argument = try XCTUnwrap(mockLibraryWrapper.readTrackFunc.argument)
         XCTAssert(argument == (library, content))
+    }
+
+    func test_reloadTrackURL_shouldReadTrackAndLoadLastKnownOffset() throws {
+        // GIVEN
+        let library = OpaquePointer(bitPattern: 1)!
+        let renderer = OpaquePointer(bitPattern: 2)!
+        let content = "<CONTENT>"
+        let url = URL(string: "file://path/to/subtitle.ass")!
+        let newContent = "<NEW_CONTENT>"
+        let newURL = URL(string: "file://path/to/new/subtitle.ass")!
+        let offset = 10.0
+        mockLibraryWrapper.libraryInitStub = library
+        mockLibraryWrapper.rendererInitStub = renderer
+        mockContentsLoader.loadContentsStub = Just(content)
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
+
+        let subRenderer = createRenderer()
+        subRenderer.loadTrack(url: url)
+        subRenderer.setTimeOffset(offset)
+
+        mockLibraryWrapper.readTrackFunc.reset()
+        mockLibraryWrapper.renderImageFunc.reset()
+
+        // WHEN
+        mockContentsLoader.loadContentsStub = Just(newContent)
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
+        subRenderer.reloadTrack(url: newURL)
+
+        // THEN
+        XCTAssert(mockLibraryWrapper.readTrackFunc.wasCalled)
+        XCTAssert(mockLibraryWrapper.renderImageFunc.wasCalled)
+        XCTAssert(mockContentsLoader.loadContentsFunc.wasCalled)
+        let contentArgument = try XCTUnwrap(mockLibraryWrapper.readTrackFunc.argument)
+        let offsetArgument = try XCTUnwrap(mockLibraryWrapper.renderImageFunc.argument)
+        let urlArgument = try XCTUnwrap(mockContentsLoader.loadContentsFunc.argument)
+        XCTAssert(contentArgument.1 == newContent)
+        XCTAssert(offsetArgument.2 == offset)
+        XCTAssert(urlArgument == newURL)
     }
 
     func test_deinit_shouldCallRendererDone() throws {
@@ -373,6 +442,99 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssert(mockLibraryWrapper.renderImageFunc.wasCalled)
         XCTAssert(mockImagePipeline.processFunc.wasCalled)
         XCTAssertEqual(images, [scaledDownImage, scaledDownImage])
+    }
+
+    func test_loadFrame_whenFrameWasLoaded_shouldReturnProcessedImage() throws {
+        // GIVEN
+        let library = OpaquePointer(bitPattern: 1)!
+        let renderer = OpaquePointer(bitPattern: 2)!
+        let content = "<CONTENT>"
+        let size = CGSize(width: 1920, height: 1080)
+        let scale = 3.0
+        let rect = CGRect(x: 10, y: 10, width: 100, height: 100)
+        let image = ProcessedImage(image: .from(color: .black), imageRect: rect)
+        let scaledDownImage = ProcessedImage(image: image.image, imageRect: (rect / scale).integral)
+        let assImage = ASS_Image()
+        let changed = true
+        mockLibraryWrapper.libraryInitStub = library
+        mockLibraryWrapper.rendererInitStub = renderer
+        mockLibraryWrapper.readTrackStub = ASS_Track()
+        mockLibraryWrapper.renderImageStub = LibraryRenderResult(image: assImage, changed: changed)
+        mockImagePipeline.processStub = image
+
+        // WHEN
+        let subRenderer = createRenderer()
+        var processedImage: ProcessedImage?
+        subRenderer.loadTrack(content: content)
+        subRenderer.setCanvasSize(size, scale: scale)
+        subRenderer.loadFrame(offset: 10) { processedImage = $0 }
+
+        // THEN
+        XCTAssert(mockLibraryWrapper.renderImageFunc.wasCalled)
+        XCTAssert(mockImagePipeline.processFunc.wasCalled)
+        XCTAssertEqual(processedImage, scaledDownImage)
+    }
+
+    func test_loadFrame_whenFrameWasNotLoaded_shouldReturnNil() throws {
+        // GIVEN
+        let library = OpaquePointer(bitPattern: 1)!
+        let renderer = OpaquePointer(bitPattern: 2)!
+        let content = "<CONTENT>"
+        let scale = 3.0
+        let size = CGSize(width: 1920, height: 1080)
+        let rect = CGRect(x: 10, y: 10, width: 100, height: 100)
+        let image = ProcessedImage(image: .from(color: .black), imageRect: rect)
+        mockLibraryWrapper.libraryInitStub = library
+        mockLibraryWrapper.rendererInitStub = renderer
+        mockLibraryWrapper.readTrackStub = ASS_Track()
+        mockLibraryWrapper.renderImageStub = LibraryRenderResult(image: ASS_Image(), changed: true)
+        mockImagePipeline.processStub = image
+
+        // WHEN
+        let subRenderer = createRenderer()
+        var processedImage: ProcessedImage?
+        subRenderer.loadTrack(content: content)
+        subRenderer.setCanvasSize(size, scale: scale)
+        subRenderer.loadFrame(offset: 10) { processedImage = $0 }
+        mockLibraryWrapper.renderImageStub = nil
+        mockImagePipeline.processStub = nil
+        subRenderer.loadFrame(offset: 20) { processedImage = $0 }
+
+        // THEN
+        XCTAssert(mockLibraryWrapper.renderImageFunc.wasCalled)
+        XCTAssertNil(processedImage)
+    }
+
+    func test_loadFrame_whenFrameWasUnchanged_shouldReturnPreviouslyProcessedImage() throws {
+        // GIVEN
+        let library = OpaquePointer(bitPattern: 1)!
+        let renderer = OpaquePointer(bitPattern: 2)!
+        let content = "<CONTENT>"
+        let size = CGSize(width: 1920, height: 1080)
+        let scale = 3.0
+        let rect = CGRect(x: 10, y: 10, width: 100, height: 100)
+        let image = ProcessedImage(image: .from(color: .black), imageRect: rect)
+        let scaledDownImage = ProcessedImage(image: image.image, imageRect: (rect / scale).integral)
+        mockLibraryWrapper.libraryInitStub = library
+        mockLibraryWrapper.rendererInitStub = renderer
+        mockLibraryWrapper.readTrackStub = ASS_Track()
+        mockImagePipeline.processStub = image
+
+        // WHEN
+        let subRenderer = createRenderer()
+        var processedImage: ProcessedImage?
+        subRenderer.loadTrack(content: content)
+        subRenderer.setCanvasSize(size, scale: scale)
+
+        mockLibraryWrapper.renderImageStub = LibraryRenderResult(image: ASS_Image(), changed: true)
+        subRenderer.loadFrame(offset: 10) { processedImage = $0 }
+
+        mockLibraryWrapper.renderImageStub = LibraryRenderResult(image: ASS_Image(), changed: false)
+        subRenderer.loadFrame(offset: 20) { processedImage = $0 }
+
+        // THEN
+        XCTAssert(mockLibraryWrapper.renderImageFunc.wasCalled)
+        XCTAssertEqual(processedImage, scaledDownImage)
     }
 }
 

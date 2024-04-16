@@ -34,4 +34,12 @@
 
         @TutorialReference(tutorial: "doc:AVPlayerViewController")
     }
+
+    @Chapter(name: "Composition Integration") {
+        Learn how to easily integrate `SwiftAssRenderer` with `AVPlayerItem` by burning the subtitles in the video on the fly.
+
+        @Image(source: "logo-rounded.png")
+
+        @TutorialReference(tutorial: "doc:Composition")
+    }
 }

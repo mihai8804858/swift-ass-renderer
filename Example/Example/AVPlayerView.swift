@@ -5,16 +5,22 @@ import Combine
 import SwiftAssRenderer
 
 struct PlayerView: PlatformViewControllerRepresentable {
+    let asset: AVAsset
+    let playerItem: AVPlayerItem
     let subtitleURL: URL
     let fontProvider: FontProvider
     let pipeline: ImagePipelineType
+    let renderKind: RenderKind
     @Environment(\.dismiss) private var dismiss
 
     func makeNSViewController(context: Context) -> PlayerViewController {
         PlayerViewController(
+            asset: asset,
+            playerItem: playerItem,
             subtitleURL: subtitleURL,
             fontProvider: fontProvider,
             pipeline: pipeline,
+            renderKind: renderKind,
             dismiss: dismiss
         )
     }
@@ -24,13 +30,15 @@ struct PlayerView: PlatformViewControllerRepresentable {
 
 final class PlayerViewController: PlatformViewController {
     private let defaultFont = "arialuni.ttf"
-    private let videoURL = Bundle.main.url(forResource: "video", withExtension: "mp4")!
     private let fontsURL = Bundle.main.resourceURL!
+    private let asset: AVAsset
+    private let playerItem: AVPlayerItem
     private let subtitleURL: URL
     private let player: AVPlayer
     private let dismiss: DismissAction
     private let fontProvider: FontProvider
     private let renderer: AssSubtitlesRenderer
+    private let renderKind: RenderKind
     private let subtitlesView: AssSubtitlesView
     private let playerView = AVPlayerView()
     private var cancellables = Set<AnyCancellable>()
@@ -45,10 +53,21 @@ final class PlayerViewController: PlatformViewController {
         dismiss()
     }
 
-    init(subtitleURL: URL, fontProvider: FontProvider, pipeline: ImagePipelineType, dismiss: DismissAction) {
+    init(
+        asset: AVAsset,
+        playerItem: AVPlayerItem,
+        subtitleURL: URL,
+        fontProvider: FontProvider,
+        pipeline: ImagePipelineType,
+        renderKind: RenderKind,
+        dismiss: DismissAction
+    ) {
+        self.asset = asset
+        self.playerItem = playerItem
         self.subtitleURL = subtitleURL
         self.fontProvider = fontProvider
         self.dismiss = dismiss
+        self.renderKind = renderKind
         self.renderer = AssSubtitlesRenderer(
             fontConfig: FontConfig(
                 fontsPath: fontsURL,
@@ -59,7 +78,7 @@ final class PlayerViewController: PlatformViewController {
             logOutput: .console(.verbose)
         )
         self.subtitlesView = AssSubtitlesView(renderer: renderer)
-        self.player = AVPlayer(url: videoURL)
+        self.player = AVPlayer(playerItem: playerItem)
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -74,7 +93,7 @@ final class PlayerViewController: PlatformViewController {
         addPlayerView()
         addSubtitlesView()
         loadSubtitleTrack()
-        player.play()
+        setupPlayer()
     }
 
     private func addPlayerView() {
@@ -98,6 +117,7 @@ final class PlayerViewController: PlatformViewController {
     }
 
     private func addSubtitlesView() {
+        guard renderKind == .videoOverlay else { return }
         subtitlesView.attach(
             to: playerView,
             containerView: view,
@@ -113,6 +133,13 @@ final class PlayerViewController: PlatformViewController {
         } catch {
             print(error)
         }
+    }
+
+    private func setupPlayer() {
+        defer { player.play() }
+        guard #available(iOS 16.0, tvOS 16.0, visionOS 1.0, macCatalyst 16.0, macOS 13.0, *) else { return }
+        guard renderKind == .videoComposition else { return }
+        renderer.attach(to: playerItem, asset: asset)
     }
 }
 #endif

@@ -7,15 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9919A7522BBCB5DA00898523 /* VideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9919A74F2BBCB5DA00898523 /* VideoPlayer.swift */; };
 		995EF5ED2B815F17000B5E39 /* ExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995EF5EC2B815F17000B5E39 /* ExampleApp.swift */; };
 		995EF5EF2B815F17000B5E39 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995EF5EE2B815F17000B5E39 /* ContentView.swift */; };
 		995EF5F12B815F1C000B5E39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 995EF5F02B815F1C000B5E39 /* Assets.xcassets */; };
 		995EF5FD2B815FF8000B5E39 /* SwiftAssRenderer in Frameworks */ = {isa = PBXBuildFile; productRef = 995EF5FC2B815FF8000B5E39 /* SwiftAssRenderer */; };
 		997B6AE12BAF0C7000BD9689 /* video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 997B6AE02BAF0AF600BD9689 /* video.mp4 */; };
-		99CC520F2BBDC36D00E3F147 /* AVPlayerLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99CC520C2BBDC36D00E3F147 /* AVPlayerLayer.swift */; };
-		99CC52102BBDC36D00E3F147 /* AVPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99CC520D2BBDC36D00E3F147 /* AVPlayerViewController.swift */; };
-		99CC52112BBDC36D00E3F147 /* AVPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99CC520E2BBDC36D00E3F147 /* AVPlayerView.swift */; };
+		99C8A0172BC86811000642C7 /* AVPlayerLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C8A0102BC86811000642C7 /* AVPlayerLayer.swift */; };
+		99C8A0182BC86811000642C7 /* AVPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C8A0112BC86811000642C7 /* AVPlayerView.swift */; };
+		99C8A0192BC86811000642C7 /* AVPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C8A0122BC86811000642C7 /* AVPlayerViewController.swift */; };
+		99C8A01A2BC86811000642C7 /* VideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C8A0132BC86811000642C7 /* VideoPlayer.swift */; };
 		99F5D35F2BBB54E000C6644F /* subtitle-ar.ass in Resources */ = {isa = PBXBuildFile; fileRef = 99F5D35B2BBB54E000C6644F /* subtitle-ar.ass */; };
 		99F5D3602BBB54E000C6644F /* subtitle-en.ass in Resources */ = {isa = PBXBuildFile; fileRef = 99F5D35C2BBB54E000C6644F /* subtitle-en.ass */; };
 		99F5D3612BBB54E000C6644F /* subtitle-ru.ass in Resources */ = {isa = PBXBuildFile; fileRef = 99F5D35D2BBB54E000C6644F /* subtitle-ru.ass */; };
@@ -26,15 +26,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9919A74F2BBCB5DA00898523 /* VideoPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayer.swift; sourceTree = "<group>"; };
 		995EF5E92B815F17000B5E39 /* ASS Subtitles.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ASS Subtitles.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		995EF5EC2B815F17000B5E39 /* ExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleApp.swift; sourceTree = "<group>"; };
 		995EF5EE2B815F17000B5E39 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		995EF5F02B815F1C000B5E39 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		997B6AE02BAF0AF600BD9689 /* video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = video.mp4; sourceTree = "<group>"; };
-		99CC520C2BBDC36D00E3F147 /* AVPlayerLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVPlayerLayer.swift; sourceTree = "<group>"; };
-		99CC520D2BBDC36D00E3F147 /* AVPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVPlayerViewController.swift; sourceTree = "<group>"; };
-		99CC520E2BBDC36D00E3F147 /* AVPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVPlayerView.swift; sourceTree = "<group>"; };
+		99C8A0102BC86811000642C7 /* AVPlayerLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVPlayerLayer.swift; sourceTree = "<group>"; };
+		99C8A0112BC86811000642C7 /* AVPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVPlayerView.swift; sourceTree = "<group>"; };
+		99C8A0122BC86811000642C7 /* AVPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVPlayerViewController.swift; sourceTree = "<group>"; };
+		99C8A0132BC86811000642C7 /* VideoPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayer.swift; sourceTree = "<group>"; };
 		99CC52132BBE013800E3F147 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		99F5D35B2BBB54E000C6644F /* subtitle-ar.ass */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "subtitle-ar.ass"; sourceTree = "<group>"; };
 		99F5D35C2BBB54E000C6644F /* subtitle-en.ass */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "subtitle-en.ass"; sourceTree = "<group>"; };
@@ -80,10 +80,10 @@
 				9994432A2BA643C00079247B /* Resources */,
 				995EF5EC2B815F17000B5E39 /* ExampleApp.swift */,
 				995EF5EE2B815F17000B5E39 /* ContentView.swift */,
-				99CC520C2BBDC36D00E3F147 /* AVPlayerLayer.swift */,
-				99CC520E2BBDC36D00E3F147 /* AVPlayerView.swift */,
-				99CC520D2BBDC36D00E3F147 /* AVPlayerViewController.swift */,
-				9919A74F2BBCB5DA00898523 /* VideoPlayer.swift */,
+				99C8A0102BC86811000642C7 /* AVPlayerLayer.swift */,
+				99C8A0112BC86811000642C7 /* AVPlayerView.swift */,
+				99C8A0122BC86811000642C7 /* AVPlayerViewController.swift */,
+				99C8A0132BC86811000642C7 /* VideoPlayer.swift */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -211,12 +211,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				99CC52112BBDC36D00E3F147 /* AVPlayerView.swift in Sources */,
-				99CC52102BBDC36D00E3F147 /* AVPlayerViewController.swift in Sources */,
+				99C8A0192BC86811000642C7 /* AVPlayerViewController.swift in Sources */,
+				99C8A0182BC86811000642C7 /* AVPlayerView.swift in Sources */,
+				99C8A01A2BC86811000642C7 /* VideoPlayer.swift in Sources */,
 				995EF5EF2B815F17000B5E39 /* ContentView.swift in Sources */,
 				995EF5ED2B815F17000B5E39 /* ExampleApp.swift in Sources */,
-				9919A7522BBCB5DA00898523 /* VideoPlayer.swift in Sources */,
-				99CC520F2BBDC36D00E3F147 /* AVPlayerLayer.swift in Sources */,
+				99C8A0172BC86811000642C7 /* AVPlayerLayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,12 +276,16 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TVOS_DEPLOYMENT_TARGET = 15.0;
+				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
 			name = Debug;
 		};
@@ -332,10 +336,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				TVOS_DEPLOYMENT_TARGET = 15.0;
+				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
 			name = Release;
 		};
@@ -363,10 +371,8 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 13.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mseremet.Example;
 				PRODUCT_NAME = "ASS Subtitles";
@@ -405,10 +411,8 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 13.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mseremet.Example;
 				PRODUCT_NAME = "ASS Subtitles";

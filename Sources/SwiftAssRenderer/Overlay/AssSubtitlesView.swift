@@ -113,12 +113,7 @@ private extension AssSubtitlesView {
         rect
         #elseif canImport(AppKit)
         // macOS has the origin on bottom left corner
-        CGRect(
-            x: rect.origin.x,
-            y: -(rect.origin.y - bounds.height + rect.height),
-            width: rect.width,
-            height: rect.height
-        )
+        rect.flippingY(for: bounds.height)
         #endif
     }
 }

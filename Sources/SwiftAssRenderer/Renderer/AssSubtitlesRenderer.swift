@@ -107,6 +107,20 @@ public final class AssSubtitlesRenderer {
         }
     }
 
+    /// Load a new track from provided content and restore the time offset to last known position.
+    ///
+    /// - Parameters:
+    ///   - content: Raw ASS/SSA subtitle contents.
+    public func reloadTrack(content: String) {
+        let restoreOffset = currentOffset
+        workQueue.executeAsync { [weak self] in
+            guard let self else { return }
+            freeTrack()
+            loadTrack(content: content)
+            loadFrame(offset: restoreOffset)
+        }
+    }
+
     /// Parse and load ASS/SSA subtitle track in memory.
     ///
     /// - Parameters:
@@ -117,22 +131,28 @@ public final class AssSubtitlesRenderer {
         workQueue.executeAsync { [weak self] in
             guard let self else { return }
             freeTrack()
+            loadContents(from: url) { [weak self] contents in
+                guard let self else { return }
+                loadTrack(content: contents)
+            }
         }
-        contentsLoader
-            .loadContents(from: url)
-            .sink { [weak self] completion in
-                guard let self, case .failure(let error) = completion else { return }
-                logger.log(
-                    message: LogMessage(message: "Could not load subtitle contents: \(error)",
-                    level: .default
-                ))
-            } receiveValue: { [weak self] contents in
-                guard let self, let contents else { return }
-                workQueue.executeAsync { [weak self] in
-                    guard let self else { return }
-                    loadTrack(content: contents)
-                }
-            }.store(in: &cancellables)
+    }
+
+    /// Load a new track from provided URL and restore the time offset to last known position.
+    ///
+    /// - Parameters:
+    ///   - url: File or remote URL to subtitle contents .
+    public func reloadTrack(url: URL) {
+        let restoreOffset = currentOffset
+        workQueue.executeAsync { [weak self] in
+            guard let self else { return }
+            freeTrack()
+            loadContents(from: url) { [weak self] contents in
+                guard let self else { return }
+                loadTrack(content: contents)
+                loadFrame(offset: restoreOffset)
+            }
+        }
     }
 
     /// Removes current track and resets the time offset and current visible frame.
@@ -194,17 +214,15 @@ public final class AssSubtitlesRenderer {
     public func reloadFrame() {
         loadFrame(offset: currentOffset)
     }
-}
 
-private extension AssSubtitlesRenderer {
-    enum FrameResult {
-        case loaded(ProcessedImage)
-        case unchanged
-        case none
-    }
-
-    func loadFrame(offset: TimeInterval) {
+    /// Load frame (if any) at the given offset.
+    ///
+    /// - Parameters:
+    ///   - offset: Time interval (in seconds) where to load the subtitle frame.
+    ///   - completion: Completion handler.
+    public func loadFrame(offset: TimeInterval, completion: @escaping (ProcessedImage?) -> Void = { _ in }) {
         workQueue.executeAsync { [weak self] in
+            defer { completion(self?.currentFrame.value) }
             guard let self else { return }
             switch frame(at: offset) {
             case .unchanged: break
@@ -212,6 +230,14 @@ private extension AssSubtitlesRenderer {
             case .loaded(let image): currentFrame.value = image
             }
         }
+    }
+}
+
+private extension AssSubtitlesRenderer {
+    enum FrameResult {
+        case loaded(ProcessedImage)
+        case unchanged
+        case none
     }
 
     func frame(at offset: TimeInterval) -> FrameResult {
@@ -241,6 +267,21 @@ private extension AssSubtitlesRenderer {
         let imageRect = (processedImage.imageRect / canvasScale).integral
 
         return .loaded(ProcessedImage(image: processedImage.image, imageRect: imageRect))
+    }
+
+    func loadContents(from url: URL, completion: @escaping (String) -> Void) {
+        contentsLoader
+            .loadContents(from: url)
+            .sink { [weak self] completion in
+                guard let self, case .failure(let error) = completion else { return }
+                logger.log(
+                    message: LogMessage(message: "Could not load subtitle contents: \(error)",
+                    level: .fatal
+                ))
+            } receiveValue: { contents in
+                guard let contents else { return }
+                completion(contents)
+            }.store(in: &cancellables)
     }
 }
 
@@ -284,7 +325,7 @@ private extension AssSubtitlesRenderer {
             }
             try fontConfig.configure(library: library, renderer: renderer)
         } catch {
-            logger.log(message: LogMessage(message: "Failed settings fonts - \(error)", level: .fatal))
+            logger.log(message: LogMessage(message: "Failed setting fonts - \(error)", level: .fatal))
         }
     }
 }

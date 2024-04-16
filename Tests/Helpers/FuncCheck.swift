@@ -6,6 +6,11 @@ final class FuncCheck<Argument> {
     func call(_ argument: Argument) {
         self.argument = argument
     }
+
+    func reset() {
+        argument = nil
+        arguments = []
+    }
 }
 
 extension FuncCheck where Argument == Void {
