@@ -180,6 +180,7 @@ public final class AssSubtitlesRenderer {
             ))
         }
         wrapper.setRendererSize(renderer, size: size * scale)
+        reloadFrame()
     }
 
     /// Set current visible subtitle offset.
@@ -223,8 +224,8 @@ public final class AssSubtitlesRenderer {
     public func loadFrame(offset: TimeInterval, completion: @escaping (ProcessedImage?) -> Void = { _ in }) {
         workQueue.executeAsync { [weak self] in
             defer { completion(self?.currentFrame.value) }
-            guard let self else { return }
-            switch frame(at: offset) {
+            guard let self, var currentTrack else { return }
+            switch frame(at: offset, in: &currentTrack) {
             case .unchanged: break
             case .none: currentFrame.value = nil
             case .loaded(let image): currentFrame.value = image
@@ -240,7 +241,7 @@ private extension AssSubtitlesRenderer {
         case none
     }
 
-    func frame(at offset: TimeInterval) -> FrameResult {
+    func frame(at offset: TimeInterval, in track: inout ASS_Track) -> FrameResult {
         guard let renderer else {
             logger.log(message: LogMessage(
                 message: "Can't render frame since renderer has not been initialized",
@@ -248,14 +249,7 @@ private extension AssSubtitlesRenderer {
             ))
             return .none
         }
-        guard var currentTrack else {
-            logger.log(message: LogMessage(
-                message: "Can't render frame since track has not been loaded",
-                level: .verbose
-            ))
-            return .none
-        }
-        guard let result = wrapper.renderImage(renderer, track: &currentTrack, at: offset) else {
+        guard let result = wrapper.renderImage(renderer, track: &track, at: offset) else {
             return .none
         }
         guard result.changed else { return .unchanged }

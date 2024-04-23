@@ -55,7 +55,6 @@ public final class AssSubtitlesView: PlatformView {
     private func resizeCanvas() {
         resizeImageAtLayout()
         renderer.setCanvasSize(bounds.size, scale: canvasScale)
-        renderer.reloadFrame()
     }
 }
 

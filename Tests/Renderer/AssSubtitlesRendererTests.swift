@@ -333,6 +333,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
             .store(in: &cancellables)
         subRenderer.loadTrack(content: content)
         subRenderer.setCanvasSize(size, scale: scale)
+        images.removeAll()
         subRenderer.setTimeOffset(10)
 
         // THEN
@@ -367,6 +368,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
             .store(in: &cancellables)
         subRenderer.loadTrack(content: content)
         subRenderer.setCanvasSize(size, scale: scale)
+        images.removeAll()
         subRenderer.setTimeOffset(10)
         mockLibraryWrapper.renderImageStub = nil
         mockImagePipeline.processStub = nil
@@ -435,6 +437,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
             .store(in: &cancellables)
         subRenderer.loadTrack(content: content)
         subRenderer.setCanvasSize(size, scale: scale)
+        images.removeAll()
         subRenderer.setTimeOffset(10)
         subRenderer.reloadFrame()
 
