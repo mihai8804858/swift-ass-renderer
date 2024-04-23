@@ -31,9 +31,7 @@ public final class AssSubtitlesView: PlatformView {
     public override func layoutSubviews() {
         super.layoutSubviews()
 
-        resizeImageAtLayout()
-        renderer.setCanvasSize(bounds.size, scale: canvasScale)
-        renderer.reloadFrame()
+        resizeCanvas()
     }
     #elseif canImport(AppKit)
     public init(renderer: AssSubtitlesRenderer, scale: CGFloat = 2.0) {
@@ -46,11 +44,19 @@ public final class AssSubtitlesView: PlatformView {
     public override func layout() {
         super.layout()
 
+        resizeCanvas()
+    }
+
+    public override func hitTest(_ point: NSPoint) -> NSView? {
+        return nil
+    }
+    #endif
+
+    private func resizeCanvas() {
         resizeImageAtLayout()
         renderer.setCanvasSize(bounds.size, scale: canvasScale)
         renderer.reloadFrame()
     }
-    #endif
 }
 
 private extension AssSubtitlesView {
@@ -63,6 +69,7 @@ private extension AssSubtitlesView {
         addSubview(imageView)
         #if canImport(UIKit)
         backgroundColor = .clear
+        isUserInteractionEnabled = false
         #elseif canImport(AppKit)
         layer?.backgroundColor = NSColor.clear.cgColor
         #endif
