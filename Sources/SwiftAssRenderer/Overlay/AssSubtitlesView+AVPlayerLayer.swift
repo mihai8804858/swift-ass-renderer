@@ -19,82 +19,55 @@ public extension AssSubtitlesView {
     /// - Frees current subtitles track when player's `currentItem` changes to `nil`.
     /// - Periodically updates renderer time offset each `updateInterval`.
     func attach(
-        to layer: AVPlayerLayer,
+        to playerLayer: AVPlayerLayer,
         containerView: PlatformView,
         updateInterval: CMTime,
         storeCancellable: @escaping (AnyCancellable) -> Void
     ) {
         containerView.addSubview(self)
-        layout(layer: layer, containerView: containerView)
-        observeContainerFrame(
-            layer: layer,
-            containerView: containerView,
-            storeCancellable: storeCancellable
-        )
-        observePlayerItem(
-            layer: layer,
-            containerView: containerView,
-            storeCancellable: storeCancellable
-        )
-        observeTimeOffset(
-            layer: layer,
-            interval: updateInterval,
-            storeCancellable: storeCancellable
-        )
+        layout(layer: playerLayer)
+        observeLayerFrame(layer: playerLayer, storeCancellable: storeCancellable)
+        observePlayerItem(layer: playerLayer, storeCancellable: storeCancellable)
+        observeTimeOffset(layer: playerLayer, interval: updateInterval, storeCancellable: storeCancellable)
     }
 }
 
 private extension AssSubtitlesView {
-    func layout(layer: AVPlayerLayer, containerView: PlatformView) {
-        guard let playerItem = layer.player?.currentItem,
-              !containerView.bounds.size.isEmpty,
-              !playerItem.presentationSize.isEmpty else { return }
+    func layout(layer: AVPlayerLayer) {
+        guard let playerItem = layer.player?.currentItem, !playerItem.presentationSize.isEmpty else { return }
         translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.deactivate(constraints)
-        removeConstraints(constraints)
-        let subtitlesCanvas = AVMakeRect(
+        frame = AVMakeRect(
             aspectRatio: playerItem.presentationSize,
-            insideRect: containerView.bounds
-        )
-        NSLayoutConstraint.activate([
-            widthAnchor.constraint(equalToConstant: subtitlesCanvas.width),
-            heightAnchor.constraint(equalToConstant: subtitlesCanvas.height),
-            centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
-        ])
+            insideRect: layer.bounds
+        ).applying(.identity.translatedBy(
+            x: layer.frame.minX,
+            y: layer.frame.minY
+        ))
     }
 
-    func observeContainerFrame(
+    func observeLayerFrame(
         layer: AVPlayerLayer,
-        containerView: PlatformView,
         storeCancellable: @escaping (AnyCancellable) -> Void
     ) {
-        let cancellable = containerView
-            .publisher(for: \.frame, options: [.initial, .new])
-            .sink { [weak self, weak layer, weak containerView] _ in
-                guard let self, let layer, let containerView else { return }
-                layout(layer: layer, containerView: containerView)
-            }
-        storeCancellable(cancellable)
+        layer.onFrameChanged { [weak self, weak layer] in
+            guard let self, let layer else { return }
+            layout(layer: layer)
+        } storeCancellable: { cancellable in
+            storeCancellable(cancellable)
+        }
     }
 
     func observePlayerItem(
         layer: AVPlayerLayer,
-        containerView: PlatformView,
         storeCancellable: @escaping (AnyCancellable) -> Void
     ) {
         guard let player = layer.player else { return }
         let cancellable = player
             .publisher(for: \.currentItem, options: [.initial, .new])
-            .sink { [weak self, weak layer, weak containerView] _ in
-                guard let self, let layer, let containerView else { return }
+            .sink { [weak self, weak layer] _ in
+                guard let self, let layer else { return }
                 if let item = player.currentItem {
-                    observePresentationSize(
-                        layer: layer,
-                        containerView: containerView,
-                        item: item,
-                        storeCancellable: storeCancellable
-                    )
+                    observePresentationSize(layer: layer, item: item, storeCancellable: storeCancellable)
                 } else {
                     renderer.freeTrack()
                 }
@@ -104,15 +77,14 @@ private extension AssSubtitlesView {
 
     func observePresentationSize(
         layer: AVPlayerLayer,
-        containerView: PlatformView,
         item: AVPlayerItem,
         storeCancellable: @escaping (AnyCancellable) -> Void
     ) {
         let cancellable = item
             .publisher(for: \.presentationSize, options: [.initial, .new])
-            .sink { [weak self, weak layer, weak containerView] _ in
-                guard let self, let layer, let containerView else { return }
-                layout(layer: layer, containerView: containerView)
+            .sink { [weak self, weak layer] _ in
+                guard let self, let layer else { return }
+                layout(layer: layer)
             }
         storeCancellable(cancellable)
     }

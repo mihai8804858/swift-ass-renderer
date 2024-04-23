@@ -70,6 +70,7 @@ private extension AssSubtitlesView {
         backgroundColor = .clear
         isUserInteractionEnabled = false
         #elseif canImport(AppKit)
+        wantsLayer = true
         layer?.backgroundColor = NSColor.clear.cgColor
         #endif
     }
@@ -108,7 +109,7 @@ private extension AssSubtitlesView {
         let ratioY = 1 / (lastRenderBounds.height / bounds.height)
         let newOrigin = CGPoint(x: imageView.frame.origin.x * ratioX, y: imageView.frame.origin.y * ratioY)
         let newSize = CGSize(width: imageView.frame.width * ratioX, height: imageView.frame.height * ratioY)
-        let newFrame = CGRect(origin: newOrigin, size: newSize)
+        let newFrame = CGRect(origin: newOrigin, size: newSize).integral
         CATransaction.begin()
         imageView.frame = newFrame
         CATransaction.commit()
