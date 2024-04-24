@@ -94,14 +94,14 @@ public final class AssSubtitlesRenderer {
     ///
     /// Always call this method before starting to update the time offset.
     public func loadTrack(content: String) {
-        guard let library else {
-            return logger.log(message: LogMessage(
-                message: "Track cannot be loaded since library has not been initialized",
-                level: .verbose
-            ))
-        }
         workQueue.executeAsync { [weak self] in
             guard let self else { return }
+            guard let library else {
+                return logger.log(message: LogMessage(
+                    message: "Track cannot be loaded since library has not been initialized",
+                    level: .verbose
+                ))
+            }
             freeTrack()
             currentTrack = wrapper.readTrack(library, content: content)
         }
@@ -113,12 +113,9 @@ public final class AssSubtitlesRenderer {
     ///   - content: Raw ASS/SSA subtitle contents.
     public func reloadTrack(content: String) {
         let restoreOffset = currentOffset
-        workQueue.executeAsync { [weak self] in
-            guard let self else { return }
-            freeTrack()
-            loadTrack(content: content)
-            loadFrame(offset: restoreOffset)
-        }
+        freeTrack()
+        loadTrack(content: content)
+        loadFrame(offset: restoreOffset)
     }
 
     /// Parse and load ASS/SSA subtitle track in memory.
@@ -128,13 +125,10 @@ public final class AssSubtitlesRenderer {
     ///
     /// Always call this method before starting to update the time offset.
     public func loadTrack(url: URL) {
-        workQueue.executeAsync { [weak self] in
+        freeTrack()
+        loadContents(from: url) { [weak self] contents in
             guard let self else { return }
-            freeTrack()
-            loadContents(from: url) { [weak self] contents in
-                guard let self else { return }
-                loadTrack(content: contents)
-            }
+            loadTrack(content: contents)
         }
     }
 
@@ -144,14 +138,11 @@ public final class AssSubtitlesRenderer {
     ///   - url: File or remote URL to subtitle contents .
     public func reloadTrack(url: URL) {
         let restoreOffset = currentOffset
-        workQueue.executeAsync { [weak self] in
+        freeTrack()
+        loadContents(from: url) { [weak self] contents in
             guard let self else { return }
-            freeTrack()
-            loadContents(from: url) { [weak self] contents in
-                guard let self else { return }
-                loadTrack(content: contents)
-                loadFrame(offset: restoreOffset)
-            }
+            loadTrack(content: contents)
+            loadFrame(offset: restoreOffset)
         }
     }
 
@@ -173,14 +164,17 @@ public final class AssSubtitlesRenderer {
     public func setCanvasSize(_ size: CGSize, scale: CGFloat) {
         canvasSize = size
         canvasScale = scale
-        guard let renderer else {
-            return logger.log(message: LogMessage(
-                message: "Can't set canvas size since renderer has not been initialized",
-                level: .verbose
-            ))
+        workQueue.executeAsync { [weak self] in
+            guard let self else { return }
+            guard let renderer else {
+                return logger.log(message: LogMessage(
+                    message: "Can't set canvas size since renderer has not been initialized",
+                    level: .verbose
+                ))
+            }
+            wrapper.setRendererSize(renderer, size: size * scale)
+            reloadFrame()
         }
-        wrapper.setRendererSize(renderer, size: size * scale)
-        reloadFrame()
     }
 
     /// Set current visible subtitle offset.
