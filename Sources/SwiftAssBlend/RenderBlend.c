@@ -14,8 +14,12 @@ void *get_buffer(size_t x, size_t y, size_t member_size) {
         return NULL;
 
     size_t size = x * y * member_size;
+    if (!size)
+        size = 1;
+
     void *buffer = malloc(size);
-    memset(buffer, 0, size);
+    if (buffer)
+        memset(buffer, 0, size);
 
     return buffer;
 }
