@@ -42,6 +42,9 @@ private extension AssSubtitlesView {
         ).applying(.identity.translatedBy(
             x: layer.frame.minX,
             y: layer.frame.minY
+        ).scaledBy(
+            x: layer.affineTransform().a,
+            y: layer.affineTransform().d
         ))
     }
 
