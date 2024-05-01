@@ -8,16 +8,17 @@ public final class BlendImagePipeline: ImagePipelineType {
     public init() {}
 
     public func process(images: [ASS_Image], boundingRect: CGRect) -> ProcessedImage? {
-        guard var image = images.first else { return nil }
+        guard var image = images.first, !image.imageRect.size.isEmpty else { return nil }
         let blendResult = renderBlend(&image)
-        guard blendResult.buffer != nil else { return nil }
 
-        return makeCGImage(
-            buffer: blendResult.buffer,
-            size: boundingRect.size,
-            colorSpace: CGColorSpaceCreateDeviceRGB(),
-            bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.last.rawValue)
-        ).flatMap { image in
+        return blendResult.buffer.flatMap { buffer in
+            makeCGImage(
+                buffer: UnsafeRawBufferPointer(start: buffer, count: Int(blendResult.buffer_size)),
+                size: boundingRect.size,
+                colorSpace: CGColorSpaceCreateDeviceRGB(),
+                bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.last.rawValue)
+            )
+        }.flatMap { image in
             ProcessedImage(image: image, imageRect: boundingRect)
         }
     }

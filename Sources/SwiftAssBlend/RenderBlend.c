@@ -43,13 +43,13 @@ Blend_Result renderBlend(ASS_Image *img) {
 
     int width = max_x - min_x + 1, height = max_y - min_y + 1;
 
-    if (width == 0 || height == 0)
-        return blend_result;
-
     blend_result.bounding_rect_x = min_x;
     blend_result.bounding_rect_y = min_y;
     blend_result.bounding_rect_w = width;
     blend_result.bounding_rect_h = height;
+
+    if (width == 0 || height == 0)
+        return blend_result;
 
     // make float buffer for blending
     float* buf = (float*)get_buffer(width, height, sizeof(float) * 4);
@@ -117,10 +117,7 @@ Blend_Result renderBlend(ASS_Image *img) {
     }
 
     // return the thing
-    blend_result.bounding_rect_x = min_x;
-    blend_result.bounding_rect_y = min_y;
-    blend_result.bounding_rect_w = width;
-    blend_result.bounding_rect_h = height;
+    blend_result.buffer_size = width * height * 4 * sizeof(float);
     blend_result.buffer = (unsigned char*)result;
 
     return blend_result;

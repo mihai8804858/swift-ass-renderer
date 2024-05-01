@@ -9,6 +9,8 @@ typedef struct blend_result {
     int bounding_rect_y;
     int bounding_rect_w;
     int bounding_rect_h;
+
+    int buffer_size;
     unsigned char* buffer;
 } Blend_Result;
 

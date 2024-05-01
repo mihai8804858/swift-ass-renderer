@@ -142,17 +142,12 @@ public func palettizedBitmap(
 ///
 /// The `CGImage` will hold onto the `buffer` and deallocate it when it won't be needing it anymore.
 public func makeCGImage(
-    buffer: UnsafeMutablePointer<UInt8>,
+    buffer: UnsafeRawBufferPointer,
     size: CGSize,
     colorSpace: CGColorSpace,
     bitmapInfo: CGBitmapInfo
 ) -> CGImage? {
-    CGDataProvider(
-        dataInfo: nil,
-        data: buffer,
-        size: 4 * Int(size.width) * Int(size.height),
-        releaseData: { _, buffer, _ in buffer.deallocate() }
-    ).flatMap { provider in
+    createDataProvider(buffer: buffer, size: size).flatMap { provider in
         CGImage(
             width: Int(size.width),
             height: Int(size.height),
@@ -167,6 +162,21 @@ public func makeCGImage(
             intent: .defaultIntent
         )
     }
+}
+
+private func createDataProvider(
+    buffer: UnsafeRawBufferPointer,
+    size: CGSize
+) -> CGDataProvider? {
+    let expectedSize = Int(size.width) * Int(size.height) * 4 * MemoryLayout<Float>.size
+    guard let baseAddress = buffer.baseAddress, buffer.count == expectedSize, !size.isEmpty else { return nil }
+
+    return CGDataProvider(
+        dataInfo: nil,
+        data: baseAddress,
+        size: expectedSize,
+        releaseData: { _, buffer, _ in buffer.deallocate() }
+    )
 }
 
 // This is more performant than for in loop 🤷‍♂️
