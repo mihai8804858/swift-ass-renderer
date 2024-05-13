@@ -9,6 +9,12 @@ public typealias RendererSetup = (_ library: OpaquePointer, _ renderer: OpaquePo
 /// ASS/SSA subtitles renderer. Manages the current ASS track, 
 /// current time offset and current visible frame (``ProcessedImage``).
 public final class AssSubtitlesRenderer {
+    public enum FrameRenderResult {
+        case loaded(ProcessedImage)
+        case unchanged
+        case none
+    }
+
     private let workQueue: DispatchQueueType
     private let scheduler: AnySchedulerOf<DispatchQueue>
     private let wrapper: LibraryWrapperType.Type
@@ -162,6 +168,7 @@ public final class AssSubtitlesRenderer {
     /// Always call this method before starting to update the time offset.
     /// When using the renderer with ``AssSubtitles`` / ``AssSubtitlesView``, you don't have to call this method.
     public func setCanvasSize(_ size: CGSize, scale: CGFloat) {
+        if canvasSize == size && canvasScale == scale { return }
         canvasSize = size
         canvasScale = scale
         workQueue.executeAsync { [weak self] in
@@ -219,23 +226,35 @@ public final class AssSubtitlesRenderer {
         workQueue.executeAsync { [weak self] in
             defer { completion(self?.currentFrame.value) }
             guard let self, var currentTrack else { return }
-            switch frame(at: offset, in: &currentTrack) {
-            case .unchanged: break
-            case .none: currentFrame.value = nil
-            case .loaded(let image): currentFrame.value = image
-            }
+            setCurrentFrame(from: frame(at: offset, in: &currentTrack))
         }
+    }
+
+    /// Load frame synchronously at the given offset.
+    ///
+    /// - Parameters:
+    ///   - offset: Time interval (in seconds) where to load the subtitle frame.
+    ///
+    /// - Returns: ``FrameRenderResult`` relative to last renderer frame.
+    public func loadFrameSync(offset: TimeInterval) -> FrameRenderResult {
+        guard var currentTrack else { return .none }
+        let result = frame(at: offset, in: &currentTrack)
+        setCurrentFrame(from: result)
+
+        return result
     }
 }
 
 private extension AssSubtitlesRenderer {
-    enum FrameResult {
-        case loaded(ProcessedImage)
-        case unchanged
-        case none
+    private func setCurrentFrame(from result: FrameRenderResult) {
+        switch result {
+        case .unchanged: break
+        case .none: currentFrame.value = nil
+        case .loaded(let image): currentFrame.value = image
+        }
     }
 
-    func frame(at offset: TimeInterval, in track: inout ASS_Track) -> FrameResult {
+    func frame(at offset: TimeInterval, in track: inout ASS_Track) -> FrameRenderResult {
         guard let renderer else {
             logger.log(message: LogMessage(
                 message: "Can't render frame since renderer has not been initialized",
@@ -279,7 +298,6 @@ private extension AssSubtitlesRenderer {
             guard let self else { return }
             configureLibrary()
             configureFonts()
-            setCanvasSize(canvasSize, scale: canvasScale)
         }
     }
 

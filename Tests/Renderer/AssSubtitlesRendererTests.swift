@@ -122,22 +122,6 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssert(argument == (library, renderer))
     }
 
-    func test_init_shouldSetRendererSize() throws {
-        // GIVEN
-        let library = OpaquePointer(bitPattern: 1)!
-        let renderer = OpaquePointer(bitPattern: 2)!
-        mockLibraryWrapper.libraryInitStub = library
-        mockLibraryWrapper.rendererInitStub = renderer
-
-        // WHEN
-        _ = createRenderer()
-
-        // THEN
-        XCTAssert(mockLibraryWrapper.setRendererSizeFunc.wasCalled)
-        let argument = try XCTUnwrap(mockLibraryWrapper.setRendererSizeFunc.argument)
-        XCTAssert(argument == (renderer, .zero))
-    }
-
     func test_loadTrackContent_shouldReadTrack() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -283,7 +267,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssert(mockLibraryWrapper.libraryDoneFunc.wasCalled)
     }
 
-    func test_setCanvasSize_shouldSetRendererSize() throws {
+    func test_setCanvasSize_whenSizeOrScaleAreDifferent_shouldSetRendererSize() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
         let renderer = OpaquePointer(bitPattern: 2)!
@@ -303,6 +287,28 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssert(mockLibraryWrapper.setRendererSizeFunc.wasCalled)
         let argument = try XCTUnwrap(mockLibraryWrapper.setRendererSizeFunc.argument)
         XCTAssert(argument == (renderer, size * scale))
+    }
+
+    func test_setCanvasSize_whenSizeAndScaleAreSame_shouldNotSetRendererSize() throws {
+        // GIVEN
+        let library = OpaquePointer(bitPattern: 1)!
+        let renderer = OpaquePointer(bitPattern: 2)!
+        let content = "<CONTENT>"
+        let size = CGSize(width: 1920, height: 1080)
+        let scale = 3.0
+        mockLibraryWrapper.libraryInitStub = library
+        mockLibraryWrapper.rendererInitStub = renderer
+        mockLibraryWrapper.readTrackStub = ASS_Track()
+
+        // WHEN
+        let subRenderer = createRenderer()
+        subRenderer.loadTrack(content: content)
+        subRenderer.setCanvasSize(size, scale: scale)
+        mockLibraryWrapper.setRendererSizeFunc.reset()
+        subRenderer.setCanvasSize(size, scale: scale)
+
+        // THEN
+        XCTAssertFalse(mockLibraryWrapper.setRendererSizeFunc.wasCalled)
     }
 
     func test_setTimeOffset_whenFrameWasLoaded_shouldReturnProcessedImage() throws {
