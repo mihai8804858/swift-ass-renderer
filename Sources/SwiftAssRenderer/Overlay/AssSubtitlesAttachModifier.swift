@@ -40,7 +40,9 @@ struct AssSubtitlesAttachModifier: ViewModifier {
                     .fixedSize()
             }
             .onReceive(
-                player.publisher(for: \.currentItem?.presentationSize, options: [.initial, .new]),
+                player
+                    .publisher(for: \.currentItem?.presentationSize, options: [.initial, .new])
+                    .receive(on: DispatchQueue.main),
                 perform: presentationSizeChanged
             )
             .onReceive(

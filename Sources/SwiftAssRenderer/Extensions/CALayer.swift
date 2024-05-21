@@ -28,6 +28,7 @@ extension CALayer {
         let cancellable = Publishers
             .MergeMany(boundsPub, positionPub, anchorPointPub, transformPub)
             .map { _ in }
+            .receive(on: DispatchQueue.main)
             .sink(receiveValue: action)
         storeCancellable(cancellable)
     }

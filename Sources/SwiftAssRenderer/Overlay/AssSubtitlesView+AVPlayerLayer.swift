@@ -67,6 +67,7 @@ private extension AssSubtitlesView {
         guard let player = layer.player else { return }
         let cancellable = player
             .publisher(for: \.currentItem, options: [.initial, .new])
+            .receive(on: DispatchQueue.main)
             .sink { [weak self, weak layer] _ in
                 guard let self, let layer else { return }
                 if let item = player.currentItem {
@@ -85,6 +86,7 @@ private extension AssSubtitlesView {
     ) {
         let cancellable = item
             .publisher(for: \.presentationSize, options: [.initial, .new])
+            .receive(on: DispatchQueue.main)
             .sink { [weak self, weak layer] _ in
                 guard let self, let layer else { return }
                 layout(layer: layer)

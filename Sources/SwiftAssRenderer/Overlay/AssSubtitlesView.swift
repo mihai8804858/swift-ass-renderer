@@ -84,35 +84,44 @@ private extension AssSubtitlesView {
     }
 
     func handleFrameChanged(_ image: ProcessedImage?) {
-        if let image {
-            resizeImageView(for: image)
-            #if canImport(UIKit)
-            imageView.image = PlatformImage(cgImage: image.image)
-            #elseif canImport(AppKit)
-            imageView.image = PlatformImage(cgImage: image.image, size: image.imageRect.size)
-            #endif
-            imageView.isHidden = false
-        } else {
-            imageView.isHidden = true
-            imageView.image = nil
+        UI { [weak self] in
+            guard let self else { return }
+            if let image {
+                resizeImageView(for: image)
+                #if canImport(UIKit)
+                imageView.image = PlatformImage(cgImage: image.image)
+                #elseif canImport(AppKit)
+                imageView.image = PlatformImage(cgImage: image.image, size: image.imageRect.size)
+                #endif
+                imageView.isHidden = false
+            } else {
+                imageView.isHidden = true
+                imageView.image = nil
+            }
         }
     }
 
     func resizeImageView(for image: ProcessedImage) {
-        lastRenderBounds = bounds
-        imageView.frame = imageFrame(for: image.imageRect)
+        UI { [weak self] in
+            guard let self else { return }
+            lastRenderBounds = bounds
+            imageView.frame = imageFrame(for: image.imageRect)
+        }
     }
 
     func resizeImageAtLayout() {
-        if lastRenderBounds.isEmpty || bounds.isEmpty || imageView.image == nil { return }
-        let ratioX = 1 / (lastRenderBounds.width / bounds.width)
-        let ratioY = 1 / (lastRenderBounds.height / bounds.height)
-        let newOrigin = CGPoint(x: imageView.frame.origin.x * ratioX, y: imageView.frame.origin.y * ratioY)
-        let newSize = CGSize(width: imageView.frame.width * ratioX, height: imageView.frame.height * ratioY)
-        let newFrame = CGRect(origin: newOrigin, size: newSize).integral
-        CATransaction.begin()
-        imageView.frame = newFrame
-        CATransaction.commit()
+        UI { [weak self] in
+            guard let self else { return }
+            if lastRenderBounds.isEmpty || bounds.isEmpty || imageView.image == nil { return }
+            let ratioX = 1 / (lastRenderBounds.width / bounds.width)
+            let ratioY = 1 / (lastRenderBounds.height / bounds.height)
+            let newOrigin = CGPoint(x: imageView.frame.origin.x * ratioX, y: imageView.frame.origin.y * ratioY)
+            let newSize = CGSize(width: imageView.frame.width * ratioX, height: imageView.frame.height * ratioY)
+            let newFrame = CGRect(origin: newOrigin, size: newSize).integral
+            CATransaction.begin()
+            imageView.frame = newFrame
+            CATransaction.commit()
+        }
     }
 
     func imageFrame(for rect: CGRect) -> CGRect {

@@ -69,6 +69,7 @@ private extension AssSubtitlesView {
     ) {
         let cancellable = containerView
             .publisher(for: \.frame, options: [.initial, .new])
+            .receive(on: DispatchQueue.main)
             .sink { [weak self, weak playerView, weak containerView] _ in
                 guard let self, let playerView, let containerView else { return }
                 layout(playerView: playerView, containerView: containerView)
@@ -83,6 +84,7 @@ private extension AssSubtitlesView {
         guard let player = playerView.player else { return }
         let cancellable = player
             .publisher(for: \.currentItem, options: [.initial, .new])
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self else { return }
                 if player.currentItem == nil { renderer.freeTrack() }
@@ -97,6 +99,7 @@ private extension AssSubtitlesView {
     ) {
         let cancellable = playerView
             .publisher(for: \.videoBounds, options: [.initial, .new])
+            .receive(on: DispatchQueue.main)
             .sink { [weak self, weak playerView, weak containerView] _ in
                 guard let self, let playerView, let containerView else { return }
                 layout(playerView: playerView, containerView: containerView)

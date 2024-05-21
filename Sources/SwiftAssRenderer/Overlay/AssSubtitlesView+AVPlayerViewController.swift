@@ -82,6 +82,7 @@ private extension AssSubtitlesView {
         guard let contentOverlayView = viewController.contentOverlayView else { return }
         let cancellable = contentOverlayView
             .publisher(for: \.frame, options: [.initial, .new])
+            .receive(on: DispatchQueue.main)
             .sink { [weak self, weak viewController] _ in
                 guard let self, let viewController else { return }
                 layout(viewController: viewController)
@@ -96,6 +97,7 @@ private extension AssSubtitlesView {
         guard let player = viewController.player else { return }
         let cancellable = player
             .publisher(for: \.currentItem, options: [.initial, .new])
+            .receive(on: DispatchQueue.main)
             .sink { [weak self, weak viewController] _ in
                 guard let self, let viewController else { return }
                 if let item = player.currentItem {
@@ -119,6 +121,7 @@ private extension AssSubtitlesView {
         #if os(tvOS)
         let cancellable = playerItem
             .publisher(for: \.presentationSize, options: [.initial, .new])
+            .receive(on: DispatchQueue.main)
             .sink { [weak self, weak viewController] _ in
                 guard let self, let viewController else { return }
                 layout(viewController: viewController)
@@ -127,6 +130,7 @@ private extension AssSubtitlesView {
         #else
         let cancellable = viewController
             .publisher(for: \.videoBounds, options: [.initial, .new])
+            .receive(on: DispatchQueue.main)
             .sink { [weak self, weak viewController] _ in
                 guard let self, let viewController else { return }
                 layout(viewController: viewController)
