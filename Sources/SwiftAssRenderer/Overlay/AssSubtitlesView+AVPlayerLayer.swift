@@ -35,7 +35,6 @@ public extension AssSubtitlesView {
 private extension AssSubtitlesView {
     func layout(layer: AVPlayerLayer) {
         guard let playerItem = layer.player?.currentItem, !playerItem.presentationSize.isEmpty else { return }
-        translatesAutoresizingMaskIntoConstraints = false
         frame = AVMakeRect(
             aspectRatio: playerItem.presentationSize,
             insideRect: layer.bounds
