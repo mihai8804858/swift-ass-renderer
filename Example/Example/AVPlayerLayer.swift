@@ -51,7 +51,7 @@ final class PlayerLayerViewController: PlatformViewController {
         }
 
         #if !os(macOS)
-        override final class var layerClass: Swift.AnyClass {
+        override static var layerClass: Swift.AnyClass {
             AVPlayerLayer.self
         }
         #endif
