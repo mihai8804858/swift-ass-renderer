@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mihai8804858/swift-libass",
       "state" : {
-        "revision" : "ec8d0be086ae19e8bb4b3b4f627531023d2f336b",
-        "version" : "1.1.0"
+        "revision" : "7fc01c5d2fdf9caed4c3811f6199526f766084d1",
+        "version" : "1.2.0"
       }
     },
     {
