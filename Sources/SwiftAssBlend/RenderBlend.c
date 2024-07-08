@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
-#include "ass/ass.h"
-#include "ass/ass_types.h"
+#include <libass/ass/ass.h>
+#include <libass/ass/ass_types.h>
 #include "RenderBlend.h"
 
 const float MIN_UINT8_CAST = 0.9 / 255;

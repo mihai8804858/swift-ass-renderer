@@ -43,8 +43,33 @@ jobs:
       - name: Run CSpell
         run: make spell
 
-  build:
-    name: Build
+  build-spm:
+    name: Build (SPM)
+    runs-on: macos-14
+    strategy:
+      matrix:
+        config: ['debug', 'release']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup netrc
+        uses: extractions/netrc@v2
+        with:
+          machine: github.com
+          username: user
+          password: ${{ secrets.GH_PAT }}
+
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Build in ${{ matrix.config }}
+        run: swift build -c ${{ matrix.config }}
+
+  build-xcode:
+    name: Build (Xcode)
     runs-on: macos-14
     strategy:
       matrix:
@@ -96,8 +121,30 @@ jobs:
       - name: Build example
         run: make build-example
 
-  test:
-    name: Test
+  test-spm:
+    name: Test (SPM)
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup netrc
+        uses: extractions/netrc@v2
+        with:
+          machine: github.com
+          username: user
+          password: ${{ secrets.GH_PAT }}
+
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Run tests
+        run: swift test --skip SwiftAssRendererTests.BlendImagePipelineTests/test_processImage
+
+  test-xcode:
+    name: Test (Xcode)
     runs-on: macos-14
     steps:
       - name: Checkout

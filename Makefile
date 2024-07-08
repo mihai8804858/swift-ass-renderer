@@ -10,14 +10,14 @@ DOCC_ARCHIVE = SwiftAssRenderer.doccarchive
 GENERIC_PLATFORM_IOS = generic/platform=iOS
 GENERIC_PLATFORM_TVOS = generic/platform=tvOS
 GENERIC_PLATFORM_VISIONOS = generic/platform=visionOS
-GENERIC_PLATFORM_MACOS = platform=macOS,arch=arm64
-GENERIC_PLATFORM_MAC_CATALYST = platform=macOS,variant=Mac Catalyst,arch=arm64
+GENERIC_PLATFORM_MACOS = platform=macOS
+GENERIC_PLATFORM_MAC_CATALYST = platform=macOS,variant=Mac Catalyst
 
 SIM_PLATFORM_IOS = platform=iOS Simulator,id=$(call udid_for,iOS 17.5,iPhone \d\+ Pro [^M])
 SIM_PLATFORM_TVOS = platform=tvOS Simulator,id=$(call udid_for,tvOS 17.5,TV)
 SIM_PLATFORM_VISIONOS = platform=visionOS Simulator,id=$(call udid_for,visionOS 1.2,Vision)
-SIM_PLATFORM_MACOS = platform=macOS,arch=arm64
-SIM_PLATFORM_MAC_CATALYST = platform=macOS,variant=Mac Catalyst,arch=arm64
+SIM_PLATFORM_MACOS = platform=macOS
+SIM_PLATFORM_MAC_CATALYST = platform=macOS,variant=Mac Catalyst
 
 GREEN='\033[0;32m'
 NC='\033[0m'
@@ -65,7 +65,8 @@ build-example:
 ifeq ($(CI),true)
 	for platform in \
 	  "$(SIM_PLATFORM_IOS)" \
-	  "$(SIM_PLATFORM_TVOS)"; \
+	  "$(SIM_PLATFORM_TVOS)" \
+	  "$(SIM_PLATFORM_VISIONOS)"; \
 	do \
 		echo -e "\n${GREEN}Building example on $$platform ${NC}"\n; \
 		set -o pipefail && xcrun xcodebuild clean build \
@@ -114,7 +115,9 @@ else
 	for platform in \
 	  "$(SIM_PLATFORM_IOS)" \
 	  "$(SIM_PLATFORM_TVOS)" \
-	  "$(SIM_PLATFORM_VISIONOS)"; \
+	  "$(SIM_PLATFORM_VISIONOS)" \
+	  "$(SIM_PLATFORM_MACOS)" \
+	  "$(SIM_PLATFORM_MAC_CATALYST)"; \
 	do \
 		echo -e "\n${GREEN}Testing $$platform ${NC}\n"; \
 		set -o pipefail && xcrun xcodebuild clean test \

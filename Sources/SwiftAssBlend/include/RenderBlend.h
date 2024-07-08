@@ -1,8 +1,8 @@
 #ifndef RENDER_BLEND_H
 #define RENDER_BLEND_H
 
-#include "ass/ass.h"
-#include "ass/ass_types.h"
+#include <libass/ass/ass.h>
+#include <libass/ass/ass_types.h>
 
 typedef struct blend_result {
     int bounding_rect_x;
