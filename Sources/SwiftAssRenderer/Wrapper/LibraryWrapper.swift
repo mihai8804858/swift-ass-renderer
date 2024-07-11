@@ -50,40 +50,54 @@ enum LibraryWrapper: LibraryWrapperType {
     }
 
     static func libraryInit() -> OpaquePointer? {
-        ass_library_init()
+        withLock {
+            ass_library_init()
+        }
     }
 
     static func libraryDone(_ library: OpaquePointer) {
-        ass_library_done(library)
+        withLock {
+            ass_library_done(library)
+        }
     }
 
     static func rendererInit(_ library: OpaquePointer) -> OpaquePointer? {
-        ass_renderer_init(library)
+        withLock {
+            ass_renderer_init(library)
+        }
     }
 
     static func rendererDone(_ renderer: OpaquePointer) {
-        ass_renderer_done(renderer)
+        withLock {
+            ass_renderer_done(renderer)
+        }
     }
 
     static func setLogCallback(_ library: OpaquePointer) {
-        ass_set_message_cb(library, { messageLevel, messageString, messageArgs, _ in
-            guard let messageString else { return }
-            let message = String(cString: messageString)
-            if let messageArgs {
-                let formattedMessage = NSString(format: message, arguments: messageArgs) as String
-                LibraryWrapper.libraryLogger(Int(messageLevel), formattedMessage)
-            } else {
-                LibraryWrapper.libraryLogger(Int(messageLevel), message)
-            }
-        }, nil)
+        withLock {
+            ass_set_message_cb(library, { messageLevel, messageString, messageArgs, _ in
+                guard let messageString else { return }
+                let message = String(cString: messageString)
+                if let messageArgs {
+                    let formattedMessage = NSString(format: message, arguments: messageArgs) as String
+                    LibraryWrapper.libraryLogger(Int(messageLevel), formattedMessage)
+                } else {
+                    LibraryWrapper.libraryLogger(Int(messageLevel), message)
+                }
+            }, nil)
+        }
     }
 
     static func setRendererSize(_ renderer: OpaquePointer, size: CGSize) {
-        ass_set_frame_size(renderer, Int32(size.width), Int32(size.height))
+        withLock {
+            ass_set_frame_size(renderer, Int32(size.width), Int32(size.height))
+        }
     }
 
     static func setExtractFonts(_ library: OpaquePointer, extract: Bool) {
-        ass_set_extract_fonts(library, extract ? 1 : 0)
+        withLock {
+            ass_set_extract_fonts(library, extract ? 1 : 0)
+        }
     }
 
     static func setFonts(
@@ -93,16 +107,20 @@ enum LibraryWrapper: LibraryWrapperType {
         defaultFont: String? = nil,
         defaultFamily: String? = nil
     ) {
-        let defaultFont = defaultFont.flatMap { $0.cString(using: .utf8) }
-        let defaultFamily = defaultFamily.flatMap { $0.cString(using: .utf8) }
-        let fontConfig = configPath.flatMap { $0.cString(using: .utf8) }
-        let update: Int32 = 1
-        ass_set_fonts(renderer, defaultFont, defaultFamily, provider.assFontProvider, fontConfig, update)
+        withLock {
+            let defaultFont = defaultFont.flatMap { $0.cString(using: .utf8) }
+            let defaultFamily = defaultFamily.flatMap { $0.cString(using: .utf8) }
+            let fontConfig = configPath.flatMap { $0.cString(using: .utf8) }
+            let update: Int32 = 1
+            ass_set_fonts(renderer, defaultFont, defaultFamily, provider.assFontProvider, fontConfig, update)
+        }
     }
 
     static func readTrack(_ library: OpaquePointer, content: String) -> ASS_Track? {
-        guard var buffer = content.cString(using: .utf8) else { return nil }
-        return ass_read_memory(library, &buffer, buffer.count, nil).pointee
+        withLock {
+            guard var buffer = content.cString(using: .utf8) else { return nil }
+            return ass_read_memory(library, &buffer, buffer.count, nil).pointee
+        }
     }
 
     static func renderImage(
@@ -110,10 +128,22 @@ enum LibraryWrapper: LibraryWrapperType {
         track: inout ASS_Track,
         at offset: TimeInterval
     ) -> LibraryRenderResult? {
-        var changed: Int32 = 0
-        let millisecond = Int64(offset * 1000)
-        guard let frame = ass_render_frame(renderer, &track, millisecond, &changed) else { return nil }
+        withLock {
+            var changed: Int32 = 0
+            let millisecond = Int64(offset * 1000)
+            guard let frame = ass_render_frame(renderer, &track, millisecond, &changed) else { return nil }
 
-        return LibraryRenderResult(image: frame.pointee, changed: changed != 0)
+            return LibraryRenderResult(image: frame.pointee, changed: changed != 0)
+        }
+    }
+
+    // MARK: - Private
+
+    private static let lock = NSLock()
+
+    private static func withLock<T>(_ perform: () -> T) -> T {
+        lock.lock()
+        defer { lock.unlock() }
+        return perform()
     }
 }
