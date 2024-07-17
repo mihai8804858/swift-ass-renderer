@@ -32,9 +32,9 @@ public final class AssSubtitlesRenderer {
     private var canvasScale: CGFloat = 1.0
     private var cancellables: Set<AnyCancellable> = []
 
-    private var currentTrack: ASS_Track?
-    private var currentOffset: TimeInterval = 0
-    private var currentFrame = CurrentValueSubject<ProcessedImage?, Never>(nil)
+    private(set) var currentTrack: ASS_Track?
+    private(set) var currentOffset: TimeInterval = 0
+    private(set) var currentFrame = CurrentValueSubject<ProcessedImage?, Never>(nil)
 
     /// - Parameters:
     ///   - fontConfig: Fonts configuration. Defines where the fonts and fonts cache is located, 
@@ -243,6 +243,21 @@ public final class AssSubtitlesRenderer {
 
         return result
     }
+
+    /// Load subtitle dialogues at the given offset.
+    ///
+    /// - Parameters:
+    ///   - offset: Time interval (in seconds) where to load the dialogues from.
+    ///
+    /// - Returns: List of dialogue strings that are being presented at the given offset.
+    public func dialogues(at offset: TimeInterval) -> [String] {
+        guard let currentTrack, let events = currentTrack.events else { return [] }
+        return (0..<Int(currentTrack.n_events)).compactMap { index in
+            let event = events.advanced(by: index).pointee
+            guard event.range.contains(offset), let text = event.Text else { return nil }
+            return String(cString: text)
+        }
+    }
 }
 
 private extension AssSubtitlesRenderer {
@@ -333,5 +348,15 @@ private extension AssSubtitlesRenderer {
         } catch {
             logger.log(message: LogMessage(message: "Failed setting fonts - \(error)", level: .fatal))
         }
+    }
+}
+
+private extension ASS_Event {
+    var range: ClosedRange<TimeInterval> {
+        let startSec = TimeInterval(Start) / 1000
+        let durationSec = TimeInterval(Duration) / 1000
+        let endSec = startSec + durationSec
+
+        return startSec...endSec
     }
 }

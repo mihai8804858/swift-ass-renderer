@@ -6,6 +6,15 @@ import AppKit
 import SwiftUI
 import Combine
 
+/// Callback called when image view is being updated (subtitle image set, updated or removed).
+/// The `dialogues` argument is not sanitized and might include ASS formatting tags.
+public typealias AssSubtitlesImageCallback = (
+    _ subtitlesView: AssSubtitlesView,
+    _ subtitlesImageView: PlatformImageView,
+    _ processedImage: ProcessedImage?,
+    _ dialogues: [String]
+) -> Void
+
 /// `UIView` /  `NSView` capable or drawing rendered image bitmaps to the screen,
 /// by subscribing to ``AssSubtitlesRenderer``  events and rendering output ``ProcessedImage`` in a image view.
 public final class AssSubtitlesView: PlatformView {
@@ -15,6 +24,7 @@ public final class AssSubtitlesView: PlatformView {
     private let imageView = PlatformImageView()
     private var lastRenderBounds = CGRect.zero
     private var cancellables = Set<AnyCancellable>()
+    private var imageCallback: AssSubtitlesImageCallback?
 
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) not supported")
@@ -58,6 +68,14 @@ public final class AssSubtitlesView: PlatformView {
     }
 }
 
+public extension AssSubtitlesView {
+    @discardableResult
+    func onImageChanged(_ callback: AssSubtitlesImageCallback?) -> Self {
+        imageCallback = callback
+        return self
+    }
+}
+
 private extension AssSubtitlesView {
     func configure() {
         setupView()
@@ -97,6 +115,10 @@ private extension AssSubtitlesView {
             } else {
                 imageView.isHidden = true
                 imageView.image = nil
+            }
+            if let imageCallback {
+                let dialogues = renderer.dialogues(at: renderer.currentOffset)
+                imageCallback(self, imageView, image, dialogues)
             }
         }
     }

@@ -8,8 +8,8 @@ excluded:
   - .docarchives
   - Sources/SwiftAssRenderer/Docs
 type_body_length:
-  - 500
   - 1000
+  - 2000
 file_length:
   warning: 1000
   error: 2000

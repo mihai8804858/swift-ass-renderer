@@ -44,6 +44,55 @@ final class AssSubtitlesRendererTests: XCTestCase {
         )
     }
 
+    func createEvent(range: ClosedRange<TimeInterval>, text: inout [CChar]) -> ASS_Event {
+        text.withUnsafeMutableBufferPointer { pointer in
+            ASS_Event(
+                Start: Int64(range.lowerBound * 1000),
+                Duration: Int64((range.upperBound - range.lowerBound) * 1000),
+                ReadOrder: 0,
+                Layer: 0,
+                Style: 0,
+                Name: nil,
+                MarginL: 0,
+                MarginR: 0,
+                MarginV: 0,
+                Effect: nil,
+                Text: pointer.baseAddress,
+                render_priv: nil
+            )
+        }
+    }
+
+    func createTrack(events: inout [ASS_Event]) -> ASS_Track {
+        events.withUnsafeMutableBufferPointer { pointer in
+            ASS_Track(
+                n_styles: 0,
+                max_styles: .max,
+                n_events: Int32(pointer.count),
+                max_events: .max,
+                styles: nil,
+                events: pointer.baseAddress,
+                style_format: nil,
+                event_format: nil,
+                track_type: 0,
+                PlayResX: 1920,
+                PlayResY: 1080,
+                Timer: 0,
+                WrapStyle: 0,
+                ScaledBorderAndShadow: 0,
+                Kerning: 0,
+                Language: nil,
+                YCbCrMatrix: YCBCR_DEFAULT,
+                default_style: 0,
+                name: nil,
+                library: nil,
+                parser_priv: nil,
+                LayoutResX: 1920,
+                LayoutResY: 1080
+            )
+        }
+    }
+
     func test_init_shouldInitLibrary() throws {
         // WHEN
         _ = createRenderer()
@@ -544,6 +593,102 @@ final class AssSubtitlesRendererTests: XCTestCase {
         // THEN
         XCTAssert(mockLibraryWrapper.renderImageFunc.wasCalled)
         XCTAssertEqual(processedImage, scaledDownImage)
+    }
+
+    func test_dialogues_whenTrackIsMissing_shouldReturnNoDialogues() {
+        // GIVEN
+        let library = OpaquePointer(bitPattern: 1)!
+        let renderer = OpaquePointer(bitPattern: 2)!
+        mockLibraryWrapper.libraryInitStub = library
+        mockLibraryWrapper.rendererInitStub = renderer
+
+        // WHEN
+        let subRenderer = createRenderer()
+        let dialogues = subRenderer.dialogues(at: 0.0)
+
+        // THEN
+        XCTAssertEqual(dialogues, [])
+    }
+
+    func test_dialogues_whenEventsAreMissing_shouldReturnNoDialogues() {
+        // GIVEN
+        let library = OpaquePointer(bitPattern: 1)!
+        let renderer = OpaquePointer(bitPattern: 2)!
+        mockLibraryWrapper.libraryInitStub = library
+        mockLibraryWrapper.rendererInitStub = renderer
+        mockLibraryWrapper.readTrackStub = ASS_Track()
+
+        // WHEN
+        let subRenderer = createRenderer()
+        subRenderer.loadTrack(content: "<CONTENT>")
+        let dialogues = subRenderer.dialogues(at: 0.0)
+
+        // THEN
+        XCTAssertEqual(dialogues, [])
+    }
+
+    func test_dialogues_whenEventsAreNotInRange_shouldReturnNoDialogues() {
+        // GIVEN
+        let library = OpaquePointer(bitPattern: 1)!
+        let renderer = OpaquePointer(bitPattern: 2)!
+        var eventsText = [
+            "text1",
+            "text2",
+            "text3",
+            "text4"
+        ].compactMap { text in
+            text.cString(using: .utf8)
+        }
+        var events = [
+            createEvent(range: 1...3, text: &eventsText[0]),
+            createEvent(range: 11...13, text: &eventsText[1]),
+            createEvent(range: 12...14, text: &eventsText[2]),
+            createEvent(range: 21...24, text: &eventsText[3])
+        ]
+        let track = createTrack(events: &events)
+        mockLibraryWrapper.libraryInitStub = library
+        mockLibraryWrapper.rendererInitStub = renderer
+        mockLibraryWrapper.readTrackStub = track
+
+        // WHEN
+        let subRenderer = createRenderer()
+        subRenderer.loadTrack(content: "<CONTENT>")
+        let dialogues = subRenderer.dialogues(at: 15)
+
+        // THEN
+        XCTAssertEqual(dialogues, [])
+    }
+
+    func test_dialogues_whenEventsAreInRange_shouldReturnDialogues() {
+        // GIVEN
+        let library = OpaquePointer(bitPattern: 1)!
+        let renderer = OpaquePointer(bitPattern: 2)!
+        var eventsText = [
+            "text1",
+            "text2",
+            "text3",
+            "text4"
+        ].compactMap { text in
+            text.cString(using: .utf8)
+        }
+        var events = [
+            createEvent(range: 1...3, text: &eventsText[0]),
+            createEvent(range: 11...13, text: &eventsText[1]),
+            createEvent(range: 12...14, text: &eventsText[2]),
+            createEvent(range: 21...24, text: &eventsText[3])
+        ]
+        let track = createTrack(events: &events)
+        mockLibraryWrapper.libraryInitStub = library
+        mockLibraryWrapper.rendererInitStub = renderer
+        mockLibraryWrapper.readTrackStub = track
+
+        // WHEN
+        let subRenderer = createRenderer()
+        subRenderer.loadTrack(content: "<CONTENT>")
+        let dialogues = subRenderer.dialogues(at: 12.5)
+
+        // THEN
+        XCTAssertEqual(dialogues, ["text2", "text3"])
     }
 }
 
