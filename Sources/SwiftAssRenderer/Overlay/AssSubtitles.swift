@@ -41,7 +41,12 @@ public struct AssSubtitles: PlatformViewRepresentable {
 }
 
 public extension AssSubtitles {
-    @discardableResult
+    /// Assign a callback to be called when subtitle image is set, changed or removed.
+    ///
+    /// - Parameters:
+    ///   - callback: Callback to call.
+    ///
+    /// Calling this multiple times will override previous callbacks.
     func onImageChanged(_ callback: AssSubtitlesImageCallback?) -> Self {
         var view = self
         view.imageCallback = callback
