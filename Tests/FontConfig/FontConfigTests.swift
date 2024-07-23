@@ -7,6 +7,7 @@ final class FontConfigTests: XCTestCase {
     private var mockFileManager: MockFileManager!
     private var mockBundle: MockBundle!
     private var mockLibraryWrapper: MockLibraryWrapper.Type!
+    private var mockUUID: UUID!
 
     private var cachesDirectory: URL {
         if #available(iOS 16.0, tvOS 16.0, visionOS 1.0, macOS 13.0, *) {
@@ -40,6 +41,7 @@ final class FontConfigTests: XCTestCase {
         mockFileManager = MockFileManager()
         mockBundle = MockBundle()
         mockLibraryWrapper = MockLibraryWrapper.self
+        mockUUID = UUID()
     }
 
     func createConfig(
@@ -50,6 +52,7 @@ final class FontConfigTests: XCTestCase {
         fontProvider: FontProvider = .fontConfig
     ) -> FontConfig {
         FontConfig(
+            uuid: { self.mockUUID },
             fileManager: mockFileManager,
             moduleBundle: mockBundle,
             libraryWrapper: mockLibraryWrapper,
@@ -73,7 +76,9 @@ final class FontConfigTests: XCTestCase {
         try config.configure(library: library, renderer: renderer)
 
         // THEN
-        let expectedURL = defaultFontsCachePath.appendingPathComponent("fonts-cache")
+        let expectedURL = defaultFontsCachePath
+            .appendingPathComponent(mockUUID.uuidString)
+            .appendingPathComponent("fonts-cache")
         XCTAssert(mockFileManager.createDirectoryFunc.wasCalled(with: expectedURL))
     }
 
@@ -102,7 +107,9 @@ final class FontConfigTests: XCTestCase {
         try config.configure(library: library, renderer: renderer)
 
         // THEN
-        let expectedURL = fontsCachePath.appendingPathComponent("fonts-cache")
+        let expectedURL = fontsCachePath
+            .appendingPathComponent(mockUUID.uuidString)
+            .appendingPathComponent("fonts-cache")
         XCTAssert(mockFileManager.createDirectoryFunc.wasCalled(with: expectedURL))
     }
 
@@ -119,7 +126,10 @@ final class FontConfigTests: XCTestCase {
         // THEN
         let createFileArgument = try XCTUnwrap(mockFileManager.createItemFunc.argument)
         let expectedDir = fontsPath.path
-        let expectedCacheDir = fontsCachePath.appendingPathComponent("fonts-cache").path
+        let expectedCacheDir = fontsCachePath
+            .appendingPathComponent(mockUUID.uuidString)
+            .appendingPathComponent("fonts-cache")
+            .path
         let expectedConfFile = cachesDirectory.appendingPathComponent("fonts.conf")
         let expectedContents = """
         <?xml version="1.0"?>

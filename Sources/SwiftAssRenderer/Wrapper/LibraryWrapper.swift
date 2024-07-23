@@ -45,36 +45,38 @@ protocol LibraryWrapperType {
 }
 
 enum LibraryWrapper: LibraryWrapperType {
+    private static let lock = NSLock()
+
     static var libraryLogger: (Int, String) -> Void = { _, message in
         print("[swift-ass] \(message)")
     }
 
     static func libraryInit() -> OpaquePointer? {
-        withLock {
+        withLock(lock) {
             ass_library_init()
         }
     }
 
     static func libraryDone(_ library: OpaquePointer) {
-        withLock {
+        withLock(lock) {
             ass_library_done(library)
         }
     }
 
     static func rendererInit(_ library: OpaquePointer) -> OpaquePointer? {
-        withLock {
+        withLock(lock) {
             ass_renderer_init(library)
         }
     }
 
     static func rendererDone(_ renderer: OpaquePointer) {
-        withLock {
+        withLock(lock) {
             ass_renderer_done(renderer)
         }
     }
 
     static func setLogCallback(_ library: OpaquePointer) {
-        withLock {
+        withLock(lock) {
             ass_set_message_cb(library, { messageLevel, messageString, messageArgs, _ in
                 guard let messageString else { return }
                 let message = String(cString: messageString)
@@ -89,13 +91,13 @@ enum LibraryWrapper: LibraryWrapperType {
     }
 
     static func setRendererSize(_ renderer: OpaquePointer, size: CGSize) {
-        withLock {
+        withLock(lock) {
             ass_set_frame_size(renderer, Int32(size.width), Int32(size.height))
         }
     }
 
     static func setExtractFonts(_ library: OpaquePointer, extract: Bool) {
-        withLock {
+        withLock(lock) {
             ass_set_extract_fonts(library, extract ? 1 : 0)
         }
     }
@@ -107,7 +109,7 @@ enum LibraryWrapper: LibraryWrapperType {
         defaultFont: String? = nil,
         defaultFamily: String? = nil
     ) {
-        withLock {
+        withLock(lock) {
             let defaultFont = defaultFont.flatMap { $0.cString(using: .utf8) }
             let defaultFamily = defaultFamily.flatMap { $0.cString(using: .utf8) }
             let fontConfig = configPath.flatMap { $0.cString(using: .utf8) }
@@ -117,7 +119,7 @@ enum LibraryWrapper: LibraryWrapperType {
     }
 
     static func readTrack(_ library: OpaquePointer, content: String) -> ASS_Track? {
-        withLock {
+        withLock(lock) {
             guard var buffer = content.cString(using: .utf8) else { return nil }
             return ass_read_memory(library, &buffer, buffer.count, nil).pointee
         }
@@ -128,22 +130,12 @@ enum LibraryWrapper: LibraryWrapperType {
         track: inout ASS_Track,
         at offset: TimeInterval
     ) -> LibraryRenderResult? {
-        withLock {
+        withLock(lock) {
             var changed: Int32 = 0
             let millisecond = Int64(offset * 1000)
             guard let frame = ass_render_frame(renderer, &track, millisecond, &changed) else { return nil }
 
             return LibraryRenderResult(image: frame.pointee, changed: changed != 0)
         }
-    }
-
-    // MARK: - Private
-
-    private static let lock = NSLock()
-
-    private static func withLock<T>(_ perform: () -> T) -> T {
-        lock.lock()
-        defer { lock.unlock() }
-        return perform()
     }
 }
