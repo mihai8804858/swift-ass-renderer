@@ -1,6 +1,10 @@
 import XCTest
 @testable import SwiftAssRenderer
 
+#if hasAttribute(retroactive)
+extension OpaquePointer: @unchecked @retroactive Sendable {}
+#endif
+
 final class LibraryWrapperTests: XCTestCase {
     private let iterations = 10_000
 

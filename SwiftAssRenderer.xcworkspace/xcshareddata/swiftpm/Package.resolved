@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/combine-schedulers",
       "state" : {
-        "revision" : "487a4d151e795a5e076a7e7aedcd13c2ebff6c31",
-        "version" : "1.0.1"
+        "revision" : "9fa31f4403da54855f1e2aeaeff478f4f0e40b13",
+        "version" : "1.0.2"
       }
     },
     {
@@ -28,15 +28,6 @@
       }
     },
     {
-      "identity" : "swift-issue-reporting",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/swift-issue-reporting",
-      "state" : {
-        "revision" : "c85092304cda8cb38d2d68454b29609a8013620b",
-        "version" : "1.2.1"
-      }
-    },
-    {
       "identity" : "swift-libass",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mihai8804858/swift-libass",
@@ -51,7 +42,7 @@
       "location" : "https://github.com/mihai8804858/swift-snapshot-testing",
       "state" : {
         "branch" : "main",
-        "revision" : "472017f0c1bc500a495af5801dadcb343a37d57b"
+        "revision" : "a3650f05218407222aed2f5a632c43e4973378cc"
       }
     },
     {
@@ -59,8 +50,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftlang/swift-syntax",
       "state" : {
-        "revision" : "4c6cc0a3b9e8f14b3ae2307c5ccae4de6167ac2c",
-        "version" : "600.0.0-prerelease-2024-06-12"
+        "revision" : "06b5cdc432e93b60e3bdf53aff2857c6b312991a",
+        "version" : "600.0.0-prerelease-2024-07-30"
+      }
+    },
+    {
+      "identity" : "xctest-dynamic-overlay",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
+      "state" : {
+        "revision" : "357ca1e5dd31f613a1d43320870ebc219386a495",
+        "version" : "1.2.2"
       }
     }
   ],

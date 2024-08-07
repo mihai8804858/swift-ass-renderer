@@ -29,7 +29,6 @@ public struct FontConfig: FontConfigType {
     private let defaultFontName: String?
     private let defaultFontFamily: String?
     private let fontProvider: FontProvider
-    private let fontsCacheSubDirName: String
 
     /// - Parameters:
     ///   - fontsPath: URL path to fonts directory. Can be read-only.
@@ -50,7 +49,6 @@ public struct FontConfig: FontConfigType {
         fontProvider: FontProvider = .fontConfig
     ) {
         self.init(
-            uuid: UUID.init,
             fileManager: FileManager.default,
             moduleBundle: Bundle.module,
             libraryWrapper: LibraryWrapper.self,
@@ -63,7 +61,6 @@ public struct FontConfig: FontConfigType {
     }
 
     init(
-        uuid: @escaping () -> UUID,
         fileManager: FileManagerType,
         moduleBundle: BundleType,
         libraryWrapper: LibraryWrapperType.Type,
@@ -81,7 +78,6 @@ public struct FontConfig: FontConfigType {
         self.defaultFontName = defaultFontName
         self.defaultFontFamily = defaultFontFamily
         self.fontProvider = fontProvider
-        self.fontsCacheSubDirName = uuid().uuidString
     }
 
     func configure(library: OpaquePointer, renderer: OpaquePointer) throws {
@@ -99,9 +95,7 @@ public struct FontConfig: FontConfigType {
     }
 
     private var cachePath: URL {
-        (fontsCachePath ?? fileManager.cachesDirectory)
-            .appendingPathComponent(fontsCacheSubDirName)
-            .appendingPathComponent(FontConfig.fontsCacheDirName)
+        (fontsCachePath ?? fileManager.cachesDirectory).appendingPathComponent(FontConfig.fontsCacheDirName)
     }
 
     private func makeFontsCacheDirectory() throws {
