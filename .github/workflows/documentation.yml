@@ -16,7 +16,7 @@ concurrency:
 jobs:
   build:
     name: Build Docs
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - name: Setup netrc
         uses: extractions/netrc@v2

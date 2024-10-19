@@ -19,7 +19,7 @@ concurrency:
 jobs:
   lint:
     name: Lint
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -32,7 +32,7 @@ jobs:
 
   spell:
     name: Spell
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -45,7 +45,7 @@ jobs:
 
   build-spm:
     name: Build (SPM)
-    runs-on: macos-14
+    runs-on: macos-15
     strategy:
       matrix:
         config: ['debug', 'release']
@@ -75,7 +75,7 @@ jobs:
 
   build-xcode:
     name: Build (Xcode)
-    runs-on: macos-14
+    runs-on: macos-15
     strategy:
       matrix:
         config: ['debug', 'release']
@@ -103,7 +103,7 @@ jobs:
 
   build-example:
     name: Build (example)
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -128,7 +128,7 @@ jobs:
 
   test-spm:
     name: Test (SPM)
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -155,7 +155,7 @@ jobs:
 
   test-xcode:
     name: Test (Xcode)
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
