@@ -47,7 +47,7 @@ struct ContentsLoader: ContentsLoaderType {
         URLSession
             .shared
             .dataTaskPublisher(for: url)
-            .map { String(decoding: $0.data, as: UTF8.self) }
+            .map { String(data: $0.data, encoding: .utf8) }
             .mapError { $0 as Error }
             .eraseToAnyPublisher()
     }
