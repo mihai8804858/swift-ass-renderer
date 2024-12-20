@@ -47,7 +47,7 @@ protocol LibraryWrapperType: Sendable {
 enum LibraryWrapper: LibraryWrapperType {
     private static let lock = NSLock()
 
-    static var libraryLogger: (Int, String) -> Void = { _, message in
+    nonisolated(unsafe) static var libraryLogger: (Int, String) -> Void = { _, message in
         print("[swift-ass] \(message)")
     }
 

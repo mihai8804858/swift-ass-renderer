@@ -3,7 +3,7 @@ import UIKit
 #elseif canImport(AppKit)
 import AppKit
 #endif
-import AVFoundation
+@preconcurrency import AVFoundation
 
 @available(iOS 16.0, tvOS 16.0, visionOS 1.0, macCatalyst 16.0, macOS 13.0, *)
 public extension AssSubtitlesRenderer {

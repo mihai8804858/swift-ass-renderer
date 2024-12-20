@@ -13,9 +13,9 @@ GENERIC_PLATFORM_VISIONOS = generic/platform=visionOS
 GENERIC_PLATFORM_MACOS = platform=macOS
 GENERIC_PLATFORM_MAC_CATALYST = platform=macOS,variant=Mac Catalyst
 
-SIM_PLATFORM_IOS = platform=iOS Simulator,id=$(call udid_for,iOS 18.0,iPhone \d\+ Pro [^M])
-SIM_PLATFORM_TVOS = platform=tvOS Simulator,id=$(call udid_for,tvOS 18.0,TV)
-SIM_PLATFORM_VISIONOS = platform=visionOS Simulator,id=$(call udid_for,visionOS 2.0,Vision)
+SIM_PLATFORM_IOS = platform=iOS Simulator,id=$(call udid_for,iOS 18.2,iPhone \d\+ Pro [^M])
+SIM_PLATFORM_TVOS = platform=tvOS Simulator,id=$(call udid_for,tvOS 18.2,TV)
+SIM_PLATFORM_VISIONOS = platform=visionOS Simulator,id=$(call udid_for,visionOS 2.2,Vision)
 SIM_PLATFORM_MACOS = platform=macOS
 SIM_PLATFORM_MAC_CATALYST = platform=macOS,variant=Mac Catalyst
 

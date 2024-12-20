@@ -220,7 +220,7 @@ public final class AssSubtitlesRenderer: Sendable {
     /// - Parameters:
     ///   - offset: Time interval (in seconds) where to load the subtitle frame.
     ///   - completion: Completion handler.
-    public func loadFrame(offset: TimeInterval, completion: @escaping (ProcessedImage?) -> Void = { _ in }) {
+    public func loadFrame(offset: TimeInterval, completion: @escaping @Sendable (ProcessedImage?) -> Void = { _ in }) {
         workQueue.executeAsync { [weak self] in
             defer { completion(self?.currentFrame.value) }
             guard let self, var currentTrack else { return }

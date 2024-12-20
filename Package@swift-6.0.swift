@@ -1,4 +1,4 @@
-// swift-tools-version:5.8
+// swift-tools-version:6.0
 import PackageDescription
 import Foundation
 
@@ -30,14 +30,16 @@ let package = Package(
             path: "Sources/SwiftAssRenderer",
             resources: [
                 .copy("Resources/PrivacyInfo.xcprivacy")
-            ]
+            ],
+            swiftSettings: [.enableExperimentalFeature("StrictConcurrency")]
         ),
         .target(
             name: "SwiftAssBlend",
             dependencies: [
                 .product(name: "SwiftLibass", package: "swift-libass")
             ],
-            path: "Sources/SwiftAssBlend"
+            path: "Sources/SwiftAssBlend",
+            swiftSettings: [.enableExperimentalFeature("StrictConcurrency")]
         ),
         .testTarget(
             name: "SwiftAssRendererTests",
@@ -53,5 +55,5 @@ let package = Package(
             ]
         )
     ],
-    swiftLanguageVersions: [.v5]
+    swiftLanguageModes: [.v6]
 )

@@ -3,7 +3,7 @@ import SwiftLibass
 @testable import SwiftAssRenderer
 
 final class MockLibraryWrapper: LibraryWrapperType {
-    static var libraryLogger: (Int, String) -> Void = { _, _ in }
+    nonisolated(unsafe) static var libraryLogger: (Int, String) -> Void = { _, _ in }
 
     static let setLogCallbackFunc = FuncCheck<OpaquePointer>()
     static func setLogCallback(_ library: OpaquePointer) {
@@ -11,7 +11,7 @@ final class MockLibraryWrapper: LibraryWrapperType {
     }
 
     static let libraryInitFunc = FuncCheck<Void>()
-    static var libraryInitStub: OpaquePointer?
+    nonisolated(unsafe) static var libraryInitStub: OpaquePointer?
     static func libraryInit() -> OpaquePointer? {
         libraryInitFunc.call()
         return libraryInitStub
@@ -23,7 +23,7 @@ final class MockLibraryWrapper: LibraryWrapperType {
     }
 
     static let rendererInitFunc = FuncCheck<OpaquePointer>()
-    static var rendererInitStub: OpaquePointer?
+    nonisolated(unsafe) static var rendererInitStub: OpaquePointer?
     static func rendererInit(_ library: OpaquePointer) -> OpaquePointer? {
         rendererInitFunc.call(library)
         return rendererInitStub
@@ -56,14 +56,14 @@ final class MockLibraryWrapper: LibraryWrapperType {
     }
 
     static let readTrackFunc = FuncCheck<(OpaquePointer, String)>()
-    static var readTrackStub: ASS_Track?
+    nonisolated(unsafe) static var readTrackStub: ASS_Track?
     static func readTrack(_ library: OpaquePointer, content: String) -> ASS_Track? {
         readTrackFunc.call((library, content))
         return readTrackStub
     }
 
     static let renderImageFunc = FuncCheck<(OpaquePointer, ASS_Track, TimeInterval)>()
-    static var renderImageStub: LibraryRenderResult?
+    nonisolated(unsafe) static var renderImageStub: LibraryRenderResult?
     static func renderImage(
         _ renderer: OpaquePointer,
         track: inout ASS_Track,

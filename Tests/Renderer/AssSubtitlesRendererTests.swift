@@ -5,7 +5,7 @@ import SwiftLibass
 import SwiftAssBlend
 @testable import SwiftAssRenderer
 
-final class AssSubtitlesRendererTests: XCTestCase {
+final class AssSubtitlesRendererTests: XCTestCase, @unchecked Sendable {
     private var mockQueue: MockDispatchQueue!
     private var mockLibraryWrapper: MockLibraryWrapper.Type!
     private var mockFontConfig: MockFontConfig!
@@ -30,6 +30,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         cancellables.removeAll()
     }
 
+    @MainActor
     func createRenderer() -> AssSubtitlesRenderer {
         AssSubtitlesRenderer(
             workQueue: mockQueue,
@@ -44,6 +45,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         )
     }
 
+    @MainActor
     func createEvent(range: ClosedRange<TimeInterval>, text: inout [CChar]) -> ASS_Event {
         text.withUnsafeMutableBufferPointer { pointer in
             ASS_Event(
@@ -63,6 +65,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         }
     }
 
+    @MainActor
     func createTrack(events: inout [ASS_Event]) -> ASS_Track {
         events.withUnsafeMutableBufferPointer { pointer in
             ASS_Track(
@@ -93,6 +96,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         }
     }
 
+    @MainActor
     func test_init_shouldInitLibrary() throws {
         // WHEN
         _ = createRenderer()
@@ -101,6 +105,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssert(mockLibraryWrapper.libraryInitFunc.wasCalled)
     }
 
+    @MainActor
     func test_init_shouldInitRenderer() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -113,6 +118,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssert(mockLibraryWrapper.rendererInitFunc.wasCalled(with: library))
     }
 
+    @MainActor
     func test_init_shouldCallLibrarySetup() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -127,6 +133,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssert(librarySetupFunc.wasCalled(with: library))
     }
 
+    @MainActor
     func test_init_shouldCallRendererSetup() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -143,6 +150,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssert(argument == (library, renderer))
     }
 
+    @MainActor
     func test_init_shouldConfigureLoggerLibrary() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -155,6 +163,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssert(mockLogger.configureLibraryFunc.wasCalled)
     }
 
+    @MainActor
     func test_init_shouldConfigureFonts() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -171,6 +180,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssert(argument == (library, renderer))
     }
 
+    @MainActor
     func test_loadTrackContent_shouldReadTrack() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -189,6 +199,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssert(argument == (library, content))
     }
 
+    @MainActor
     func test_reloadTrackContent_shouldReadTrackAndLoadLastKnownOffset() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -218,6 +229,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssert(offsetArgument.2 == offset)
     }
 
+    @MainActor
     func test_loadTrackURL_shouldReadTrack() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -240,6 +252,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssert(argument == (library, content))
     }
 
+    @MainActor
     func test_reloadTrackURL_shouldReadTrackAndLoadLastKnownOffset() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -280,6 +293,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssert(urlArgument == newURL)
     }
 
+    @MainActor
     func test_deinit_shouldCallRendererDone() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -298,6 +312,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssert(mockLibraryWrapper.rendererDoneFunc.wasCalled)
     }
 
+    @MainActor
     func test_deinit_shouldCallLibraryDone() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -316,6 +331,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssert(mockLibraryWrapper.libraryDoneFunc.wasCalled)
     }
 
+    @MainActor
     func test_setCanvasSize_whenSizeOrScaleAreDifferent_shouldSetRendererSize() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -338,6 +354,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssert(argument == (renderer, size * scale))
     }
 
+    @MainActor
     func test_setCanvasSize_whenSizeAndScaleAreSame_shouldNotSetRendererSize() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -360,6 +377,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssertFalse(mockLibraryWrapper.setRendererSizeFunc.wasCalled)
     }
 
+    @MainActor
     func test_setTimeOffset_whenFrameWasLoaded_shouldReturnProcessedImage() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -397,6 +415,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssertEqual(images, [scaledDownImage])
     }
 
+    @MainActor
     func test_setTimeOffset_whenFrameWasNotLoaded_shouldReturnNil() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -434,6 +453,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssertEqual(images, [scaledDownImage, nil])
     }
 
+    @MainActor
     func test_setTimeOffset_whenFrameWasUnchanged_shouldNotReturnAnything() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -464,6 +484,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssertEqual(images, [])
     }
 
+    @MainActor
     func test_reloadFrame_shouldReloadFrameAtCurrentOffset() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -502,6 +523,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssertEqual(images, [scaledDownImage, scaledDownImage])
     }
 
+    @MainActor
     func test_loadFrame_whenFrameWasLoaded_shouldReturnProcessedImage() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -522,7 +544,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
 
         // WHEN
         let subRenderer = createRenderer()
-        var processedImage: ProcessedImage?
+        nonisolated(unsafe) var processedImage: ProcessedImage?
         subRenderer.loadTrack(content: content)
         subRenderer.setCanvasSize(size, scale: scale)
         subRenderer.loadFrame(offset: 10) { processedImage = $0 }
@@ -533,6 +555,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssertEqual(processedImage, scaledDownImage)
     }
 
+    @MainActor
     func test_loadFrame_whenFrameWasNotLoaded_shouldReturnNil() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -550,7 +573,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
 
         // WHEN
         let subRenderer = createRenderer()
-        var processedImage: ProcessedImage?
+        nonisolated(unsafe) var processedImage: ProcessedImage?
         subRenderer.loadTrack(content: content)
         subRenderer.setCanvasSize(size, scale: scale)
         subRenderer.loadFrame(offset: 10) { processedImage = $0 }
@@ -563,6 +586,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssertNil(processedImage)
     }
 
+    @MainActor
     func test_loadFrame_whenFrameWasUnchanged_shouldReturnPreviouslyProcessedImage() throws {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -580,7 +604,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
 
         // WHEN
         let subRenderer = createRenderer()
-        var processedImage: ProcessedImage?
+        nonisolated(unsafe) var processedImage: ProcessedImage?
         subRenderer.loadTrack(content: content)
         subRenderer.setCanvasSize(size, scale: scale)
 
@@ -595,6 +619,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssertEqual(processedImage, scaledDownImage)
     }
 
+    @MainActor
     func test_dialogues_whenTrackIsMissing_shouldReturnNoDialogues() {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -610,6 +635,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssertEqual(dialogues, [])
     }
 
+    @MainActor
     func test_dialogues_whenEventsAreMissing_shouldReturnNoDialogues() {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -627,6 +653,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssertEqual(dialogues, [])
     }
 
+    @MainActor
     func test_dialogues_whenEventsAreNotInRange_shouldReturnNoDialogues() {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!
@@ -659,6 +686,7 @@ final class AssSubtitlesRendererTests: XCTestCase {
         XCTAssertEqual(dialogues, [])
     }
 
+    @MainActor
     func test_dialogues_whenEventsAreInRange_shouldReturnDialogues() {
         // GIVEN
         let library = OpaquePointer(bitPattern: 1)!

@@ -10,7 +10,11 @@ protocol FileManagerType: Sendable {
     func createItem(at path: URL, contents: String, override: Bool) throws
 }
 
-extension FileManager: FileManagerType, @retroactive @unchecked Sendable {
+#if hasAttribute(retroactive)
+extension FileManager: @unchecked @retroactive Sendable {}
+#endif
+
+extension FileManager: FileManagerType {
     var cachesDirectory: URL {
         if #available(iOS 16.0, tvOS 16.0, visionOS 1.0, macOS 13.0, *) {
             URL.cachesDirectory

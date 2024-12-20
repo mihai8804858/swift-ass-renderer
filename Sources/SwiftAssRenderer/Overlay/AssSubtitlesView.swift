@@ -62,6 +62,7 @@ public final class AssSubtitlesView: PlatformView {
     }
     #endif
 
+    @MainActor
     private func resizeCanvas() {
         resizeImageAtLayout()
         renderer.setCanvasSize(bounds.size, scale: canvasScale)
@@ -75,6 +76,7 @@ public extension AssSubtitlesView {
     ///   - callback: Callback to call.
     ///
     /// Calling this multiple times will override previous callbacks.
+    @MainActor
     @discardableResult
     func onImageChanged(_ callback: AssSubtitlesImageCallback?) -> Self {
         imageCallback = callback
@@ -83,11 +85,13 @@ public extension AssSubtitlesView {
 }
 
 private extension AssSubtitlesView {
+    @MainActor
     func configure() {
         setupView()
         subscribeToEvents()
     }
 
+    @MainActor
     func setupView() {
         addSubview(imageView)
         #if canImport(UIKit)
@@ -99,6 +103,7 @@ private extension AssSubtitlesView {
         #endif
     }
 
+    @MainActor
     func subscribeToEvents() {
         renderer
             .framesPublisher()
@@ -107,51 +112,46 @@ private extension AssSubtitlesView {
             .store(in: &cancellables)
     }
 
+    @MainActor
     func handleFrameChanged(_ image: ProcessedImage?) {
-        UI { [weak self] in
-            guard let self else { return }
-            if let image {
-                resizeImageView(for: image)
-                #if canImport(UIKit)
-                imageView.image = PlatformImage(cgImage: image.image)
-                #elseif canImport(AppKit)
-                imageView.image = PlatformImage(cgImage: image.image, size: image.imageRect.size)
-                #endif
-                imageView.isHidden = false
-            } else {
-                imageView.isHidden = true
-                imageView.image = nil
-            }
-            if let imageCallback {
-                let dialogues = renderer.dialogues(at: renderer.currentOffset)
-                imageCallback(self, imageView, image, dialogues)
-            }
+        if let image {
+            resizeImageView(for: image)
+            #if canImport(UIKit)
+            imageView.image = PlatformImage(cgImage: image.image)
+            #elseif canImport(AppKit)
+            imageView.image = PlatformImage(cgImage: image.image, size: image.imageRect.size)
+            #endif
+            imageView.isHidden = false
+        } else {
+            imageView.isHidden = true
+            imageView.image = nil
+        }
+        if let imageCallback {
+            let dialogues = renderer.dialogues(at: renderer.currentOffset)
+            imageCallback(self, imageView, image, dialogues)
         }
     }
 
+    @MainActor
     func resizeImageView(for image: ProcessedImage) {
-        UI { [weak self] in
-            guard let self else { return }
-            lastRenderBounds = bounds
-            imageView.frame = imageFrame(for: image.imageRect)
-        }
+        lastRenderBounds = bounds
+        imageView.frame = imageFrame(for: image.imageRect)
     }
 
+    @MainActor
     func resizeImageAtLayout() {
-        UI { [weak self] in
-            guard let self else { return }
-            if lastRenderBounds.isEmpty || bounds.isEmpty || imageView.image == nil { return }
-            let ratioX = 1 / (lastRenderBounds.width / bounds.width)
-            let ratioY = 1 / (lastRenderBounds.height / bounds.height)
-            let newOrigin = CGPoint(x: imageView.frame.origin.x * ratioX, y: imageView.frame.origin.y * ratioY)
-            let newSize = CGSize(width: imageView.frame.width * ratioX, height: imageView.frame.height * ratioY)
-            let newFrame = CGRect(origin: newOrigin, size: newSize).integral
-            CATransaction.begin()
-            imageView.frame = newFrame
-            CATransaction.commit()
-        }
+        if lastRenderBounds.isEmpty || bounds.isEmpty || imageView.image == nil { return }
+        let ratioX = 1 / (lastRenderBounds.width / bounds.width)
+        let ratioY = 1 / (lastRenderBounds.height / bounds.height)
+        let newOrigin = CGPoint(x: imageView.frame.origin.x * ratioX, y: imageView.frame.origin.y * ratioY)
+        let newSize = CGSize(width: imageView.frame.width * ratioX, height: imageView.frame.height * ratioY)
+        let newFrame = CGRect(origin: newOrigin, size: newSize).integral
+        CATransaction.begin()
+        imageView.frame = newFrame
+        CATransaction.commit()
     }
 
+    @MainActor
     func imageFrame(for rect: CGRect) -> CGRect {
         #if canImport(UIKit)
         rect

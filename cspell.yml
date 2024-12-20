@@ -4,6 +4,7 @@ files:
   - Tests/**/*.swift
   - Example/**/*.swift
   - Package.swift
+  - Package@swift-6.0.swift
   - README.md
 ignoreWords:
   - libass
@@ -33,3 +34,4 @@ ignoreWords:
   - AVURL
   - Sublayer
   - YCBCR
+  - preconcurrency

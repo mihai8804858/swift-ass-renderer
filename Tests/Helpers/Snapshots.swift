@@ -15,7 +15,7 @@ func platformName() -> String {
     #endif
 }
 
-func snapshotsDirectory(file: StaticString = #file, pathComponents: String...) -> URL {
+func snapshotsDirectory(file: StaticString = #filePath, pathComponents: String...) -> URL {
     let fileURL = URL(fileURLWithPath: "\(file)", isDirectory: false)
     let fileName = fileURL.deletingPathExtension().lastPathComponent
     let snapshotsDirectory = fileURL
@@ -33,6 +33,7 @@ func assertSnapshot<Value, Format>(
     snapshotDirectory: URL? = nil,
     record recording: Bool = false,
     file: StaticString = #file,
+    filePath: StaticString = #filePath,
     testName: String = #function,
     line: UInt = #line
 ) {
@@ -47,5 +48,5 @@ func assertSnapshot<Value, Format>(
         line: line
     )
     guard let message = failure else { return }
-    XCTFail(message, file: file, line: line)
+    XCTFail(message, file: filePath, line: line)
 }

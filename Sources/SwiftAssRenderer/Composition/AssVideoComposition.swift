@@ -4,7 +4,7 @@ import UIKit
 import AppKit
 #endif
 @preconcurrency import AVFoundation
-import CoreImage
+@preconcurrency import CoreImage
 
 @available(iOS 16.0, tvOS 16.0, visionOS 1.0, macCatalyst 16.0, macOS 13.0, *)
 final class AssVideoComposition: Sendable {

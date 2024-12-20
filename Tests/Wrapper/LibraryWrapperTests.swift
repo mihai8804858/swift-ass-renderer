@@ -1,11 +1,13 @@
 import XCTest
+import SwiftLibass
 @testable import SwiftAssRenderer
 
 #if hasAttribute(retroactive)
 extension OpaquePointer: @unchecked @retroactive Sendable {}
+extension ASS_Track: @unchecked @retroactive Sendable {}
 #endif
 
-final class LibraryWrapperTests: XCTestCase {
+final class LibraryWrapperTests: XCTestCase, @unchecked Sendable {
     private let iterations = 10_000
 
     private var cachesDirectory: URL {
@@ -113,7 +115,7 @@ final class LibraryWrapperTests: XCTestCase {
         let content = try String(contentsOfFile: contentsPath.path)
         let library = try XCTUnwrap(LibraryWrapper.libraryInit())
         let renderer = try XCTUnwrap(LibraryWrapper.rendererInit(library))
-        var track = try XCTUnwrap(LibraryWrapper.readTrack(library, content: content))
+        nonisolated(unsafe) var track = try XCTUnwrap(LibraryWrapper.readTrack(library, content: content))
         LibraryWrapper.setRendererSize(renderer, size: CGSize(width: 320, height: 240))
         DispatchQueue.concurrentPerform(iterations: iterations) { _ in
             _ = LibraryWrapper.renderImage(renderer, track: &track, at: 40.0)
