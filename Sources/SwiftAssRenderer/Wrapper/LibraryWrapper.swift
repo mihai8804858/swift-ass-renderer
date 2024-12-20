@@ -1,7 +1,7 @@
 import Foundation
-import SwiftLibass
+@preconcurrency import SwiftLibass
 
-struct LibraryRenderResult {
+struct LibraryRenderResult: Sendable {
     let image: ASS_Image
     let changed: Bool
 }
@@ -15,7 +15,7 @@ extension FontProvider {
     }
 }
 
-protocol LibraryWrapperType {
+protocol LibraryWrapperType: Sendable {
     static var libraryLogger: (Int, String) -> Void { get set }
     static func setLogCallback(_ library: OpaquePointer)
 

@@ -1,7 +1,7 @@
 import Dispatch
 import Foundation
 
-protocol DispatchQueueType {
+protocol DispatchQueueType: Sendable {
     func executeAsync(_ work: @escaping () -> Void)
 }
 

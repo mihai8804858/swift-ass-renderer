@@ -3,11 +3,11 @@ import UIKit
 #elseif canImport(AppKit)
 import AppKit
 #endif
-import AVFoundation
+@preconcurrency import AVFoundation
 import CoreImage
 
 @available(iOS 16.0, tvOS 16.0, visionOS 1.0, macCatalyst 16.0, macOS 13.0, *)
-final class AssVideoComposition {
+final class AssVideoComposition: Sendable {
     private let scale: CGFloat
     private let asset: AVAsset
     private let renderer: AssSubtitlesRenderer

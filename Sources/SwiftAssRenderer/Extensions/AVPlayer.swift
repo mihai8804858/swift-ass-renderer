@@ -1,21 +1,19 @@
 import AVFoundation
 import Combine
-import CombineExt
 
 extension AVPlayer {
     func periodicTimeObserver(interval: CMTime, queue: DispatchQueue = .main) -> AnyPublisher<CMTime, Never> {
-        AnyPublisher<CMTime, Never>.create { [weak self] subscriber in
+        Deferred { [weak self] in
             guard let self else {
-                subscriber.send(completion: .finished)
-                return AnyCancellable {}
+                return Empty(outputType: CMTime.self, failureType: Never.self)
+                    .eraseToAnyPublisher()
             }
-            let observer = addPeriodicTimeObserver(forInterval: interval, queue: queue) { time in
-                subscriber.send(time)
-            }
-
-            return AnyCancellable { [weak self] in
-                self?.removeTimeObserver(observer)
-            }
-        }
+            let subject = PassthroughSubject<CMTime, Never>()
+            let observer = addPeriodicTimeObserver(forInterval: interval, queue: queue) { subject.send($0) }
+            return subject.handleEvents(
+                receiveCompletion: { [weak self] _ in self?.removeTimeObserver(observer) },
+                receiveCancel: { [weak self] in self?.removeTimeObserver(observer) }
+            ).eraseToAnyPublisher()
+        }.eraseToAnyPublisher()
     }
 }

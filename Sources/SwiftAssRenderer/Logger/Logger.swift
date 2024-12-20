@@ -1,5 +1,5 @@
 /// Log level.
-public enum LogLevel: Int {
+public enum LogLevel: Int, Sendable {
     /// Only fatal errors that result in subtitles not being rendered.
     case fatal = 0
 
@@ -20,7 +20,7 @@ public enum LogLevel: Int {
 }
 
 /// Log output message and level.
-public struct LogMessage {
+public struct LogMessage: Sendable {
     /// Output message.
     public let message: String
 
@@ -29,15 +29,15 @@ public struct LogMessage {
 }
 
 /// Where the messages should be send to.
-public enum LogOutput {
+public enum LogOutput: Sendable {
     /// Print messages to console based on the provided log level.
     case console(LogLevel)
 
     /// Send all messages to custom handler.
-    case custom((LogMessage) -> Void)
+    case custom(@Sendable (LogMessage) -> Void)
 }
 
-protocol LoggerType {
+protocol LoggerType: Sendable {
     func configureLibrary(_ wrapper: LibraryWrapperType.Type, library: OpaquePointer)
     func log(message: LogMessage)
 }

@@ -1,7 +1,7 @@
 import Foundation
 
 /// Which provider to use for character rendering and font management.
-public enum FontProvider: Equatable {
+public enum FontProvider: Equatable, Sendable {
     /// Uses [fontconfig](https://www.freedesktop.org/wiki/Software/fontconfig/)
     /// to manage the fonts and render the characters.
     case fontConfig
@@ -10,7 +10,7 @@ public enum FontProvider: Equatable {
     case coreText
 }
 
-protocol FontConfigType {
+protocol FontConfigType: Sendable {
     func configure(library: OpaquePointer, renderer: OpaquePointer) throws
 }
 

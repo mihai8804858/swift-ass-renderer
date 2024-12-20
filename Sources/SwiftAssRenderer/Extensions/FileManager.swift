@@ -1,6 +1,6 @@
 import Foundation
 
-protocol FileManagerType {
+protocol FileManagerType: Sendable {
     var cachesDirectory: URL { get }
 
     func fileExists(at path: URL) -> Bool
@@ -10,7 +10,7 @@ protocol FileManagerType {
     func createItem(at path: URL, contents: String, override: Bool) throws
 }
 
-extension FileManager: FileManagerType {
+extension FileManager: FileManagerType, @retroactive @unchecked Sendable {
     var cachesDirectory: URL {
         if #available(iOS 16.0, tvOS 16.0, visionOS 1.0, macOS 13.0, *) {
             URL.cachesDirectory

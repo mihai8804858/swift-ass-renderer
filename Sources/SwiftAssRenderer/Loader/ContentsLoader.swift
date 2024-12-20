@@ -1,9 +1,8 @@
 import Foundation
 import Combine
-import CombineExt
 import CombineSchedulers
 
-protocol ContentsLoaderType {
+protocol ContentsLoaderType: Sendable {
     func loadContents(from url: URL) -> AnyPublisher<String?, Error>
 }
 
@@ -31,16 +30,16 @@ struct ContentsLoader: ContentsLoaderType {
     }
 
     private func loadLocalContents(from url: URL) -> AnyPublisher<String?, Error> {
-        AnyPublisher<String?, Error>.create { subscriber in
-            do {
-                subscriber.send(try String(contentsOf: url))
-                subscriber.send(completion: .finished)
-            } catch {
-                subscriber.send(completion: .failure(error))
+        Deferred {
+            Future { promise in
+                do {
+                    promise(.success(try String(contentsOf: url)))
+                } catch {
+                    promise(.failure(error))
+                }
             }
-
-            return AnyCancellable {}
         }
+        .eraseToAnyPublisher()
     }
 
     private func loadRemoveContents(from url: URL) -> AnyPublisher<String?, Error> {

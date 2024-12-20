@@ -17,8 +17,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/mihai8804858/swift-snapshot-testing", branch: "main"),
         .package(url: "https://github.com/mihai8804858/swift-libass", .upToNextMajor(from: "1.0.0")),
-        .package(url: "https://github.com/pointfreeco/combine-schedulers", .upToNextMajor(from: "1.0.0")),
-        .package(url: "https://github.com/CombineCommunity/CombineExt.git", .upToNextMajor(from: "1.0.0"))
+        .package(url: "https://github.com/pointfreeco/combine-schedulers", .upToNextMajor(from: "1.0.0"))
     ],
     targets: [
         .target(
@@ -26,8 +25,7 @@ let package = Package(
             dependencies: [
                 .target(name: "SwiftAssBlend"),
                 .product(name: "SwiftLibass", package: "swift-libass"),
-                .product(name: "CombineSchedulers", package: "combine-schedulers"),
-                .product(name: "CombineExt", package: "CombineExt")
+                .product(name: "CombineSchedulers", package: "combine-schedulers")
             ],
             path: "Sources/SwiftAssRenderer",
             resources: [

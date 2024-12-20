@@ -1,6 +1,6 @@
-final class FuncCheck<Argument> {
-    var argument: Argument?
-    var arguments: [Argument] = []
+final class FuncCheck<Argument>: Sendable {
+    nonisolated(unsafe) var argument: Argument?
+    nonisolated(unsafe) var arguments: [Argument] = []
     var wasCalled: Bool { argument != nil }
 
     func call(_ argument: Argument) {

@@ -4,7 +4,7 @@ import Combine
 
 final class MockContentsLoader: ContentsLoaderType {
     let loadContentsFunc = FuncCheck<URL>()
-    var loadContentsStub: AnyPublisher<String?, Error> = Just(nil)
+    nonisolated(unsafe) var loadContentsStub: AnyPublisher<String?, Error> = Just(nil)
         .setFailureType(to: Error.self)
         .eraseToAnyPublisher()
     func loadContents(from url: URL) -> AnyPublisher<String?, Error> {

@@ -3,13 +3,13 @@ import Foundation
 import SwiftLibass
 import CombineSchedulers
 
-public typealias LibrarySetup = (_ library: OpaquePointer) -> Void
-public typealias RendererSetup = (_ library: OpaquePointer, _ renderer: OpaquePointer) -> Void
+public typealias LibrarySetup = @Sendable (_ library: OpaquePointer) -> Void
+public typealias RendererSetup = @Sendable (_ library: OpaquePointer, _ renderer: OpaquePointer) -> Void
 
 /// ASS/SSA subtitles renderer. Manages the current ASS track, 
 /// current time offset and current visible frame (``ProcessedImage``).
-public final class AssSubtitlesRenderer {
-    public enum FrameRenderResult {
+public final class AssSubtitlesRenderer: Sendable {
+    public enum FrameRenderResult: Sendable {
         case loaded(ProcessedImage)
         case unchanged
         case none
@@ -25,16 +25,14 @@ public final class AssSubtitlesRenderer {
     private let librarySetup: LibrarySetup?
     private let rendererSetup: RendererSetup?
 
-    private var library: OpaquePointer?
-    private var renderer: OpaquePointer?
-
-    private var canvasSize: CGSize = .zero
-    private var canvasScale: CGFloat = 1.0
-    private var cancellables: Set<AnyCancellable> = []
-
-    private(set) var currentTrack: ASS_Track?
-    private(set) var currentOffset: TimeInterval = 0
-    private(set) var currentFrame = CurrentValueSubject<ProcessedImage?, Never>(nil)
+    nonisolated(unsafe) private var library: OpaquePointer?
+    nonisolated(unsafe) private var renderer: OpaquePointer?
+    nonisolated(unsafe) private var canvasSize: CGSize = .zero
+    nonisolated(unsafe) private var canvasScale: CGFloat = 1.0
+    nonisolated(unsafe) private var cancellables: Set<AnyCancellable> = []
+    nonisolated(unsafe) private(set) var currentTrack: ASS_Track?
+    nonisolated(unsafe) private(set) var currentOffset: TimeInterval = 0
+    nonisolated(unsafe) private(set) var currentFrame = CurrentValueSubject<ProcessedImage?, Never>(nil)
 
     /// - Parameters:
     ///   - fontConfig: Fonts configuration. Defines where the fonts and fonts cache is located, 

@@ -2,7 +2,7 @@ import Foundation
 @testable import SwiftAssRenderer
 
 final class MockFileManager: FileManagerType {
-    var cachesDirectory: URL = {
+    nonisolated(unsafe) var cachesDirectory: URL = {
         if #available(iOS 16.0, tvOS 16.0, visionOS 1.0, macOS 13.0, *) {
             URL.cachesDirectory
         } else {
@@ -11,14 +11,14 @@ final class MockFileManager: FileManagerType {
     }()
 
     let directoryExistsFunc = FuncCheck<URL>()
-    var directoryExistsStub = false
+    nonisolated(unsafe) var directoryExistsStub = false
     func directoryExists(at path: URL) -> Bool {
         directoryExistsFunc.call(path)
         return directoryExistsStub
     }
 
     let fileExistsFunc = FuncCheck<URL>()
-    var fileExistsStub = false
+    nonisolated(unsafe) var fileExistsStub = false
     func fileExists(at path: URL) -> Bool {
         fileExistsFunc.call(path)
         return fileExistsStub

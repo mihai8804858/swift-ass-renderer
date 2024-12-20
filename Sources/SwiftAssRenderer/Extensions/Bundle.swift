@@ -1,6 +1,6 @@
 import Foundation
 
-protocol BundleType {
+protocol BundleType: Sendable {
     func url(forResource name: String?, withExtension ext: String?) -> URL?
 }
 
