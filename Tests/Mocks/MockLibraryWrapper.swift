@@ -3,6 +3,25 @@ import SwiftLibass
 @testable import SwiftAssRenderer
 
 final class MockLibraryWrapper: LibraryWrapperType {
+    /// Clears every stub and call record. They are static, so tests that use this mock
+    /// must reset it first and run serialized (see `MockLibraryWrapperSuites`).
+    static func reset() {
+        setLogCallbackFunc.reset()
+        libraryInitFunc.reset()
+        libraryInitStub = nil
+        libraryDoneFunc.reset()
+        rendererInitFunc.reset()
+        rendererInitStub = nil
+        rendererDoneFunc.reset()
+        setRendererSizeFunc.reset()
+        setExtractFontsFunc.reset()
+        setFontsFunc.reset()
+        readTrackFunc.reset()
+        readTrackStub = nil
+        renderImageFunc.reset()
+        renderImageStub = nil
+    }
+
     static let setLogCallbackFunc = FuncCheck<OpaquePointer>()
     static func setLogCallback(_ library: OpaquePointer, sink: LibraryLogSink) {
         setLogCallbackFunc.call(library)

@@ -1,4 +1,5 @@
-import XCTest
+import Foundation
+import Testing
 import SnapshotTesting
 
 func platformName() -> String {
@@ -32,10 +33,11 @@ func assertSnapshot<Value, Format>(
     named name: String? = nil,
     snapshotDirectory: URL? = nil,
     record recording: Bool = false,
-    file: StaticString = #file,
+    fileID: StaticString = #fileID,
     filePath: StaticString = #filePath,
     testName: String = #function,
-    line: UInt = #line
+    line: UInt = #line,
+    column: UInt = #column
 ) {
     let failure = verifySnapshot(
         of: try value(),
@@ -43,10 +45,20 @@ func assertSnapshot<Value, Format>(
         named: name,
         record: recording,
         snapshotDirectory: snapshotDirectory?.path,
-        file: file,
+        fileID: fileID,
+        file: filePath,
         testName: testName,
-        line: line
+        line: line,
+        column: column
     )
     guard let message = failure else { return }
-    XCTFail(message, file: filePath, line: line)
+    Issue.record(
+        Comment(rawValue: message),
+        sourceLocation: SourceLocation(
+            fileID: "\(fileID)",
+            filePath: "\(filePath)",
+            line: Int(line),
+            column: Int(column)
+        )
+    )
 }

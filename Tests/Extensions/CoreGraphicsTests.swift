@@ -1,7 +1,9 @@
-import XCTest
+import Foundation
+import Testing
 @testable import SwiftAssRenderer
 
-final class CoreGraphicsTests: XCTestCase {
+struct CoreGraphicsTests {
+    @Test
     func testCGSize_multiplied_shouldMultiply() {
         // GIVEN
         let size = CGSize(width: 100, height: 200)
@@ -11,9 +13,10 @@ final class CoreGraphicsTests: XCTestCase {
 
         // THEN
         let expectedSize = CGSize(width: 300, height: 600)
-        XCTAssertEqual(multipliedSize, expectedSize)
+        #expect(multipliedSize == expectedSize)
     }
 
+    @Test
     func testCGSize_divided_shouldDivide() {
         // GIVEN
         let size = CGSize(width: 100, height: 200)
@@ -23,9 +26,10 @@ final class CoreGraphicsTests: XCTestCase {
 
         // THEN
         let expectedSize = CGSize(width: 50, height: 100)
-        XCTAssertEqual(dividedSize, expectedSize)
+        #expect(dividedSize == expectedSize)
     }
 
+    @Test
     func testCGRect_divided_shouldDivide() {
         // GIVEN
         let rect = CGRect(origin: CGPoint(x: 100, y: 200), size: CGSize(width: 300, height: 400))
@@ -35,6 +39,6 @@ final class CoreGraphicsTests: XCTestCase {
 
         // THEN
         let expectedRect = CGRect(origin: CGPoint(x: 50, y: 100), size: CGSize(width: 150, height: 200))
-        XCTAssertEqual(dividedRect, expectedRect)
+        #expect(dividedRect == expectedRect)
     }
 }

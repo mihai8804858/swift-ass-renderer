@@ -1,7 +1,8 @@
-import XCTest
+import Foundation
+import Testing
 @testable import SwiftAssRenderer
 
-final class AssSubtitlesRendererLoggingTests: XCTestCase, @unchecked Sendable {
+struct AssSubtitlesRendererLoggingTests {
     // No [Events] Format line, so libass reports that it falls back to the default format.
     private let trackWithoutEventFormat = """
     [Script Info]
@@ -12,9 +13,10 @@ final class AssSubtitlesRendererLoggingTests: XCTestCase, @unchecked Sendable {
     """
     private let fallbackMessage = "No event format found"
 
+    @Test
     @MainActor
-    func test_eachRendererReceivesOnlyMessagesFromItsOwnLibrary() throws {
-        let fontsPath = try XCTUnwrap(Bundle.module.resourceURL).appendingPathComponent("Fonts")
+    func test_eachRendererReceivesOnlyMessagesFromItsOwnLibrary() async throws {
+        let fontsPath = try #require(Bundle.module.resourceURL).appendingPathComponent("Fonts")
         let first = MessageLog()
         let second = MessageLog()
         let firstRenderer = AssSubtitlesRenderer(
@@ -25,22 +27,22 @@ final class AssSubtitlesRendererLoggingTests: XCTestCase, @unchecked Sendable {
             fontConfig: FontConfig(fontsPath: fontsPath, fontProvider: .coreText),
             logOutput: .custom { second.append($0.message) }
         )
-        drainWorkQueue(of: firstRenderer)
-        drainWorkQueue(of: secondRenderer)
+        await drainWorkQueue(of: firstRenderer)
+        await drainWorkQueue(of: secondRenderer)
 
         firstRenderer.loadTrack(content: trackWithoutEventFormat)
-        drainWorkQueue(of: firstRenderer)
+        await drainWorkQueue(of: firstRenderer)
 
-        XCTAssertTrue(first.messages.contains { $0.contains(fallbackMessage) }, "\(first.messages)")
-        XCTAssertFalse(second.messages.contains { $0.contains(fallbackMessage) }, "\(second.messages)")
+        #expect(first.messages.contains { $0.contains(fallbackMessage) }, "\(first.messages)")
+        #expect(!second.messages.contains { $0.contains(fallbackMessage) }, "\(second.messages)")
     }
 
     /// A frame request queues behind everything the renderer's work queue already holds.
     @MainActor
-    private func drainWorkQueue(of renderer: AssSubtitlesRenderer) {
-        let drained = expectation(description: "work queue drained")
-        renderer.loadFrame(offset: 0) { _ in drained.fulfill() }
-        wait(for: [drained], timeout: 10)
+    private func drainWorkQueue(of renderer: AssSubtitlesRenderer) async {
+        await withCheckedContinuation { continuation in
+            renderer.loadFrame(offset: 0) { _ in continuation.resume() }
+        }
     }
 }
 
