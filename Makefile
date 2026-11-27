@@ -13,9 +13,9 @@ GENERIC_PLATFORM_VISIONOS = generic/platform=visionOS
 GENERIC_PLATFORM_MACOS = platform=macOS
 GENERIC_PLATFORM_MAC_CATALYST = platform=macOS,variant=Mac Catalyst
 
-SIM_PLATFORM_IOS = platform=iOS Simulator,id=$(call udid_for,iOS 18.2,iPhone \d\+ Pro [^M])
-SIM_PLATFORM_TVOS = platform=tvOS Simulator,id=$(call udid_for,tvOS 18.2,TV)
-SIM_PLATFORM_VISIONOS = platform=visionOS Simulator,id=$(call udid_for,visionOS 2.2,Vision)
+SIM_PLATFORM_IOS = platform=iOS Simulator,id=$(call udid_for,iOS $(call latest_runtime,iOS),iPhone \d\+ Pro [^M])
+SIM_PLATFORM_TVOS = platform=tvOS Simulator,id=$(call udid_for,tvOS $(call latest_runtime,tvOS),TV)
+SIM_PLATFORM_VISIONOS = platform=visionOS Simulator,id=$(call udid_for,visionOS $(call latest_runtime,visionOS),Vision)
 SIM_PLATFORM_MACOS = platform=macOS
 SIM_PLATFORM_MAC_CATALYST = platform=macOS,variant=Mac Catalyst
 
@@ -140,6 +140,11 @@ all: lint spell build-all-platforms build-example build-docs test-all-platforms
 
 .PHONY: all
 .DEFAULT_GOAL := all
+
+# Newest available simulator runtime version for a platform, e.g. "26.5" for iOS
+define latest_runtime
+$(shell xcrun simctl list runtimes available | grep '^$(1) ' | tail -1 | awk '{ print $$2 }')
+endef
 
 define udid_for
 $(shell xcrun simctl list devices available '$(1)' | grep '$(2)' | sort -r | head -1 | awk -F '[()]' '{ print $$(NF-3) }')
