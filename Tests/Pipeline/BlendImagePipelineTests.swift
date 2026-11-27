@@ -32,7 +32,7 @@ struct BlendImagePipelineTests {
                 let image = try #require(rendered)
                 assertSnapshot(
                     of: harness.value(image: image),
-                    as: .image,
+                    as: layerImage,
                     named: harness.snapshotName(offset: offset),
                     snapshotDirectory: snapshotsDirectory(pathComponents: platformName(), subtitle)
                 )
