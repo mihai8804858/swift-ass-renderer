@@ -78,7 +78,8 @@ build-example:
 			-configuration Debug \
 			-scmProvider system \
 			-usePackageSupportBuiltinSCM \
-			-destination "$$platform" | xcpretty || exit 1; \
+			-destination "$$platform" \
+			CODE_SIGNING_ALLOWED=NO | xcpretty || exit 1; \
 	done;
 
 test-all-platforms:
