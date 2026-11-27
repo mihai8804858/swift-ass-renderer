@@ -3,8 +3,6 @@ included:
   - Tests
   - Example
   - Package.swift
-  - Package@swift-5.10.swift
-  - Package@swift-6.0.swift
 excluded:
   - .build
   - .docarchives

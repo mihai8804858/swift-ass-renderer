@@ -1,12 +1,12 @@
-// swift-tools-version:5.8
+// swift-tools-version:6.2
 import PackageDescription
-import Foundation
 
 let package = Package(
     name: "swift-ass-renderer",
     platforms: [
         .iOS(.v15),
         .tvOS(.v15),
+        .visionOS(.v1),
         .macOS(.v12),
         .macCatalyst(.v15)
     ],
@@ -17,7 +17,7 @@ let package = Package(
         .package(url: "https://github.com/mihai8804858/swift-snapshot-testing", branch: "main"),
         .package(url: "https://github.com/mihai8804858/swift-libass", .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/pointfreeco/combine-schedulers", .upToNextMajor(from: "1.0.0")),
-        .package(url: "https://github.com/pointfreeco/swift-concurrency-extras.git", .upToNextMajor(from: "1.0.0"))
+        .package(url: "https://github.com/pointfreeco/swift-concurrency-extras", .upToNextMajor(from: "1.0.0"))
     ],
     targets: [
         .target(
@@ -54,5 +54,5 @@ let package = Package(
             ]
         )
     ],
-    swiftLanguageVersions: [.v5]
+    swiftLanguageModes: [.v6]
 )
