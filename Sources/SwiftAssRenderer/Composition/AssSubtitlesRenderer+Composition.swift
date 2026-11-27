@@ -55,8 +55,15 @@ public extension AssSubtitlesRenderer {
 
     private func performAttachment(to playerItem: AVPlayerItem, asset: AVAsset, scale: CGFloat) {
         Task { @MainActor in
-            let composition = AssVideoComposition(asset: asset, renderer: self, scale: scale)
-            playerItem.videoComposition = try await composition.makeAVVideoComposition()
+            do {
+                let composition = AssVideoComposition(asset: asset, renderer: self, scale: scale)
+                playerItem.videoComposition = try await composition.makeAVVideoComposition()
+            } catch {
+                logger.log(message: LogMessage(
+                    message: "Video composition failed to attach: \(error)",
+                    level: .verbose
+                ))
+            }
         }
     }
 }

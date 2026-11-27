@@ -19,7 +19,7 @@ concurrency:
 jobs:
   lint:
     name: Lint
-    runs-on: macos-latest
+    runs-on: xcode-27
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -32,7 +32,7 @@ jobs:
 
   spell:
     name: Spell
-    runs-on: macos-latest
+    runs-on: xcode-27
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -45,7 +45,7 @@ jobs:
 
   build-spm:
     name: Build (SPM)
-    runs-on: macos-latest
+    runs-on: xcode-27
     strategy:
       matrix:
         config: ['debug', 'release']
@@ -63,7 +63,7 @@ jobs:
       - name: Setup Xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: latest-stable
+          xcode-version: latest
 
       - name: Resolve Packages
         run: |
@@ -75,7 +75,7 @@ jobs:
 
   build-xcode:
     name: Build (Xcode)
-    runs-on: macos-latest
+    runs-on: xcode-27
     strategy:
       matrix:
         config: ['debug', 'release']
@@ -96,14 +96,14 @@ jobs:
       - name: Setup Xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: latest-stable
+          xcode-version: latest
 
       - name: Build platforms in ${{ matrix.config }}
         run: make CONFIG=${{ matrix.config }} build-all-platforms
 
   build-example:
     name: Build (example)
-    runs-on: macos-latest
+    runs-on: xcode-27
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -121,14 +121,14 @@ jobs:
       - name: Setup Xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: latest-stable
+          xcode-version: latest
 
       - name: Build example
         run: make build-example
 
   test-spm:
     name: Test (SPM)
-    runs-on: macos-latest
+    runs-on: xcode-27
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -143,7 +143,7 @@ jobs:
       - name: Setup Xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: latest-stable
+          xcode-version: latest
 
       - name: Resolve Packages
         run: |
@@ -155,7 +155,7 @@ jobs:
 
   test-xcode:
     name: Test (Xcode)
-    runs-on: macos-latest
+    runs-on: xcode-27
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -173,7 +173,7 @@ jobs:
       - name: Setup Xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: latest-stable
+          xcode-version: latest
 
       - name: Run tests
         run: make CONFIG=debug test-all-platforms

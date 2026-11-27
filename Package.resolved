@@ -1,12 +1,13 @@
 {
+  "originHash" : "e110c883d0e4075b722f9ec0c144350d4f0519932c34d90f040f9b01b6d4f133",
   "pins" : [
     {
       "identity" : "combine-schedulers",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/combine-schedulers",
       "state" : {
-        "revision" : "9fa31f4403da54855f1e2aeaeff478f4f0e40b13",
-        "version" : "1.0.2"
+        "revision" : "114354e8c1667a2edc4993700fb9fa4f90157b56",
+        "version" : "1.2.2"
       }
     },
     {
@@ -14,8 +15,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-concurrency-extras",
       "state" : {
-        "revision" : "82a4ae7170d98d8538ec77238b7eb8e7199ef2e8",
-        "version" : "1.3.1"
+        "revision" : "8a4260f7373493435bd21194585c95b72bfdd401",
+        "version" : "1.4.3"
+      }
+    },
+    {
+      "identity" : "swift-issue-reporting",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-issue-reporting",
+      "state" : {
+        "revision" : "b23bb4493c439d3e05152bc167014235ba3d47fc",
+        "version" : "2.1.2"
       }
     },
     {
@@ -23,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mihai8804858/swift-libass",
       "state" : {
-        "revision" : "a097db001228834c57ffb8c5245f3bccc8df8124",
-        "version" : "1.3.1"
+        "revision" : "6513c488e377a26c06db327fb2acfc2653a041d5",
+        "version" : "1.4.0"
       }
     },
     {
@@ -33,7 +43,7 @@
       "location" : "https://github.com/mihai8804858/swift-snapshot-testing",
       "state" : {
         "branch" : "main",
-        "revision" : "a3650f05218407222aed2f5a632c43e4973378cc"
+        "revision" : "4ee19ec0d8af7a3fce0a3f961fef71f0c7c1edd2"
       }
     },
     {
@@ -44,16 +54,7 @@
         "revision" : "0687f71944021d616d34d922343dcef086855920",
         "version" : "600.0.1"
       }
-    },
-    {
-      "identity" : "xctest-dynamic-overlay",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
-      "state" : {
-        "revision" : "a3f634d1a409c7979cabc0a71b3f26ffa9fc8af1",
-        "version" : "1.4.3"
-      }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

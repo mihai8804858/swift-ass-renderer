@@ -16,7 +16,8 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/mihai8804858/swift-snapshot-testing", branch: "main"),
         .package(url: "https://github.com/mihai8804858/swift-libass", .upToNextMajor(from: "1.0.0")),
-        .package(url: "https://github.com/pointfreeco/combine-schedulers", .upToNextMajor(from: "1.0.0"))
+        .package(url: "https://github.com/pointfreeco/combine-schedulers", .upToNextMajor(from: "1.0.0")),
+        .package(url: "https://github.com/pointfreeco/swift-concurrency-extras.git", .upToNextMajor(from: "1.0.0"))
     ],
     targets: [
         .target(
@@ -42,7 +43,8 @@ let package = Package(
             name: "SwiftAssRendererTests",
             dependencies: [
                 .target(name: "SwiftAssRenderer"),
-                .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+                .product(name: "ConcurrencyExtras", package: "swift-concurrency-extras")
             ],
             path: "Tests",
             exclude: ["Pipeline/__Snapshots__"],

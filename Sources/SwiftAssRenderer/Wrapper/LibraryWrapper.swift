@@ -1,6 +1,11 @@
 import Foundation
 @preconcurrency import SwiftLibass
 
+#if hasAttribute(retroactive)
+extension ASS_Image: @retroactive @unchecked Sendable {}
+extension ASS_Track: @retroactive @unchecked Sendable {}
+#endif
+
 struct LibraryRenderResult: Sendable {
     let image: ASS_Image
     let changed: Bool

@@ -1,11 +1,7 @@
 import XCTest
+import ConcurrencyExtras
 import SwiftLibass
 @testable import SwiftAssRenderer
-
-#if hasAttribute(retroactive)
-extension OpaquePointer: @unchecked @retroactive Sendable {}
-extension ASS_Track: @unchecked @retroactive Sendable {}
-#endif
 
 final class LibraryWrapperTests: XCTestCase, @unchecked Sendable {
     private let iterations = 10_000
@@ -32,27 +28,27 @@ final class LibraryWrapperTests: XCTestCase, @unchecked Sendable {
     }
 
     func test_rendererInit_isThreadSafety() throws {
-        let library = try XCTUnwrap(LibraryWrapper.libraryInit())
+        let library = UncheckedSendable(try XCTUnwrap(LibraryWrapper.libraryInit()))
         DispatchQueue.concurrentPerform(iterations: iterations) { _ in
-            _ = LibraryWrapper.rendererInit(library)
+            _ = LibraryWrapper.rendererInit(library.value)
         }
     }
 
     func test_rendererDone_isThreadSafety() throws {
-        let library = try XCTUnwrap(LibraryWrapper.libraryInit())
+        let library = UncheckedSendable(try XCTUnwrap(LibraryWrapper.libraryInit()))
         DispatchQueue.concurrentPerform(iterations: iterations) { _ in
-            guard let renderer = LibraryWrapper.rendererInit(library) else { return }
+            guard let renderer = LibraryWrapper.rendererInit(library.value) else { return }
             LibraryWrapper.rendererDone(renderer)
         }
     }
 
     func test_setLogCallback_isThreadSafety() throws {
-        let library = try XCTUnwrap(LibraryWrapper.libraryInit())
+        let library = UncheckedSendable(try XCTUnwrap(LibraryWrapper.libraryInit()))
         let sink = LibraryLogSink { _, _ in }
         DispatchQueue.concurrentPerform(iterations: iterations) { _ in
-            LibraryWrapper.setLogCallback(library, sink: sink)
+            LibraryWrapper.setLogCallback(library.value, sink: sink)
         }
-        LibraryWrapper.libraryDone(library)
+        LibraryWrapper.libraryDone(library.value)
     }
 
     func test_setLogCallback_routesMessagesToTheSinkOfTheirLibrary() throws {
@@ -79,25 +75,25 @@ final class LibraryWrapperTests: XCTestCase, @unchecked Sendable {
 
     func test_setRendererSize_isThreadSafety() throws {
         let library = try XCTUnwrap(LibraryWrapper.libraryInit())
-        let renderer = try XCTUnwrap(LibraryWrapper.rendererInit(library))
+        let renderer = UncheckedSendable(try XCTUnwrap(LibraryWrapper.rendererInit(library)))
         DispatchQueue.concurrentPerform(iterations: iterations) { _ in
-            LibraryWrapper.setRendererSize(renderer, size: CGSize(width: 1920, height: 1080))
+            LibraryWrapper.setRendererSize(renderer.value, size: CGSize(width: 1920, height: 1080))
         }
     }
 
     func test_setExtractFonts_isThreadSafety() throws {
-        let library = try XCTUnwrap(LibraryWrapper.libraryInit())
+        let library = UncheckedSendable(try XCTUnwrap(LibraryWrapper.libraryInit()))
         DispatchQueue.concurrentPerform(iterations: iterations) { _ in
-            LibraryWrapper.setExtractFonts(library, extract: .random())
+            LibraryWrapper.setExtractFonts(library.value, extract: .random())
         }
     }
 
     func test_setFonts_coreText_isThreadSafety() throws {
         let library = try XCTUnwrap(LibraryWrapper.libraryInit())
-        let renderer = try XCTUnwrap(LibraryWrapper.rendererInit(library))
+        let renderer = UncheckedSendable(try XCTUnwrap(LibraryWrapper.rendererInit(library)))
         DispatchQueue.concurrentPerform(iterations: iterations) { _ in
             LibraryWrapper.setFonts(
-                renderer,
+                renderer.value,
                 provider: .coreText,
                 defaultFont: "Arial",
                 defaultFamily: "Regular"
@@ -107,10 +103,10 @@ final class LibraryWrapperTests: XCTestCase, @unchecked Sendable {
 
     func test_setFonts_fontConfig_isThreadSafety() throws {
         let library = try XCTUnwrap(LibraryWrapper.libraryInit())
-        let renderer = try XCTUnwrap(LibraryWrapper.rendererInit(library))
+        let renderer = UncheckedSendable(try XCTUnwrap(LibraryWrapper.rendererInit(library)))
         DispatchQueue.concurrentPerform(iterations: iterations) { _ in
             LibraryWrapper.setFonts(
-                renderer,
+                renderer.value,
                 provider: .fontConfig,
                 configPath: cachesDirectory.appendingPathComponent("fonts.conf").path,
                 defaultFont: "Arial",
@@ -122,9 +118,9 @@ final class LibraryWrapperTests: XCTestCase, @unchecked Sendable {
     func test_readTrack_isThreadSafety() throws {
         let contentsPath = try XCTUnwrap(Bundle.module.resourceURL?.appendingPathComponent("Subs/en.ass"))
         let content = try String(contentsOfFile: contentsPath.path)
-        let library = try XCTUnwrap(LibraryWrapper.libraryInit())
+        let library = UncheckedSendable(try XCTUnwrap(LibraryWrapper.libraryInit()))
         DispatchQueue.concurrentPerform(iterations: iterations) { _ in
-            _ = LibraryWrapper.readTrack(library, content: content)
+            _ = LibraryWrapper.readTrack(library.value, content: content)
         }
     }
 
@@ -132,11 +128,11 @@ final class LibraryWrapperTests: XCTestCase, @unchecked Sendable {
         let contentsPath = try XCTUnwrap(Bundle.module.resourceURL?.appendingPathComponent("Subs/en.ass"))
         let content = try String(contentsOfFile: contentsPath.path)
         let library = try XCTUnwrap(LibraryWrapper.libraryInit())
-        let renderer = try XCTUnwrap(LibraryWrapper.rendererInit(library))
+        let renderer = UncheckedSendable(try XCTUnwrap(LibraryWrapper.rendererInit(library)))
         nonisolated(unsafe) var track = try XCTUnwrap(LibraryWrapper.readTrack(library, content: content))
-        LibraryWrapper.setRendererSize(renderer, size: CGSize(width: 320, height: 240))
+        LibraryWrapper.setRendererSize(renderer.value, size: CGSize(width: 320, height: 240))
         DispatchQueue.concurrentPerform(iterations: iterations) { _ in
-            _ = LibraryWrapper.renderImage(renderer, track: &track, at: 40.0)
+            _ = LibraryWrapper.renderImage(renderer.value, track: &track, at: 40.0)
         }
     }
 }

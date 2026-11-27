@@ -20,10 +20,11 @@ public final class AssSubtitlesRenderer: Sendable {
     private let wrapper: LibraryWrapperType.Type
     private let fontConfig: FontConfigType
     private let pipeline: ImagePipelineType
-    private let logger: LoggerType
     private let contentsLoader: ContentsLoaderType
     private let librarySetup: LibrarySetup?
     private let rendererSetup: RendererSetup?
+
+    let logger: LoggerType
 
     nonisolated(unsafe) private var library: OpaquePointer?
     nonisolated(unsafe) private var renderer: OpaquePointer?
