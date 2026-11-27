@@ -19,7 +19,7 @@ jobs:
     runs-on: xcode-27
     steps:
       - name: Setup netrc
-        uses: extractions/netrc@v2
+        uses: extractions/netrc@v3
         with:
           machine: github.com
           username: user
@@ -31,12 +31,12 @@ jobs:
           xcode-version: latest
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Checkout gh-pages
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: gh-pages
           path: docs

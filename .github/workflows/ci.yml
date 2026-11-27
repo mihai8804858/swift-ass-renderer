@@ -22,7 +22,7 @@ jobs:
     runs-on: xcode-27
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install tools
         run: brew install swiftlint
@@ -35,7 +35,7 @@ jobs:
     runs-on: xcode-27
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install tools
         run: npm install -g git+https://github.com/streetsidesoftware/cspell-cli
@@ -51,10 +51,10 @@ jobs:
         config: ['debug', 'release']
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup netrc
-        uses: extractions/netrc@v2
+        uses: extractions/netrc@v3
         with:
           machine: github.com
           username: user
@@ -81,10 +81,10 @@ jobs:
         config: ['debug', 'release']
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup netrc
-        uses: extractions/netrc@v2
+        uses: extractions/netrc@v3
         with:
           machine: github.com
           username: user
@@ -106,10 +106,10 @@ jobs:
     runs-on: xcode-27
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup netrc
-        uses: extractions/netrc@v2
+        uses: extractions/netrc@v3
         with:
           machine: github.com
           username: user
@@ -131,10 +131,10 @@ jobs:
     runs-on: xcode-27
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup netrc
-        uses: extractions/netrc@v2
+        uses: extractions/netrc@v3
         with:
           machine: github.com
           username: user
@@ -158,10 +158,10 @@ jobs:
     runs-on: xcode-27
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup netrc
-        uses: extractions/netrc@v2
+        uses: extractions/netrc@v3
         with:
           machine: github.com
           username: user
