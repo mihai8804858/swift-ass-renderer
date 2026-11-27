@@ -13,7 +13,7 @@ final class AssSubtitlesRendererLoggingTests: XCTestCase, @unchecked Sendable {
     private let fallbackMessage = "No event format found"
 
     @MainActor
-    func test_eachRendererReceivesOnlyItsOwnLibrarysMessages() throws {
+    func test_eachRendererReceivesOnlyMessagesFromItsOwnLibrary() throws {
         let fontsPath = try XCTUnwrap(Bundle.module.resourceURL).appendingPathComponent("Fonts")
         let first = MessageLog()
         let second = MessageLog()

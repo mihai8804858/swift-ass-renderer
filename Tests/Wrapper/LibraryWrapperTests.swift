@@ -55,7 +55,7 @@ final class LibraryWrapperTests: XCTestCase, @unchecked Sendable {
         LibraryWrapper.libraryDone(library)
     }
 
-    func test_setLogCallback_routesMessagesToTheLibrarysOwnSink() throws {
+    func test_setLogCallback_routesMessagesToTheSinkOfTheirLibrary() throws {
         let first = MessageCollector()
         let second = MessageCollector()
         let firstSink = LibraryLogSink { _, message in first.append(message) }
@@ -66,7 +66,8 @@ final class LibraryWrapperTests: XCTestCase, @unchecked Sendable {
         LibraryWrapper.setLogCallback(secondLibrary, sink: secondSink)
 
         // No [Events] Format line, so libass reports that it falls back to the default format.
-        let content = "[Script Info]\nScriptType: v4.00+\n\n[Events]\nDialogue: 0,0:00:00.00,0:00:01.00,Default,,0,0,0,,Hi\n"
+        let content = "[Script Info]\nScriptType: v4.00+\n\n"
+            + "[Events]\nDialogue: 0,0:00:00.00,0:00:01.00,Default,,0,0,0,,Hi\n"
         _ = LibraryWrapper.readTrack(firstLibrary, content: content)
 
         XCTAssertFalse(first.messages.isEmpty)
