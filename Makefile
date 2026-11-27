@@ -14,7 +14,9 @@ GENERIC_PLATFORM_MACOS = platform=macOS
 GENERIC_PLATFORM_MAC_CATALYST = platform=macOS,variant=Mac Catalyst
 
 SIM_PLATFORM_IOS = platform=iOS Simulator,id=$(call udid_for,iOS,iPhone [0-9]+ Pro,iPhone [0-9]+.*)
-SIM_PLATFORM_TVOS = platform=tvOS Simulator,id=$(call udid_for,tvOS,Apple TV.*)
+# Snapshot references depend on the screen scale, so tvOS needs the newest 2x Apple TV 4K,
+# of any generation, and never an "(at 1080p)" model, which renders at 1x
+SIM_PLATFORM_TVOS = platform=tvOS Simulator,id=$(call udid_for,tvOS,Apple TV 4K( \([0-9]+(st|nd|rd|th) generation\))?)
 SIM_PLATFORM_VISIONOS = platform=visionOS Simulator,id=$(call udid_for,visionOS,Apple Vision.*)
 SIM_PLATFORM_MACOS = platform=macOS
 SIM_PLATFORM_MAC_CATALYST = platform=macOS,variant=Mac Catalyst
@@ -147,10 +149,12 @@ $(shell xcrun simctl list runtimes available | grep '^$(1) ' | awk '{ print $$2 
 endef
 
 OPEN_PAREN := (
+CLOSE_PAREN := )
 
-# UDID of the newest device on runtime $(1) whose whole name matches the extended regex $(2)
+# UDID of the newest device on runtime $(1) whose name is exactly matched by the extended regex $(2)
 define find_udid
-$(shell xcrun simctl list devices available '$(1)' | grep -E '^ +$(2) [$(OPEN_PAREN)]' | sort -V -r | head -1 | awk -F '[()]' '{ print $$(NF-3) }')
+$(shell xcrun simctl list devices available '$(1)' | grep -E '^ +$(2) [$(OPEN_PAREN)][0-9A-F-]{36}[$(CLOSE_PAREN)]' \
+  | sed -E 's/^ +(.*) \(([0-9A-F-]{36})\) [$(OPEN_PAREN)].*$$/\1|\2/' | sort -t '|' -k1,1 -V -r | head -1 | cut -d '|' -f2)
 endef
 
 # UDID of a simulator on the newest $(1) runtime named like $(2), or else like $(3)
