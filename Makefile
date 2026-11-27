@@ -13,9 +13,9 @@ GENERIC_PLATFORM_VISIONOS = generic/platform=visionOS
 GENERIC_PLATFORM_MACOS = platform=macOS
 GENERIC_PLATFORM_MAC_CATALYST = platform=macOS,variant=Mac Catalyst
 
-SIM_PLATFORM_IOS = platform=iOS Simulator,id=$(call udid_for,iOS $(call latest_runtime,iOS),iPhone \d\+ Pro [^M])
-SIM_PLATFORM_TVOS = platform=tvOS Simulator,id=$(call udid_for,tvOS $(call latest_runtime,tvOS),TV)
-SIM_PLATFORM_VISIONOS = platform=visionOS Simulator,id=$(call udid_for,visionOS $(call latest_runtime,visionOS),Vision)
+SIM_PLATFORM_IOS = platform=iOS Simulator,id=$(call udid_for,iOS,iPhone [0-9]+ Pro,iPhone [0-9]+.*)
+SIM_PLATFORM_TVOS = platform=tvOS Simulator,id=$(call udid_for,tvOS,Apple TV.*)
+SIM_PLATFORM_VISIONOS = platform=visionOS Simulator,id=$(call udid_for,visionOS,Apple Vision.*)
 SIM_PLATFORM_MACOS = platform=macOS
 SIM_PLATFORM_MAC_CATALYST = platform=macOS,variant=Mac Catalyst
 
@@ -143,9 +143,21 @@ all: lint spell build-all-platforms build-example build-docs test-all-platforms
 
 # Newest available simulator runtime version for a platform, e.g. "26.5" for iOS
 define latest_runtime
-$(shell xcrun simctl list runtimes available | grep '^$(1) ' | tail -1 | awk '{ print $$2 }')
+$(shell xcrun simctl list runtimes available | grep '^$(1) ' | awk '{ print $$2 }' | sort -V | tail -1)
 endef
 
+OPEN_PAREN := (
+
+# UDID of the newest device on runtime $(1) whose whole name matches the extended regex $(2)
+define find_udid
+$(shell xcrun simctl list devices available '$(1)' | grep -E '^ +$(2) [$(OPEN_PAREN)]' | sort -V -r | head -1 | awk -F '[()]' '{ print $$(NF-3) }')
+endef
+
+# UDID of a simulator on the newest $(1) runtime named like $(2), or else like $(3)
 define udid_for
-$(shell xcrun simctl list devices available '$(1)' | grep '$(2)' | sort -r | head -1 | awk -F '[()]' '{ print $$(NF-3) }')
+$(strip $(eval _rt := $(call latest_runtime,$(1)))$(or \
+  $(if $(_rt),,$(error No available $(1) simulator runtime)), \
+  $(call find_udid,$(1) $(_rt),$(2)), \
+  $(if $(3),$(call find_udid,$(1) $(_rt),$(3))), \
+  $(error No available $(1) $(_rt) simulator named like "$(2)")))
 endef
