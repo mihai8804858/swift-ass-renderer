@@ -15,9 +15,21 @@ extension FontProvider {
     }
 }
 
+/// Receives the messages of one libass library.
+///
+/// libass passes the `data` pointer given to `ass_set_message_cb` back with every message, so each
+/// library reports to its own sink. The library does not retain it, so whoever sets the callback
+/// has to keep the sink alive for as long as the library exists.
+final class LibraryLogSink: Sendable {
+    let log: @Sendable (Int, String) -> Void
+
+    init(log: @escaping @Sendable (Int, String) -> Void) {
+        self.log = log
+    }
+}
+
 protocol LibraryWrapperType: Sendable {
-    static var libraryLogger: (Int, String) -> Void { get set }
-    static func setLogCallback(_ library: OpaquePointer)
+    static func setLogCallback(_ library: OpaquePointer, sink: LibraryLogSink)
 
     static func libraryInit() -> OpaquePointer?
     static func libraryDone(_ library: OpaquePointer)
@@ -47,10 +59,6 @@ protocol LibraryWrapperType: Sendable {
 enum LibraryWrapper: LibraryWrapperType {
     private static let lock = NSLock()
 
-    nonisolated(unsafe) static var libraryLogger: (Int, String) -> Void = { _, message in
-        print("[swift-ass] \(message)")
-    }
-
     static func libraryInit() -> OpaquePointer? {
         withLock(lock) {
             ass_library_init()
@@ -75,18 +83,20 @@ enum LibraryWrapper: LibraryWrapperType {
         }
     }
 
-    static func setLogCallback(_ library: OpaquePointer) {
+    static func setLogCallback(_ library: OpaquePointer, sink: LibraryLogSink) {
+        let data = Unmanaged.passUnretained(sink).toOpaque()
         withLock(lock) {
-            ass_set_message_cb(library, { messageLevel, messageString, messageArgs, _ in
-                guard let messageString else { return }
+            ass_set_message_cb(library, { messageLevel, messageString, messageArgs, data in
+                guard let messageString, let data else { return }
+                let sink = Unmanaged<LibraryLogSink>.fromOpaque(data).takeUnretainedValue()
                 let message = String(cString: messageString)
                 if let messageArgs {
                     let formattedMessage = NSString(format: message, arguments: messageArgs) as String
-                    LibraryWrapper.libraryLogger(Int(messageLevel), formattedMessage)
+                    sink.log(Int(messageLevel), formattedMessage)
                 } else {
-                    LibraryWrapper.libraryLogger(Int(messageLevel), message)
+                    sink.log(Int(messageLevel), message)
                 }
-            }, nil)
+            }, data)
         }
     }
 

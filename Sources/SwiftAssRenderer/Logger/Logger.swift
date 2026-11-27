@@ -45,27 +45,35 @@ protocol LoggerType: Sendable {
 struct Logger: LoggerType {
     let prefix: String
     let output: LogOutput
+    /// The library's messages go here. Held by the logger, and so by its renderer, which outlives
+    /// the library it frees in `deinit`.
+    private let librarySink: LibraryLogSink
 
     init(prefix: String = "swift-ass", output: LogOutput? = nil) {
-        self.prefix = prefix
-        self.output = output ?? .console({
+        let output = output ?? .console({
             #if DEBUG
             .default
             #else
             .fatal
             #endif
         }())
-    }
-
-    func configureLibrary(_ wrapper: LibraryWrapperType.Type, library: OpaquePointer) {
-        wrapper.setLogCallback(library)
-        wrapper.libraryLogger = { messageLevel, message in
+        self.prefix = prefix
+        self.output = output
+        self.librarySink = LibraryLogSink { messageLevel, message in
             guard let level = LogLevel(rawValue: messageLevel) else { return }
-            log(message: LogMessage(message: message, level: level))
+            Self.log(message: LogMessage(message: message, level: level), prefix: prefix, output: output)
         }
     }
 
+    func configureLibrary(_ wrapper: LibraryWrapperType.Type, library: OpaquePointer) {
+        wrapper.setLogCallback(library, sink: librarySink)
+    }
+
     func log(message: LogMessage) {
+        Self.log(message: message, prefix: prefix, output: output)
+    }
+
+    private static func log(message: LogMessage, prefix: String, output: LogOutput) {
         let prefixedMessage = "[\(prefix)] \(message.message)"
         switch output {
         case .console(let level):

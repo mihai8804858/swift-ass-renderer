@@ -36,3 +36,4 @@ ignoreWords:
   - Sublayer
   - YCBCR
   - preconcurrency
+  - Unretained
