@@ -18,12 +18,6 @@ final class LibraryWrapperTests: XCTestCase, @unchecked Sendable {
         }
     }
 
-    func test_libraryLogger_isThreadSafety() {
-        DispatchQueue.concurrentPerform(iterations: iterations) { _ in
-            LibraryWrapper.libraryLogger = { _, _ in }
-        }
-    }
-
     func test_libraryInit_isThreadSafety() {
         DispatchQueue.concurrentPerform(iterations: iterations) { _ in
             _ = LibraryWrapper.libraryInit()
@@ -54,9 +48,32 @@ final class LibraryWrapperTests: XCTestCase, @unchecked Sendable {
 
     func test_setLogCallback_isThreadSafety() throws {
         let library = try XCTUnwrap(LibraryWrapper.libraryInit())
+        let sink = LibraryLogSink { _, _ in }
         DispatchQueue.concurrentPerform(iterations: iterations) { _ in
-            LibraryWrapper.setLogCallback(library)
+            LibraryWrapper.setLogCallback(library, sink: sink)
         }
+        LibraryWrapper.libraryDone(library)
+    }
+
+    func test_setLogCallback_routesMessagesToTheLibrarysOwnSink() throws {
+        let first = MessageCollector()
+        let second = MessageCollector()
+        let firstSink = LibraryLogSink { _, message in first.append(message) }
+        let secondSink = LibraryLogSink { _, message in second.append(message) }
+        let firstLibrary = try XCTUnwrap(LibraryWrapper.libraryInit())
+        let secondLibrary = try XCTUnwrap(LibraryWrapper.libraryInit())
+        LibraryWrapper.setLogCallback(firstLibrary, sink: firstSink)
+        LibraryWrapper.setLogCallback(secondLibrary, sink: secondSink)
+
+        // No [Events] Format line, so libass reports that it falls back to the default format.
+        let content = "[Script Info]\nScriptType: v4.00+\n\n[Events]\nDialogue: 0,0:00:00.00,0:00:01.00,Default,,0,0,0,,Hi\n"
+        _ = LibraryWrapper.readTrack(firstLibrary, content: content)
+
+        XCTAssertFalse(first.messages.isEmpty)
+        XCTAssertTrue(second.messages.isEmpty, "\(second.messages)")
+
+        LibraryWrapper.libraryDone(firstLibrary)
+        LibraryWrapper.libraryDone(secondLibrary)
     }
 
     func test_setRendererSize_isThreadSafety() throws {
@@ -120,5 +137,22 @@ final class LibraryWrapperTests: XCTestCase, @unchecked Sendable {
         DispatchQueue.concurrentPerform(iterations: iterations) { _ in
             _ = LibraryWrapper.renderImage(renderer, track: &track, at: 40.0)
         }
+    }
+}
+
+private final class MessageCollector: @unchecked Sendable {
+    private let lock = NSLock()
+    private var storage: [String] = []
+
+    var messages: [String] {
+        lock.lock()
+        defer { lock.unlock() }
+        return storage
+    }
+
+    func append(_ message: String) {
+        lock.lock()
+        storage.append(message)
+        lock.unlock()
     }
 }

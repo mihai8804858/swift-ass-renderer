@@ -3,10 +3,8 @@ import SwiftLibass
 @testable import SwiftAssRenderer
 
 final class MockLibraryWrapper: LibraryWrapperType {
-    nonisolated(unsafe) static var libraryLogger: (Int, String) -> Void = { _, _ in }
-
     static let setLogCallbackFunc = FuncCheck<OpaquePointer>()
-    static func setLogCallback(_ library: OpaquePointer) {
+    static func setLogCallback(_ library: OpaquePointer, sink: LibraryLogSink) {
         setLogCallbackFunc.call(library)
     }
 
