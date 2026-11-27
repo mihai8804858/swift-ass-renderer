@@ -64,22 +64,6 @@ build-docs:
 		--output-path $(DOCC_DIR)
 
 build-example:
-ifeq ($(CI),true)
-	for platform in \
-	  "$(SIM_PLATFORM_IOS)" \
-	  "$(SIM_PLATFORM_TVOS)" \
-	  "$(SIM_PLATFORM_VISIONOS)"; \
-	do \
-		echo -e "\n${GREEN}Building example on $$platform ${NC}"\n; \
-		set -o pipefail && xcrun xcodebuild clean build \
-			-workspace $(WORKSPACE).xcworkspace \
-			-scheme $(EXAMPLE_SCHEME) \
-			-configuration Debug \
-			-scmProvider system \
-			-usePackageSupportBuiltinSCM \
-			-destination "$$platform" | xcpretty || exit 1; \
-	done;
-else
 	for platform in \
 	  "$(SIM_PLATFORM_IOS)" \
 	  "$(SIM_PLATFORM_TVOS)" \
@@ -96,24 +80,8 @@ else
 			-usePackageSupportBuiltinSCM \
 			-destination "$$platform" | xcpretty || exit 1; \
 	done;
-endif
 
 test-all-platforms:
-ifeq ($(CI),true)
-	for platform in \
-	  "$(SIM_PLATFORM_IOS)" \
-	  "$(SIM_PLATFORM_TVOS)"; \
-	do \
-		echo -e "\n${GREEN}Testing $$platform ${NC}\n"; \
-		set -o pipefail && xcrun xcodebuild clean test \
-			-workspace $(WORKSPACE).xcworkspace \
-			-scheme $(LIB_SCHEME) \
-			-configuration $(CONFIG) \
-			-scmProvider system \
-			-usePackageSupportBuiltinSCM \
-			-destination "$$platform" | xcpretty || exit 1; \
-	done;
-else
 	for platform in \
 	  "$(SIM_PLATFORM_IOS)" \
 	  "$(SIM_PLATFORM_TVOS)" \
@@ -130,7 +98,6 @@ else
 			-usePackageSupportBuiltinSCM \
 			-destination "$$platform" | xcpretty || exit 1; \
 	done;
-endif
 
 lint:
 	swiftlint lint --strict
